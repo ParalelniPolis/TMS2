@@ -3,13 +3,6 @@
 //TODO dotáhnout kontrolu šesti znaků (u všech funkcí)
 function formhash(form, password) {
 
-    //kdyby nefungovalo HTML5 forms
-    /*if (password.value.length < 1) {
-     alert('Vyplň prosím heslo!');
-     form.password.focus();
-     return false;
-     }*/
-
     // Create a new element input, this will be our hashed password field.
     var p = document.createElement("input");
 
