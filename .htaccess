@@ -1,0 +1,10 @@
+Options -Indexes
+
+RewriteEngine On
+# RewriteBase / #sometimes production don't work without this line
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule !\.(css|js|icon|zip|rar|png|jpg|gif|pdf)$ index.php [L]
+
+AddType application/x-httpd-php .php .phtml

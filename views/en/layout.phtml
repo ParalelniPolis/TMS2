@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <base href="/localhost"/> <!-- na produkci přepsat natvrdo url-->
+    <meta charset="UTF-8"/>
+    <title><?= $title ?></title>
+    <meta name="description" content="<?= $description ?>"/>
+    <meta name="keywords" content="<?= $keywords ?>"/>
+    <meta name="author" content="Tomáš Klíma"/>
+    <link rel="stylesheet" href="<?= ROOT ?>/style.css" type="text/css"/>
+    <!-- TODO optimalzation - get JS scripts only when needed -->
+    <script type="text/JavaScript" src="<?= ROOT ?>/js/sha512.js"></script>
+    <script type="text/JavaScript" src="<?= ROOT ?>/js/forms.js"></script>
+</head>
+
+<body>
+<header>
+    <div class="upperRow">
+        <?= $languageSwitch ?>
+        <?= $loginCredentials ?>
+    </div>
+    <h1><?= NAME ?> - Paralell polis</h1>
+</header>
+
+<nav>
+    <ul>
+        <?= $mainMenu ?>
+    </ul>
+</nav>
+<br clear="both"/>
+
+<article>
+    <?php
+    //load all stored (and empty them) and new messages
+    if (!empty($_SESSION['messages'])) {
+        $messages = array_merge($_SESSION['messages'], $messages);
+        unset($_SESSION['messages']);
+    }
+    foreach ($messages as $m) echo('<div class="message '.$m['s'].'">'.$m['en'].'</div>');
+    $this->controller->render();
+    ?>
+</article>
+
+<footer>
+    <p>version <?= VERSION ?> of the Tenant Management System for Paralell polis by TomK<br/>
+        <a href="<?= ROOT ?>/en/contact">Something wrong? Contact the webmaster!</a></p>
+</footer>
+</body>
+</html>

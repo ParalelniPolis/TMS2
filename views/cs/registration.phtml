@@ -1,0 +1,63 @@
+
+<h2>Registrace</h2>
+<form method="post" action="" name="registrationForm">
+    <table>
+        <tr>
+            <td class="right"><label for="email">Email - bude použit jako login: </label></td>
+            <td class="left"><input type="email" name="email" id="email"
+                                    value="<?php if (!empty($email)) echo($email); ?>"/></td>
+        </tr>
+        <tr>
+            <td class="right"><label for="firstname">Jméno: </label></td>
+            <td class="left"><input type="text" name="firstname" id="firstname"
+                                    value="<?php if (!empty($firstname)) echo($firstname); ?>"/></td>
+        </tr>
+        <tr>
+            <td class="right"><label for="surname">Příjmení: </label></td>
+            <td class="left"><input type="text" name="surname" id="surname"
+                                    value="<?php if (!empty($surname)) echo($surname); ?>"/></td>
+        </tr>
+        <tr>
+            <td class="right"><label for="telephone">Telefon: </label></td>
+            <td class="left"><input type="text" name="telephone" id="telephone"
+                                    value="<?php if (!empty($telephone)) echo($telephone); ?>"/></td>
+        </tr>
+        <tr>
+            <td class="right"><label for="ic">IČ: </label></td>
+            <td class="left"><input type="text" name="ic" id="ic"
+                                    value="<?php if (!empty($ic)) echo($ic); ?>"/></td>
+        </tr>
+        <tr>
+            <td class="right"><label for="tariff">Místo a tarif: </label></td>
+            <td class="left">
+                <select name="tariff" id="tariff">
+                    <option value="X" selected="selected">Vyber místo a tarif...</option><?php
+                    foreach ($tariffs as $tariff): ?>
+                        <option value="<?= $tariff['id_tariff'] ?>"><?= $tariff['name'] ?>:
+                            <?= $tariff['tariffCZE'] ?> za <?= $tariff['priceCZK'] ?> Kč
+                        </option>
+                    <?php endforeach ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="right"><label for="startDate">Datum začátku fakturace: </label></td>
+            <td class="left"><input type="date" id="startDate" name="startDate" value="<?=date('Y-m-d', time());?>"></td>
+        </tr>
+        <tr>
+            <!-- TODO add pass toggle visibility -->
+            <td class="right"><label for="password">Heslo (alespoň 6 znaků): </label></td>
+            <td class="left"><input type="password" name="password" id="password"/></td>
+        </tr>
+        <tr>
+            <td class="right"><label for="passwordComfirm">Potvrzení hesla: </label></td>
+            <td class="left"><input type="password" name="passwordComfirm" id="passwordComfirm"/></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="center">
+                <input type="submit" name="sent" value="Registrovat!"
+                       onclick="return regformhash(this.form, this.form.password, this.form.passwordComfirm);"/>
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,43 @@
+<h2>
+    <i><?= $user['first_name'] ?> <?= $user['last_name'] ?></i>
+</h2>
+<h3>
+    s tarifem <?= $user['tariffCZE'] ?> (<?= $tariff['priceCZK'] ?> Kč/měsíc) v <?= $user['name'] ?>
+</h3>
+
+<table class="user">
+    <tr class="firstRow">
+        <td>Datum</td>
+        <td>Cena v BTC</td>
+        <td>Status faktury</td>
+        <td>Zaplatit</td>
+        <td>Link na stažení faktury</td>
+        <td>Tarif</td>
+        <!--<td>Fičurky</td>-->
+    </tr>
+    <?php foreach ($payments as $p): ?>
+        <tr>
+            <td>
+                <?= date("j. n. Y", strtotime($p['payment_first_date'])) ?>
+                až <?= date("j. n. Y", strtotime($p['payment_first_date']."+1 month -1 day")) ?>
+            </td>
+            <td>
+                <?= $p['payed_price_BTC'] * 1000 ?> mBTC
+            </td>
+            <td>
+                <b><?= $p['status'] ?></b>
+            </td>
+            <td>
+                <a href="<?= ROOT ?>/cs/PayInvoice/pay/<?= $p['id_payment'] ?>">
+                    <button>Zaplatit</button>
+                </a>
+            </td>
+            <td>
+                <a href="<?= ROOT ?>/cs/InvoicePdf/<?= $p['invoice_fakturoid_id'] ?>" target="_blank">
+                    <button>PDF faktura</button>
+                </a>
+            </td>
+            <td><?= $tariff['tariffCZE'] ?></td>
+        </tr>
+    <?php endforeach ?>
+</table>

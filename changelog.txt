@@ -1,0 +1,30 @@
+TMS 2nd generation for PP by TK
+restructuralized onto MVC and shifted from handmade payments into BitcoinPay.com system
+planned:
+ - one-time payments for equipment (and proper invoicing for it),
+ - booking of rooms (and invoicing of it)
+
+v0.11-3 table design polishing & changed story of payments
+v0.10-5+16 multilingual website!
+v0.9-5 požadavky
+v0.8.10-1 hotfix (temporary makeAdmin)
+v0.8.9-1+4 debugging from 5min HS testing + added CSRF protection
+v0.8.4-4+3+4 debugging and deploying on production
+v0.8.3-4+3+5 added Fakturoid system
+v0.8.2-6+3,5+4 adding BitcoinPay payments
+v0.8.1-7 added users personal informations
+v0.8.0-3+3 complete translation into english as preparation for github
+v0.7.0-2+8+4+7+4+2+3 restructralized into MVC scheme
+v0.6.3 RC-? sending email notofications & dynamicly generated number for addresses
+v0.6.2 RC-6 styling
+v0.6.1 RC-5 styling + production debugging
+v0.6.0-4 PHP generating addresses!
+v0.5.3-10 activation system, minor cool things
+v0.5.2-7 restart pass by registred mail
+v0.5.1-8 registration, user rights and fixed login brutforce
+v0.5.0-4 login system
+v0.4.1-2 fix on production (DB statements)
+v0.4.0-4 full functional checking addresses
+v0.3.0-6 restruktralization DB, added places
+v0.2.0-3 XSS+btc.php
+v0.1.0-10 start

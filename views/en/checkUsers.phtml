@@ -1,0 +1,56 @@
+<h2>Přehled členů</h2>
+<table class="checkUsers">
+    <tr class="firstRow">
+        <td>ID</td>
+        <td>Activation</td>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Tel. number</td>
+        <td>Place</td>
+        <td>First membership</td>
+        <td>Tariff</td>
+    </tr>
+    <?php foreach ($members as $m) : ?>
+        <tr>
+            <td>
+                <?= $m['id_user']; ?>
+            </td>
+            <td>
+                <?php if ($m['active']) { ?>
+                    <a href="<?= ROOT ?>/en/forceDeactivation/<?= $m['id_user'] ?>/<?= $csrf ?>">
+                        <button>deaktivovat</button>
+                    </a>
+                <?php }
+                if (!$m['active']) { ?>
+                    <a href="<?= ROOT ?>/en/forceActivation/<?= $m['id_user'] ?>/<?= $csrf ?>">
+                        <button>Aktivovat!</button>
+                    </a>
+                <?php } ?>
+            </td>
+            <td>
+                <a href="<?= ROOT ?>/en/user/<?= $m['id_user'] ?>">
+                    <?= $m['first_name'] ?> <?= $m['last_name'] ?>
+                </a>
+            </td>
+            <td>
+                <?= $m['email'] ?>
+            </td>
+            <td>
+                <?= $m['telephone'] ?>
+            </td>
+            <td>
+                <?= $m['id_of_place'] ?> - <?= $m['name'] ?>
+            </td>
+            <td>
+                <?= $m['firstPaymentDate'] ?>
+            </td>
+            <td>
+                <div class="<?= $m['paymentFlag'] ?>">
+                    <?= $m['tariffCZE'] ?>
+                </div>
+            </td>
+        </tr>
+    <?php endforeach ?>
+</table>
+
+<p><a href="mailto:<?php foreach ($activeMemberMailList as $a) echo $a.',' ?>">Send email to all active members</a></p>

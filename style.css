@@ -1,0 +1,223 @@
+body {
+    font-family: Verdana, Arial, Courier, sans-serif;
+    font-size: 14px;
+    width: 900px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: #444444;
+    font-size: 26px;
+}
+
+h2 {
+    text-align: center;
+    color: #444444;
+    font-size: 22px;
+}
+
+h3 {
+    text-align: center;
+    color: #444444;
+    font-size: 18px;
+}
+
+footer {
+    font-size: 11px;
+    text-align: center;
+    padding-top: 15px;
+}
+
+nav {
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    display: inline-block;
+}
+
+nav li {
+    float: left;
+    margin-right: 15px;
+    display: inline;
+}
+
+nav a {
+    background: #444444;
+    color: #eeeeee;
+    padding: 8px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+}
+
+button {
+    background: #444444;
+    color: #eeeeee;
+    padding: 2px 6px;
+    text-decoration: none;
+    border: none;
+
+}
+
+button:hover, input[type="submit"]:hover, nav a:hover {
+    background: #eeeeee;
+    color: #444444;
+}
+
+button:active, input[type="submit"]:active, nav a:active {
+    background: #ffffff;
+    color: #000000;
+}
+
+button.logout {
+    background: #000000;
+    color: #eeeeee;
+    font-weight: bold;
+    height: 32px;
+    padding: 0 15px;
+    margin-left: 20px;
+}
+
+button:hover.logout {
+    background: #eeeeee;
+    color: #444444;
+}
+
+button:active.logout {
+    background: #ffffff;
+    color: #000000;
+}
+
+form {
+    text-align: center;
+}
+
+input[type="submit"] {
+    padding: 10px 25px;
+    display: block;
+    margin: 20px auto 0;
+    font-weight: bold;
+    background: #444444;
+    color: #eeeeee;
+    border: 0;
+}
+
+input[type="submit"]:hover {
+    cursor: pointer;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
+    width: 280px;
+    height: 16px;
+    border: 1px solid #444444;
+    padding: 3px;
+    margin: 0;
+}
+
+select {
+    width: 288px;
+    height: 20px;
+}
+
+textarea {
+    border: 1px solid #444444;
+    width: 500px;
+    height: 90px;
+}
+
+table {
+    margin: 0 auto;
+}
+
+table.user, table.checkUsers {
+    border-collapse: collapse;
+}
+
+table.user tr:nth-child(2n), table.checkUsers tr:nth-child(2n) {
+    background-color: #e4e4e4;
+}
+
+table.user td {
+    padding: 8px;
+}
+
+table.checkUsers td {
+    padding: 3px;
+}
+
+tr.firstRow {
+    background-color: #444444;
+    color: #eeeeee;
+}
+
+p {
+    text-align: center;
+}
+
+div.upperRow {
+    background-color: #444444;
+    color: #eeeeee;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.languageSwitch{
+    text-decoration: none;
+    color: #eeeeee;
+}
+
+div.languageSwitch {
+    margin: 0 20px;
+    text-decoration: none;
+}
+
+div.intro {
+    width: 700px;
+    padding: 0 150px;
+}
+
+p.message {
+    background-color: #eeeeee;
+}
+
+div.message {
+    width: 600px;
+    padding: 20px;
+    margin: 10px auto;
+    text-align: center;
+    font-size: 18px;
+}
+
+.success {
+    background-color: #AAFFAA
+}
+
+.error {
+    background-color: #FF0000;
+    color: white
+}
+
+.info {
+    background-color: #DDDDFF
+}
+
+.unknown {
+    background-color: yellow;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.lightBackground {
+    background-color: #e4e4e4;
+}
