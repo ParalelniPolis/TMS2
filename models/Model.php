@@ -16,17 +16,9 @@ class Model {
         else return false;
     }
 
-    public function forceChangeLanguage($language) {
-        setcookie('language', $language, time()+60*60*24*365);
-        $_COOKIE['language'] = $language;
-    }
-
-    public function returnTariffs($lang) {
-        if ($lang == 'cs') return Db::queryAll('SELECT `id_tariff`, `tariffCZE`, `priceCZK`, `name`
-            FROM `tariffs` JOIN places ON places.id = tariffs.place_id', []);
-        if ($lang == 'en') return Db::queryAll('SELECT `id_tariff`, `tariffENG`, `priceCZK`, `name`
-            FROM `tariffs` JOIN places ON places.id = tariffs.place_id', []);
-        return false;
+    public function forceChangeLanguage($lang) {
+        setcookie('language', $lang, time()+60*60*24*365);
+        $_COOKIE['language'] = $lang;
     }
 
     public function sanitize($data) {
@@ -97,6 +89,14 @@ class Model {
                                 JOIN users ON users.user_tariff = tariffs.id_tariff
                                 WHERE id_user = ?', [$userID]);
         return $result['id'];
+    }
+
+    public function getTariffName($tariffId, $lang) {
+        if ($lang == 'cs') return Db::querySingleOne('SELECT `tariffCZE` FROM `tariffs`
+            WHERE `id_tariff` = ?', [$tariffId]);
+        if ($lang == 'en') return Db::querySingleOne('SELECT `tariffENG` FROM `tariffs`
+            WHERE `id_tariff` = ?', [$tariffId]);
+        return false;
     }
 
     public function getRandomHash() {

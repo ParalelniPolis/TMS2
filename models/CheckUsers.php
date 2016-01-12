@@ -23,8 +23,8 @@ class CheckUsers extends Model {
     }
 
     private function getFirstPaymentDate($userId, $lang) {
-        $r = Db::querySingleOne('SELECT `payment_date` FROM `payments`
-                                 WHERE `id_payer` = ? ORDER BY `payment_date` ASC', [$userId]);
+        $r = Db::querySingleOne('SELECT `payment_first_date` FROM `payments`
+                                 WHERE `id_payer` = ? ORDER BY `payment_first_date` ASC', [$userId]);
         if (empty($r)) {
             if ($lang == 'cs') return 'neznámé';
             if ($lang == 'en') return 'unknown';

@@ -2,35 +2,40 @@
 
 class Bitcoinpay extends Model {
 
-    function createPayment($paymentId) {
+    function createPayment($paymentId, $lang) {
         $payment = $this->getPaymentData($paymentId);
-        //$price = round($payment['price'], 5); //should not be needed due to rounding in database
-        $price = $payment['price'];
+        $idPayer = $payment['id_payer'];
+        $price = $payment['priceCZK'];
         $email = $payment['email'];
+        $fakturoidNumber = $payment['invoice_fakturoid_number'];
+
         //make warning ticket if paying user is different from the owner
-        if ($email != $_SESSION['username']) $this->newTicket('warning', 'function BitcoinPay->TryPayInvoice', 'users '.$_SESSION['username'].' invoice with id:'.$paymentId.' is payed by:'.$email);
+        if ($email != $_SESSION['username'])
+            $this->newTicket('warning', 'function BitcoinPay->TryPayInvoice',
+                'users '.$_SESSION['username'].' invoice with id:'.$paymentId.' is payed by:'.$email);
 
         $ch = curl_init();
-        //production
-        curl_setopt($ch, CURLOPT_URL, "https://www.bitcoinpay.com/api/v1/payment/btc");
+        curl_setopt($ch, CURLOPT_URL, "https://www.bitcoinpay.com/api/v1/payment/btc"); //production
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_POST, true);
 
-        //TODO make valid address /PayInvoice/notify (about change of payment) (with security!)
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "{
+        //TODO make valid address /PayInvoice/notify (about change of payment)
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $x="{
             \"settled_currency\": \"BTC\",
-            \"return_url\": \"".ROOT."/PayInvoice/return/".$paymentId."\",
-            \"notify_url\": \"".ROOT."/PayInvoice/notify\",
+            \"return_url\": \"".ROOT."/".$lang."/PayInvoice/return/".$paymentId."\",
+            \"notify_url\": \"".ROOT."/".$lang."/PayInvoice/notify/".$paymentId."\",
             \"notify_email\": \"".EMAIL."\",
-            \"price\": $price,
-            \"currency\": \"BTC\",
+            \"price\": \"$price\",
+            \"currency\": \"CZK\",
             \"reference\": {
-                \"id_invoice\": \"$paymentId\",
-                \"customer_email\": \"$email\"
+                \"customer_id\": \"$idPayer\",
+                \"customer_email\": \"$email\",
+                \"payment_id\": \"$paymentId\",
+                \"fakturoid_number\": \"$fakturoidNumber\"
             },
-            \"item\": \"Invoice from TMS2 in PP\",
-            \"lang\": \"cs\"
+            \"item\": \"Invoice from ".NAME." in PP\",
+            \"lang\": \"$lang\"
         }");
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -50,10 +55,11 @@ class Bitcoinpay extends Model {
         return $data['data'];
     }
 
-    function getTransactionDetails($bitcoinpayId) {
+    function getTransactionDetails($paymentId) {
+        $bitcoinpayId = $this->getBitcoinpayId($paymentId);
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, "https://www.bitcoinpay.com/api/v1/transaction-history/$bitcoinpayId");
+        curl_setopt($ch, CURLOPT_URL, "https://www.bitcoinpay.com/api/v1/transaction-history/".$bitcoinpayId);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
 
@@ -75,6 +81,9 @@ class Bitcoinpay extends Model {
         $status = $data['status'];
         Db::queryModify('UPDATE `payments` SET `bitcoinpay_payment_id` = ?, `status` = ?, `time_generated` = ?
                          WHERE `id_payment` = ?', [$bitcoinpayId, $status, $time, $id]);
+        if (!empty($price = $data['paid_amount']))
+            Db::queryModify('UPDATE `payments` SET `payed_price_BTC` = ?
+                WHERE `id_payment` = ?', [$price, $id]);
     }
 
     function getStatusMessage($case) {
@@ -83,6 +92,7 @@ class Bitcoinpay extends Model {
                 $r = ['s' => 'info',
                     'cs' => 'Čekáme na zaplacení',
                     'en' => 'Waiting for payment'];
+                //TODO when pending, return to correct payment
                 break;
             }
             case 'confirmed':
@@ -96,6 +106,7 @@ class Bitcoinpay extends Model {
                 $r = ['s' => 'error',
                     'cs' => 'Poslána menší částka než je vyžadováno',
                     'en' => 'Sent smaller amount than we expected'];
+                //TODO - handle this in system - provide refund to customer
                 break;
             }
             case 'invalid': {
@@ -115,6 +126,7 @@ class Bitcoinpay extends Model {
                 $r = ['s' => 'error',
                     'cs' => 'Platba byla odeslána po splatnosti',
                     'en' => 'Payment was send after timeout'];
+                //TODO - handle this in system - provide refund to customer
                 break;
             }
             case 'refund': {
@@ -123,6 +135,7 @@ class Bitcoinpay extends Model {
                     'en' => 'Payment was refunded'];
                 break;
             }
+            //internal status
             case 'unpaid': {
                 $r = ['s' => 'info',
                     'cs' => 'Nová nezaplacená faktura',
@@ -139,10 +152,20 @@ class Bitcoinpay extends Model {
         return $r;
     }
 
-    public function getPaymentData($paymentId) {
-        return Db::queryOne('SELECT `id_payment`,`bitcoinpay_payment_id`,`id_payer`,`price`,`email` FROM `payments`
+    private function getPaymentData($paymentId) {
+        return Db::queryOne('SELECT `id_payer`,`email`,`priceCZK`,`invoice_fakturoid_number` FROM `payments`
                              JOIN `users` ON `users`.`id_user` = `payments`.`id_payer`
+                             JOIN `tariffs` ON `users`.`user_tariff` = `tariffs`.`id_tariff`
                              WHERE `id_payment` = ?', [$paymentId]);
     }
 
+    public function getPaymentUserId($paymentId) {
+        return Db::querySingleOne('SELECT `id_payer` FROM `payments`
+            WHERE `id_payment` = ?', [$paymentId]);
+    }
+
+    private function getBitcoinpayId($paymentId) {
+        return Db::querySingleOne('SELECT `bitcoinpay_payment_id` FROM `payments`
+            WHERE `id_payment` = ?', [$paymentId]);
+    }
 }

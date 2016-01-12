@@ -1,8 +1,11 @@
 <?php
 
-class ChangePersonals extends User {
+class ChangePersonals extends Payments {
 
     public function validateData($data) {
+        if (!is_numeric($data['ic'])) return ['s' => 'error',
+            'cs' => 'IČ musí být číslo',
+            'en' => 'VAT number must be a number'];
         $attempt = Db::queryOne('SELECT `password`,`salt` FROM `users`
                                  WHERE `email` = ?', [$_SESSION['username']]);
         $userPassword = hash('sha512', $data['p'].$attempt['salt']);

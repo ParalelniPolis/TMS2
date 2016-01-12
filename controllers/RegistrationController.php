@@ -30,7 +30,7 @@ class RegistrationController extends Controller {
         }
 
         $this->header['title'] = 'Registrace nového uživatele';
-        $this->data['tariffs'] = $registration->returnTariffs($this->language);
+        $this->data['tariffs'] = $registration->returnMenuTariffs($this->language);
         $this->view = 'registration';
     }
 }

@@ -36,7 +36,7 @@
         $messages = array_merge($_SESSION['messages'], $messages);
         unset($_SESSION['messages']);
     }
-    foreach ($messages as $m) echo('<div class="message '.$m['s'].'">'.$m['cs'].'</div>');
+    if (!empty($messages)) foreach ($messages as $m) echo('<div class="message '.$m['s'].'">'.$m['cs'].'</div>');
     $this->controller->render();
     ?>
 </article>

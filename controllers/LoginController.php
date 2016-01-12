@@ -14,11 +14,11 @@ class LoginController extends Controller {
 
         if (isset($_POST['sent'])) {
             $data = $login->sanitize([
-                "login" => $_POST['login'],
-                "p" => $_POST['p']
+                'login' => $_POST['login'],
+                'p' => $_POST['p']
                 ]);
             $result = $login->tryLogin($data);
-            if ($result['s'] == 'success') $this->redirect("user/".$_SESSION["id_user"]);
+            if ($result['s'] == 'success') $this->redirect('payments');
             else $this->messages[] = $result;
             $this->data = $data; //for autofilling imputs from previous page
         }

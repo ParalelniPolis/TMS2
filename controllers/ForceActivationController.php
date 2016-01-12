@@ -15,6 +15,7 @@ class ForceActivationController extends Controller {
                 'cs' => 'Možný CSRF útok! Zkuste prosím aktivaci znovu',
                 'en' => 'Possible CSRF attack! Please try activation again'];
         } else {
+            //TODO add place choice for acivated member
             $email = $activation->getUserEmailFromId($userId);
             $result = $activation->activateUser($email);
             $this->messages[] = $result;
