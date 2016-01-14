@@ -12,7 +12,9 @@ class UnlockBrutforceController extends Controller {
         }
 
         $this->messages[] = $result;
-        $this->header['title'] = 'Odemknout brutforce systém';
+        $this->header['title'] = [
+            'cs' => 'Odemknout brutforce systém',
+            'en' => 'Unlock bruteforce system'];
         $this->view = 'unlockBrutforce';
     }
 }

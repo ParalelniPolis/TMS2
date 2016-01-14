@@ -39,7 +39,7 @@ class RouterController extends Controller {
 
         switch ($this->language) {
             case ('cs'): {
-                $this->data['title'] = $this->controller->header['title'].' - '.NAME.' v'.VERSION.' - Paralelní polis';
+                $this->data['title'] = $this->controller->header['title']['cs'].' - '.NAME.' v'.VERSION.' - Paralelní polis';
                 $this->data['description'] = NAME.' Tenant Management System v'.VERSION.' pro Paralelní polis - systém pravidelného placení za Bitcoiny';
                 $this->data['keywords'] = "TMS, TMS2, TMSv2, Tenant Management System, Paralelni polis, BTC, bitcoin, ".NAME;
                 $this->data['mainMenu'] = $render->returnMainMenu('cs');
@@ -47,7 +47,7 @@ class RouterController extends Controller {
                 break;
             }
             case ('en'): {
-                $this->data['title'] = $this->controller->header['title'].' - '.NAME.' v'.VERSION.' - Paralell polis';
+                $this->data['title'] = $this->controller->header['title']['en'].' - '.NAME.' v'.VERSION.' - Paralell polis';
                 $this->data['description'] = NAME.' Temant Management System v'.VERSION.' for Paralell polis - system for regular Bitcoin payments';
                 $this->data['keywords'] = "TMS, TMS2, TMSv2, Tenant Management System, Paralelni polis, BTC, bitcoin, ".NAME;
                 $this->data['mainMenu'] = $render->returnMainMenu('en');

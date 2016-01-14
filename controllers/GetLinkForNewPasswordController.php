@@ -12,6 +12,8 @@ class GetLinkForNewPasswordController extends Controller {
         } else {
             $this->view = 'getLinkForNewPassword';
         }
-        $this->header['title'] = 'Restart hesla';
+        $this->header['title'] = [
+            'cs' => 'Restart hesla',
+            'en' => 'Restart password'];
     }
 }

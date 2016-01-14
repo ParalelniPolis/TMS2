@@ -23,7 +23,9 @@ class LoginController extends Controller {
             $this->data = $data; //for autofilling imputs from previous page
         }
 
-        $this->header['title'] = 'Login';
+        $this->header['title'] = [
+            'cs' => 'Přihlášení',
+            'en' => 'Login'];
         $this->view = 'login';
     }
 }

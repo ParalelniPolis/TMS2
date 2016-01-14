@@ -8,11 +8,13 @@ class ActivationController extends Controller {
 
         $result = $activation->checkKeyReturnEmail($key);
         if ($result['s'] == 'success') {
-            $result = $activation->activateUser($result[0]);
+            $result = $activation->activateUser($result['email']);
         }
 
         $this->messages[] = $result;
-        $this->header['title'] = 'Aktivace účtu';
+        $this->header['title'] = [
+            'cs' => 'Aktivace účtu',
+            'en' => 'Account activation'];
         $this->view = 'activation';
     }
 }

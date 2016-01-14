@@ -12,7 +12,9 @@ class CheckUsersController extends Controller {
         $this->data['csrf'] = Csrf::getCsrfToken();
         $this->data['activeMemberMailList'] = $checkUsers->getActiveMemberMailList($members);
         $this->data['members'] = $members;
-        $this->header['title'] = 'Ostatní členové';
+        $this->header['title'] = [
+            'cs' => 'Ostatní členové',
+            'en' => 'Other members'];
         $this->view = 'checkUsers';
     }
 }

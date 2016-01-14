@@ -26,10 +26,12 @@ class RegistrationController extends Controller {
 
             $this->messages[] = $result;
             //if register success, show registration form no more
-            if ($result[0] == 'success') $this->redirect('');
+            if ($result['s'] == 'success') $this->redirect('');
         }
 
-        $this->header['title'] = 'Registrace nového uživatele';
+        $this->header['title'] = [
+            'cs' => 'Registrace nového uživatele',
+            'en' => 'Registration of new user'];
         $this->data['tariffs'] = $registration->returnMenuTariffs($this->language);
         $this->view = 'registration';
     }

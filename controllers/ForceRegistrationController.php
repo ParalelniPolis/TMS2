@@ -16,7 +16,7 @@ class ForceRegistrationController extends Controller {
                 "telephone" => $_POST['telephone'],
                 "startDate" => $_POST['startDate'],
                 "ic" => $_POST['ic'],
-                //make up password (its hash)
+                //make up password (especially its hash)
                 "p" => $registration->getRandomHash()
             ]);
             $this->data = $data; //for autofilling from previous page
@@ -29,7 +29,9 @@ class ForceRegistrationController extends Controller {
             $this->messages[] = $result;
         }
 
-        $this->header['title'] = 'Registrace nového uživatele';
+        $this->header['title'] = [
+            'cs' => 'Registrace nového uživatele',
+            'en' => 'Registration of new user'];
         $this->data['tariffs'] = $registration->returnMenuTariffs($this->language);
         $this->view = 'forceRegistration';
     }

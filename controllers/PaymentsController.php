@@ -28,11 +28,15 @@ class PaymentsController extends Controller {
         $data = $user->getUserData($id, $this->language);
 
         //show non-active user
-        if (!$data['user']['active']) $this->messages[] = ['info', 'Neaktivní uživatel - nové faktury se negenerují'];
+        if (!$data['user']['active']) $this->messages[] = ['s' => 'info',
+            'cs' => 'Neaktivní uživatel - nové faktury se negenerují',
+            'en' => 'Inactive user - new invoices are not generated'];
         $this->data['tariff'] = $data['tariff'];
         $this->data['user'] = $data['user'];
         $this->data['payments'] = $data['payments'];
-        $this->header['title'] = 'Přehled plateb';
+        $this->header['title'] = [
+            'cs' => 'Přehled plateb',
+            'en' => 'Payments overview'];
         $this->view = 'payments';
     }
 }

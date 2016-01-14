@@ -17,7 +17,9 @@ class ContactController extends Controller {
         }
 
         if (isset($_SESSION['username'])) $this->data['email'] = $_SESSION['username']; //autofilling current user email
-        $this->header['title'] = 'Kontakt';
+        $this->header['title'] = [
+            'cs' => 'Kontakt',
+            'en' => 'Contact'];
         $this->view = 'contact';
     }
 }

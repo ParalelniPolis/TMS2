@@ -27,6 +27,8 @@ class RestartPasswordByLinkController extends Controller {
                 $this->view = 'restartPasswordByLink';
             }
         }
-        $this->header['title'] = 'Obnov heslo linkem';
+        $this->header['title'] = [
+            'cs' => 'Obnov heslo linkem',
+            'en' => 'Renew password by link'];
     }
 }

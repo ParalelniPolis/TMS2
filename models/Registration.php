@@ -22,7 +22,9 @@ class Registration extends Model {
             'cs' => 'Prosím vyberte svůj tarif',
             'en' => 'Please choose your tariff']; //non-choosed tariff
         //TODO add nice parser for $data['telephone']
-        //TODO add validation for IČ in $data['ic']
+        if (!is_numeric($data['ic'])) return ['s' => 'error',
+            'cs' => 'ÍČ musí být čísli',
+            'en' => 'VAT must be a number'];
         if (strlen($data['p']) != 128) {
             $this->newTicket('error', 'function validateData in Registration', 'Something wrong with \'p\' in registration; p='.$_POST['p'].',strlen($p)='.strlen($data['p']));
             return ['s' => 'error',

@@ -1,9 +1,10 @@
 TMS 2nd generation for PP by TK
 restructuralized onto MVC and shifted from handmade payments into BitcoinPay.com system
 planned:
- - one-time payments for equipment (and proper invoicing for it),
  - booking of rooms (and invoicing of it)
+ - one-time payments for equipment (and proper invoicing for it),
 
+v0.13-2 polishing things up&header fixing
 v0.12-6+3 redesign invoice generation
 v0.11-3+3 table design polishing & changed story of payments
 v0.10-5+16 multilingual website!

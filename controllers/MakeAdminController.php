@@ -21,7 +21,9 @@ class MakeAdminController extends Controller {
         }
 
         $this->messages[] = $result;
-        $this->header['title'] = 'Make admin';
+        $this->header['title'] = [
+            'cs' => 'Vytvořit admina',
+            'en' => 'Make admin'];
         $this->view = 'intro';
     }
 }
