@@ -1,7 +1,7 @@
 <?php
 
 class GetLinkForNewPassword extends Model {
-    public function trySendLink($email, $year) {
+    public function trySendLink($email, $year, $language) {
         //inkredintions are correctly set
         if (!isset($email, $year)) return ['s' => 'error',
             'cs' => 'Nepovedlo se získat data. Zkus to znovu prosím',
@@ -26,12 +26,13 @@ class GetLinkForNewPassword extends Model {
                     'en' => 'We failed on saving data. Try it again please after couple of minutes'];
             }
 
-            $activeLink = 'http://www.paralelnipolis.cz/TMS2/RestartPasswordByLink/'.$randomHash;
+            //TODO add all languages
+            $activeLink = 'http://www.paralelnipolis.cz/TMS2/'.$language.'/RestartPasswordByLink/'.$randomHash;
             $message = 'Zdravím!<br/>
             <br/>
-            Na stránce <a href="http://www.paralelnipolis.cz/TMS2">http://www.paralelnipolis.cz/TMS2</a> jsme registrovali žádost o restart hesla.<br/>
+            Na stránce <a href="http://www.paralelnipolis.cz/TMS2/'.$language.'">http://www.paralelnipolis.cz/TMS2</a> jsme registrovali žádost o restart hesla.<br/>
             <br/>
-            Heslo si můžeš změnit klikem na odkaz <a href="'.$activeLink.'">'.$activeLink.'</a>. Platnost odkazu je <b>půl hodiny</b>.<br/>
+            Heslo si můžeš změnit klikem na odkaz <a href="'.$activeLink.'">'.$activeLink.'</a>. Platnost odkazu je <b>'.round(CHANGE_PASS_TIME_VALIDITY/60).'</b> minut.<br/>
             <br/>
             Pokud tento mail neočekáváš, stačí ho ignorovat. Pokud by ti přesto přišel podezřelý nebo vícekrát za sebou,
             prosím konkatuj správce stránek na <a href="http://www.paralelnipolis.cz/TMS2/kontakt">http://www.paralelnipolis.cz/TMS2/kontakt</a><br/>
@@ -47,7 +48,7 @@ class GetLinkForNewPassword extends Model {
             //check if we can grab who is logged - serve as primitive honeypot
             if (isset($_SESSION['username'])) $loggedUser = $_SESSION['username'];
             else $loggedUser = "we dont know :(";
-            $this->newTicket("restartHesla", $loggedUser, 'neplatny pokus restartu hesla pro uzivatele:'.$_POST['email']);
+            $this->newTicket("restartHesla", $loggedUser, 'neplatny pokus restartu hesla pro uzivatele: '.$_POST['email']);
         }
         return ['s' => 'success',
             'cs' => 'Ozvali jsme se na zadaný email',

@@ -6,7 +6,7 @@ class GetLinkForNewPasswordController extends Controller {
         $getLinkForNewPassword = new GetLinkForNewPassword();
 
         if (isset($_POST['sent'])) {
-            $result = $getLinkForNewPassword->trySendLink($_POST['email'], $_POST["year"]);
+            $result = $getLinkForNewPassword->trySendLink($_POST['email'], $_POST["year"], $this->language);
             $this->messages[] = $result;
             $this->view = 'intro';
         } else {
