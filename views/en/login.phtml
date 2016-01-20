@@ -1,18 +1,18 @@
 ﻿<h2>Login</h2>
 <form method="post" action="" name="loginForm">
-    <table>
-        <tr>
-            <td class="right"><label for="login">Email: </label></td>
-            <td class="left"><input type="email" name="login" id="login" required="required"
-                                    value="<?php if (isset($login)) echo($login); ?>"/></td>
-        </tr>
-        <tr>
-            <td class="right"><label for="password">Password: </label></td>
-            <td class="right"><input type="password" name="password" id="password" required="required"</td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" name="sent" value="Login"
-                                   onclick="return formhash(this.form, this.form.password);"/></td>
-        </tr>
-    </table>
+	<table>
+		<tr>
+			<td class="right"><label for="login">Email: </label></td>
+			<td class="left"><input type="email" name="login" id="login" required="required"
+									value="<?php if (isset($login)) echo($login); ?>"/></td>
+		</tr>
+		<tr>
+			<td class="right"><label for="password">Password: </label></td>
+			<td class="right"><input type="password" name="password" id="password" required="required"</td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" name="sent" value="Login"
+								   onclick="return formhash(this.form, this.form.password);"/></td>
+		</tr>
+	</table>
 </form>

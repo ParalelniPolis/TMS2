@@ -1,21 +1,21 @@
 <h2>Zpráva pro správce webu</h2>
 <form method="post" id="sendEmail">
-    <table>
-        <tr>
-            <td class="right"><label for="email">Email pro odpověď: </label></td>
-            <td class="left"><input type="email" id="email" name="email" required="required"
-                                    value="<?php if (isset($email)) echo($email); ?>"/></td>
-        </tr>
-        <tr>
-            <td class="right"><label for="year">Antispam - zadej následující rok: </label></td>
-            <td class="left"><input type="text" id="year" name="year" required="required"></td>
-        </tr>
-        <tr>
-            <td colspan="2"><textarea name="message" required><?php if (isset($message)) echo($message); ?></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" name="send" value="Odeslat"/></td>
-        </tr>
-    </table>
+	<table>
+		<tr>
+			<td class="right"><label for="email">Email pro odpověď: </label></td>
+			<td class="left"><input type="email" id="email" name="email" required="required"
+									value="<?php if (isset($email)) echo($email); ?>"/></td>
+		</tr>
+		<tr>
+			<td class="right"><label for="year">Antispam - zadej následující rok: </label></td>
+			<td class="left"><input type="text" id="year" name="year" required="required"></td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="message" required><?php if (isset($message)) echo($message); ?></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" name="send" value="Odeslat"/></td>
+		</tr>
+	</table>
 </form>
