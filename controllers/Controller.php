@@ -42,7 +42,6 @@ abstract class Controller {
 
     public function displayPdf($pdf) {
         header('Content-Type: application/pdf');
-        //TODO make nice header
         echo($pdf);
         exit;
     }
