@@ -4,14 +4,14 @@ class Db {
 	//database connection
 	private static $connection;
 
-	//default setting of driver
+	//default setting of PDO driver
 	private static $settings = [
 		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 		PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
 		PDO::ATTR_EMULATE_PREPARES => false,
 	];
 
-	//connect to db
+	//connect to db - singeltonously
 	public static function connect($host, $user, $password, $database) {
 		if (!isset(self::$connection)) {
 			self::$connection = @new PDO(
@@ -26,6 +26,11 @@ class Db {
 	}
 
 	//return one row
+	/**
+	 * @param string $query
+	 * @param array  $parameters
+	 * @return array
+	 */
 	public static function queryOne($query, $parameters = []) {
 		try {
 			$result = self::$connection->prepare($query);
@@ -38,6 +43,11 @@ class Db {
 	}
 
 	//return all result as array of associative arrays
+	/**
+	 * @param string $query
+	 * @param array  $parameters
+	 * @return array
+	 */
 	public static function queryAll($query, $parameters = []) {
 		try {
 			$result = self::$connection->prepare($query);
@@ -50,6 +60,11 @@ class Db {
 	}
 
 	//return first column from first row in result
+	/**
+	 * @param string $query
+	 * @param array  $parameters
+	 * @return string
+	 */
 	public static function querySingleOne($query, $parameters = []) {
 		try {
 			$result = Db::queryOne($query, $parameters);
@@ -61,6 +76,11 @@ class Db {
 	}
 
 	//method for INSERT and UPDATE
+	/**
+	 * @param string $query
+	 * @param array  $parameters
+	 * @return bool
+	 */
 	public static function queryModify($query, $parameters = []) {
 		try {
 			$result = self::$connection->prepare($query);
