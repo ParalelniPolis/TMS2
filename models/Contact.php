@@ -1,15 +1,21 @@
 <?php
 
 class Contact extends Model {
-	public function sendContactEmail($year, $email, $message) {
+	public function sendContactEmail($year, $email, $message, $language) {
 		if ($year != date("Y") + 1) return ['s' => 'error',
 			'cs' => 'Bohužel, nic se neodeslalo, antispam byl tentokrát mocnější než ty',
 			'en' => 'Nothing happend, antispam was stronger than you'];
 
+		$subject = ['cs' => NAME.'Paralelní Polis', 'en' => NAME.' - Paralell Polis'];
+		$prefix = [
+			'cs' => 'Kopie emailu zaslaného ze systému '.NAME.': '.PHP_EOL.PHP_EOL,
+			'en' => 'Copy of email send from system '.NAME.': '.PHP_EOL.PHP_EOL
+		];
+
 		//send email to admin
-		$this->sendEmail($email, EMAIL, "Paralelní polis - TMS2", $message);
+		$this->sendEmail($email, EMAIL, $subject[$language], $message);
 		//and copy to user
-		$this->sendEmail(EMAIL, $email, "Paralelni polis - TMS2", "Kopie emailu zaslaného ze systému TMS2: ".PHP_EOL.PHP_EOL.$message);
+		$this->sendEmail(EMAIL, $email, $subject[$language], $prefix[$language].$message);
 
 		if (!Db::queryModify('INSERT INTO `tickets` (`type`, `title`, `message`, `timestamp`)
                             VALUES (?,?,?, NOW())', ["sent contact email", $email, $message])

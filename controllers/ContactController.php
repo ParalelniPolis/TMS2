@@ -11,7 +11,7 @@ class ContactController extends Controller {
 				'message' => $_POST["message"]
 			]);
 
-			$result = $contact->sendContactEmail($data['year'], $data['email'], $data['message']);
+			$result = $contact->sendContactEmail($data['year'], $data['email'], $data['message'], $this->language);
 			$this->messages[] = $result;
 			if ($result['s'] != 'success') $this->data = $data; //for autofilling from previous page when error
 		}

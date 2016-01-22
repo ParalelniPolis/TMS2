@@ -49,7 +49,7 @@ If you don\'t awaiting for this mail, just ignore it. But if you want to know wh
 please contact our webmaster on this page: <a href="'.ROOT.'/'.$language.'/contact">'.ROOT.'/'.$language.'/contact</a><br/>'
 			];
 
-			if (!$this->sendEmail(EMAIL, $email, $subject[$language], $message)) {
+			if (!$this->sendEmail(EMAIL, $email, $subject[$language], $message[$language])) {
 				$this->newTicket('problem', $_SESSION['id_user'], 'nepovedlo se odeslat email');
 				return ['s' => 'error',
 					'cs' => 'Nepovedlo se odeslat email s aktivačním linkem; zkus to prosím za pár minut znovu',
