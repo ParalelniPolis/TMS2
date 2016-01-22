@@ -47,7 +47,7 @@ class Model {
 		//$header .= 'Content-Transfer-Encoding: base64';
 		//$subject = mb_encode_mimeheader($subject, "UTF-8");
 		$result = mb_send_mail($to, $subject, $message, $header);
-		if (!$result) $this->newTicket('error', 'mail send', 'email was not sent. \$to: '.$to.' ,\$subject: '.$subject.' ,\$message: '.$message.' ,\header: '.$header);
+		if (!$result) $this->newTicket('error', 'mail sending', 'email was not sent. \$to: '.$to.' ,\$subject: '.$subject.' ,\$message: '.$message.' ,\header: '.$header);
 		return $result;
 	}
 
