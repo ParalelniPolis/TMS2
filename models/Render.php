@@ -30,6 +30,7 @@ class Render extends Model {
 				'registration' => 'Registrace',
 				'forceRegistration' => 'Zaregistrovat člena',
 				'payments' => 'Platby',
+				'booking' => 'Rezervace',
 				'changePersonals' => 'Změnit údaje',
 				'checkUsers' => 'Ostatní členové',
 				'contact' => 'Kontakt'
@@ -39,6 +40,7 @@ class Render extends Model {
 				'registration' => 'Registration',
 				'forceRegistration' => 'Register member',
 				'payments' => 'Payments',
+				'booking' => 'Booking',
 				'changePersonals' => 'Change personals',
 				'checkUsers' => 'Other users',
 				'contact' => 'Contact'
@@ -49,6 +51,7 @@ class Render extends Model {
 		if ($login == false) $result .= '<li><a href="'.ROOT.'/'.$lang.'/login">'.$labels[$lang]['login'].'</a></li>';
 		if ($login == false) $result .= '<li><a href="'.ROOT.'/'.$lang.'/registration">'.$labels[$lang]['registration'].'</a></li>';
 		if ($login == true) $result .= '<li><a href="'.ROOT.'/'.$lang.'/payments/'.$_SESSION["id_user"].'">'.$labels[$lang]['payments'].'</a></li>';
+		if ($login == true) $result .= '<li><a href="'.ROOT.'/'.$lang.'/booking/">'.$labels[$lang]['booking'].'</a></li>';
 		if ($login == true) $result .= '<li><a href="'.ROOT.'/'.$lang.'/changePersonals/'.$_SESSION["id_user"].'">'.$labels[$lang]['changePersonals'].'</a></li>';
 		if ($adminPlacesIds != false) $result .= '<li><a href="'.ROOT.'/'.$lang.'/checkUsers">'.$labels[$lang]['checkUsers'].'</a></li>';
 		if ($adminPlacesIds != false) $result .= '<li><a href="'.ROOT.'/'.$lang.'/forceRegistration">'.$labels[$lang]['forceRegistration'].'</a></li>';

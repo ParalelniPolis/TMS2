@@ -28,15 +28,15 @@ abstract class Controller {
 			$_SESSION['messages'] = array_merge($_SESSION['messages'], $this->messages);
 		else
 			$_SESSION['messages'] = $this->messages;
-		header("Location: ".ROOT."/".$this->language."/$url");
-		header("Connection: close");
+		header('Location: '.ROOT.'/'.$this->language.'/'.$url);
+		header('Connection: close');
 		exit;
 	}
 
 	//redirection outside the system
 	public function redirectOut($url) {
-		header("Location: $url");
-		header("Connection: close");
+		header('Location: '.$url);
+		header('Connection: close');
 		exit;
 	}
 
