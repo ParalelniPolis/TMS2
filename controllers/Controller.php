@@ -41,6 +41,8 @@ abstract class Controller {
 	}
 
 	public function displayPdf($pdf) {
+		//TODO add nice header
+		//TODO fix nice name when user is saving the document
 		header('Content-Type: application/pdf');
 		echo($pdf);
 		exit;

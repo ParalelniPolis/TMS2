@@ -5,10 +5,15 @@ class ChangePersonalsController extends Controller {
 	function process($parameters) {
 		$changePersonals = new ChangePersonals();
 		if (!$changePersonals->checkLogin()) $this->redirect('error');
-		//if not same user as logged in, throw error page
-		$id = $parameters[0];
-		if ($changePersonals->getUserIdFromEmail($_SESSION['username']) != $id) $this->redirect('error');
+		//if empty parameter, add there current user
+		if (isset($parameters[0])) $id = $parameters[0]; else $id = $_SESSION['id_user'];
 
+		if ($id != $_SESSION['id_user']) {
+			//if not admin of the right place, throw error
+			$placesIds = $changePersonals->returnAdminPlacesIds();
+			$userPlace = $changePersonals->getUserPlaceFromId($id);
+			if (!in_array($userPlace, $placesIds)) $this->redirect('error');
+		}
 		//if form is sent
 		if (isset($_POST['sent'])) {
 			$data = $changePersonals->sanitize([

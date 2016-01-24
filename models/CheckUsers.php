@@ -10,7 +10,7 @@ class CheckUsers extends Model {
                                            JOIN `tariffs` ON `user_tariff` = `id_tariff`
                                            JOIN `places` ON `tariffs`.`place_id` = `places`.`id`
                                            WHERE `place_id` = ?
-                                           ORDER BY `active` DESC', [$placeID]);
+                                           ORDER BY `active` DESC, `invoicing_start_date` ASC', [$placeID]);
 			//for equvivalent position between members
 			foreach ($tariffMembers as $tm) $members[] = $tm;
 		}

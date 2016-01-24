@@ -41,7 +41,7 @@ class Render extends Model {
 				'forceRegistration' => 'Register member',
 				'payments' => 'Payments',
 				'booking' => 'Booking',
-				'changePersonals' => 'Change personals',
+				'changePersonals' => 'Change personal data',
 				'checkUsers' => 'Other users',
 				'contact' => 'Contact'
 			]
