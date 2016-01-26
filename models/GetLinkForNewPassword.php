@@ -7,7 +7,7 @@ class GetLinkForNewPassword extends Model {
 			'cs' => 'Nepovedlo se získat data. Zkus to znovu prosím',
 			'en' => 'We didn\'t catch data correctly - please try it again'];
 		//correct year in antispam
-		if ($_POST['year'] != date("Y") - 1) return ['s' => 'error',
+		if ($year != date("Y") - 1) return ['s' => 'error',
 			'cs' => 'Bohužel, antispam byl tentokrát mocnější než ty',
 			'en' => 'Nothing happend, antispam was stronger than you'];
 
@@ -15,10 +15,10 @@ class GetLinkForNewPassword extends Model {
 		$result = Db::queryOne('SELECT `email` FROM `users`
                                 WHERE `email` = ?', [$_POST['email']]);
 		//skip all when email ins't the same as typed
-		if ($_POST['email'] == $result[0]) {
+		if ($email == $result[0]) {
 			$randomHash = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
 			if (!Db::queryModify('INSERT INTO `restart_password` (`validation_string`, `email`, `active`, `timestamp`)
-                                  VALUES (?, ?, TRUE, NOW())', [$randomHash, $result[0]])
+                                  VALUES (?, ?, 1, NOW())', [$randomHash, $result[0]])
 			) {
 				$this->newTicket('problem', $_SESSION['id_user'], 'nepovedlo se zapsat do restart_password ve funkci register');
 				return ['s' => 'chyba',
@@ -55,7 +55,7 @@ please contact our webmaster on this page: <a href="'.ROOT.'/'.$language.'/conta
 					'cs' => 'Nepovedlo se odeslat email s aktivačním linkem; zkus to prosím za pár minut znovu',
 					'en' => 'We failed in sending email with activation link; try it again please after couple of minutes'];
 			}
-			$this->newTicket("restartHesla", $email, 'poslan mail s linkem');
+			$this->newTicket('restartHesla', $email, 'poslan mail s linkem');
 		} else {
 			//check if we can grab who is logged - serve as primitive honeypot
 			if (isset($_SESSION['username'])) $loggedUser = $_SESSION['username'];

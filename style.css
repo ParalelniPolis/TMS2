@@ -1,7 +1,7 @@
 body {
     font-family: Verdana, Arial, Courier, sans-serif;
     font-size: 14px;
-    width: 900px;
+    width: 950px;
     margin: 0 auto;
 }
 
@@ -177,8 +177,7 @@ div.languageSwitch {
 }
 
 div.intro {
-    width: 650px;
-    padding: 0 125px;
+    padding: 0 150px;
 }
 
 p.message {

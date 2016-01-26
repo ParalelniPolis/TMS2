@@ -1,8 +1,8 @@
 <h2>Přehled členů</h2>
 <table class="checkUsers">
 	<tr class="firstRow">
-		<td>ID</td>
 		<td>Activation</td>
+		<td>Personal data</td>
 		<td>Name</td>
 		<td>Email</td>
 		<td>Tel. number</td>
@@ -12,9 +12,6 @@
 	</tr>
 	<?php foreach ($members as $m) : ?>
 		<tr>
-			<td>
-				<?= $m['id_user']; ?>
-			</td>
 			<td>
 				<?php if ($m['active']) { ?>
 					<a href="<?= ROOT ?>/en/forceDeactivation/<?= $m['id_user'] ?>/<?= $csrf ?>">
@@ -26,6 +23,11 @@
 						<button>Aktivovat!</button>
 					</a>
 				<?php } ?>
+			</td>
+			<td>
+				<a href="<?= ROOT ?>/en/changePersonals/<?= $m['id_user'] ?>/<?= $csrf ?>">
+					<button>Change!</button>
+				</a>
 			</td>
 			<td>
 				<a href="<?= ROOT ?>/en/payments/<?= $m['id_user'] ?>">

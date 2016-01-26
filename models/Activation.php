@@ -47,6 +47,6 @@ class Activation extends Model {
 		}
 		return ['s' => 'info',
 			'cs' => 'Uživatel '.$email.' úspěšně deaktivován',
-			'en' => 'User '.$email.'is successfully deactivated'];
+			'en' => 'User '.$email.' is successfully deactivated'];
 	}
 }
