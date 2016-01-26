@@ -21,11 +21,12 @@ class ChangePersonals extends Payments {
 			$data['firstname'],
 			$data['surname'],
 			$data['telephone'],
+			$data['address'],
 			$data['ic'],
 			$id];
 		if (!Db::queryModify('
             UPDATE users
-            SET `first_name` = ?, `last_name` = ?, `telephone`= ?, `ic`= ?
+            SET `first_name` = ?, `last_name` = ?, `telephone` = ?, `address` =?, `ic` = ?
             WHERE `id_user` = ?', $databaseData)
 		)
 			return ['s' => 'error',

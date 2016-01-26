@@ -8,14 +8,16 @@ class RegistrationController extends Controller {
 
 		//catch registration (button is pressed)
 		if (isset($_POST['sent'])) {
-			$data = $registration->sanitize(["email" => $_POST['email'],
-				"tariff" => $_POST['tariff'],
-				"firstname" => $_POST['firstname'],
-				"surname" => $_POST['surname'],
-				"telephone" => $_POST['telephone'],
-				"startDate" => $_POST['startDate'],
-				"ic" => $_POST['ic'],
-				"p" => $_POST['p']
+			$data = $registration->sanitize([
+				'email' => $_POST['email'],
+				'tariff' => $_POST['tariff'],
+				'firstname' => $_POST['firstname'],
+				'surname' => $_POST['surname'],
+				'telephone' => $_POST['telephone'],
+				'address' => $_POST['address'],
+				'startDate' => $_POST['startDate'],
+				'ic' => $_POST['ic'],
+				'p' => $_POST['p']
 			]);
 			$this->data = $data; //for autofilling from previous page
 

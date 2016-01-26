@@ -24,7 +24,9 @@ class Registration extends Model {
 		if (!empty($data['ic']) && !is_numeric($data['ic'])) return ['s' => 'error',
 			'cs' => 'IČ musí být číslo',
 			'en' => 'VAT must be a number'];
-		//TODO add address
+		if (strlen($data['address']) > 120) return ['s' => 'error',
+			'cs' => 'Adresa by měla být dlouhá max. 120 znaků',
+			'en' => 'Address should be long max. 120 characters'];
 		if ($data['tariff'] == 'X') return ['s' => 'error',
 			'cs' => 'Prosím vyber svůj tarif',
 			'en' => 'Please choose your tariff']; //non-choosed tariff
@@ -57,17 +59,18 @@ class Registration extends Model {
 			$randomSalt,
 			$data['startDate'],
 			$data['telephone'],
+			$data['address'],
 			$data['ic']
 		];
 
 		//insert user into DB
-		if (!Db::queryModify('INSERT INTO `users` (`first_name`,`last_name`,`user_tariff`,`active`,`email`,`password`,`salt`,`invoicing_start_date`,`telephone`,`ic`)
-                              VALUES (?,?,?,0,?,?,?,?,?,?)', $databaseData)
+		if (!Db::queryModify('INSERT INTO `users` (`first_name`,`last_name`,`user_tariff`,`active`,`email`,`password`,`salt`,`invoicing_start_date`,`telephone`,`address`,`ic`)
+                              VALUES (?,?,?,0,?,?,?,?,?,?,?)', $databaseData)
 		) return ['s' => 'error',
 			'cs' => 'Nepovedlo se zapsat do databáze. Zkuste to prosím později',
 			'en' => 'We failed at wrinting into database. Please try this later'];
 
-		//generate...
+		//generate activation link...
 		$randomHash = $this->getRandomHash();
 		if (!Db::queryModify('INSERT INTO `activation`(`validation_string`,`email`,`active`,`timestamp`)
                               VALUES (?,?,1,NOW())', [$randomHash, $data["email"]])

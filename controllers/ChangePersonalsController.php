@@ -17,12 +17,13 @@ class ChangePersonalsController extends Controller {
 		//if form is sent
 		if (isset($_POST['sent'])) {
 			$data = $changePersonals->sanitize([
-				"firstname" => $_POST['firstname'],
-				"surname" => $_POST['surname'],
-				"telephone" => $_POST['telephone'],
-				"ic" => $_POST['ic'],
-				"p" => $_POST['p'],
-				"csrf" => $_POST['csrf']
+				'firstname' => $_POST['firstname'],
+				'surname' => $_POST['surname'],
+				'telephone' => $_POST['telephone'],
+				'address' => $_POST['address'],
+				'ic' => $_POST['ic'],
+				'p' => $_POST['p'],
+				'csrf' => $_POST['csrf']
 			]);
 			if (!Csrf::validateCsrfRequest($data['csrf'])) {
 				$this->messages[] = ['s' => 'error',

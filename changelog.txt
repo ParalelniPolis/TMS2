@@ -4,7 +4,7 @@ TODO:
  - booking of rooms (and invoicing of it)
  - one-time payments for equipment (and proper invoicing for it),
 
-v0.13-2+4+2 polishing things up&header fixing&making TODOs
+v0.13-2+4+2+? polishing things up&header fixing&making TODOs
 v0.12-6+3 redesign invoice generation
 v0.11-3+3 table design polishing & changed story of payments
 v0.10-5+16 multilingual website!
