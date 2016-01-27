@@ -11,34 +11,39 @@ class PayInvoiceController extends Controller {
 		//finds out if that payment belongs to logged user. If not, redirect to error
 		$paymentUserId = $bitcoinPay->getPaymentUserId($paymentId);
 		if ($paymentUserId != $_SESSION['id_user']) {
-			$bitcoinPay->newTicket('warning', 'payInvoiceController->user michmach violence', 'logged user: '.$_SESSION['id_user'].' is trying something with payment of user id: '.$paymentUserId);
+			$bitcoinPay->newTicket('warning', 'payInvoiceController->user mischmasch violence', 'logged user: '.$_SESSION['id_user'].' is trying something with payment of user id: '.$paymentUserId);
 			$this->redirect('error');
 		}
 
 		switch ($case) {
 			case ('pay'): {
-				$data = $bitcoinPay->createPayment($paymentId, $this->language);
+				$paymentStatus = $bitcoinPay->returnPaymentStatus($paymentId);
+				$result = $bitcoinPay->requestPayment($paymentId, $paymentStatus, $this->language);
 
-				if ($data == false) {
-					$this->messages[] = ['s' => 'error',
-						'cs' => 'Pardon, nepovedlo se spojení s platebním serverem',
-						'en' => 'Sorry, connection to payment server failed'];
-					//check if user is trying pay this invoice twice
-				} else if ($data['status'] == 'confirmed' || $data['status'] == 'received') {
-					$this->messages[] = ['s' => 'info',
-						'cs' => 'Faktura již byla zaplacena',
-						'en' => 'Invoice is already payed'];
-					$this->redirect('payments');
-				} else {
-					//get payment, save it and redirect to payment
-					$bitcoinPay->updatePayment($paymentId, $data);
-					$this->redirectOut($data['payment_url']);
+				switch ($result['paymentType']) {
+					case ('new'):
+						//get payment data, save it and redirect to payment
+						$data = $result['data'];
+						$bitcoinPay->updatePayment($paymentId, $data);
+						$this->redirectOut($data['payment_url']);
+						break;
+
+					case ('old'):
+						//redirect to old payment (pending, refund etc.)
+						$data = $result['data'];
+						$this->redirectOut($data['payment_url']);
+						break;
+
+					default:
+						//invoice already payed or error
+						$this->messages = $result;
+						break;
 				}
 				break;
 			}
 
 			case ('return'): {
-				//first via GET returning status about actual action of user (spoofable, only info for common folks)
+				//first via GET returning status about actual action of user (spoofable, info only for ordinary folks)
 				switch ($_GET['bitcoinpay-status']) {
 					case ('true'): {
 						$this->messages[] = ['s' => 'success',
@@ -56,8 +61,8 @@ class PayInvoiceController extends Controller {
 					default: {
 						$bitcoinPay->newTicket('error', 'controller $bitcoinPay->case return->case false', 'error with bitcoinpay payment - something wrong happend');
 						$this->messages[] = ['error',
-							'cs' => 'S platbou se stalo něco špatně. Zkuste to prosím znovu za pár minut',
-							'en' => 'It\'s something wrong with the payment. Please try it again after couple of minutes'];
+							'cs' => 'S platbou se stalo něco zvláštního',
+							'en' => 'It\'s something unusual with the payment'];
 						break;
 					}
 				}
@@ -77,9 +82,14 @@ class PayInvoiceController extends Controller {
 				break;
 			}
 
+			case ('notify'): {
+				//TODO make landing page for bitcoinpay notification status change
+			}
+
 			default:
 				$this->redirect('error');
 		}
+		//navigato to default view for this action
 		$this->redirect('payments');
 	}
 }

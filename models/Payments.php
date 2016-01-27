@@ -12,10 +12,10 @@ class Payments extends Model {
                                 JOIN `tariffs` ON `users`.`user_tariff` = `tariffs`.`id_tariff`
                                 JOIN `places` ON `place_id` = `places`.`id`
                                 WHERE  `id_user` = ?', [$userId]);
-		$payments = Db::queryAll('SELECT `id_payment`,`bitcoinpay_payment_id`,`id_payer`,`payed_price_BTC`,`payment_first_date`,`status`,`tariff`,`invoice_fakturoid_id`
+		$payments = Db::queryAll('SELECT `id_payment`,`bitcoinpay_payment_id`,`id_payer`,`payed_price_BTC`,`payment_first_date`,`status`,`price_CZK`,`invoice_fakturoid_id`
                                   FROM `payments` WHERE `id_payer` = ?
                                   ORDER BY `payment_first_date` DESC', [$userId]);
-		//czech translation
+		//translation for messages
 		foreach ($payments as &$p) {
 			$p['status'] = $this->translatePaymentStatus($p['status'], $lang);
 			if (empty($p['payed_price_BTC'])) $p['payed_price_BTC'] = round($tariff['priceCZK'] / $this->getExchangeRate(), 5);
@@ -32,34 +32,32 @@ class Payments extends Model {
 		$messages = [];
 
 		foreach ($payments as $payment) {
-			//skip already confirmed playments
-			if (!$payment['status'] == 'confirmed') {
-				$paymentId = $payment['id_payment'];
-				$bitcoinpayId = $payment['bitcoinpay_payment_id'];
-				$fakturoidId = $payment['invoice_fakturoid_id'];
+			$paymentId = $payment['id_payment'];
+			$bitcoinpayId = $payment['bitcoinpay_payment_id'];
+			$fakturoidId = $payment['invoice_fakturoid_id'];
 
-				if (empty($bitcoinpayId)) $result['status'] = 'unpaid';
-				else $result = $bitcoinPay->getTransactionDetails($bitcoinpayId);
-
-				//invalid response
+			if (empty($result['status'])) $result['status'] = 'unpaid';
+			else {
+				$result = $bitcoinPay->getTransactionDetails($bitcoinpayId);
+				//catch invalid response
 				if (empty($result)) {
 					$messages[] = ['s' => 'info',
 						'cs' => 'Nepovedlo se nám spojit se se serverem bitcoinpay.com - některé platby můžou být neaktualizované',
 						'en' => 'We failed at connection with bitcoinpay.com - some payments can be outdated'];
 				} else {
 					$newStatus = $result['status'];
-					//when status is different, inform user
+					//when status is different (new), inform user
 					if ($newStatus != $payment['status']) {
-						Db::queryModify('UPDATE `payments` SET `status` = ?WHERE `id_payment` = ?', [$newStatus, $paymentId]);
+						Db::queryModify('UPDATE `payments` SET `status` = ? WHERE `id_payment` = ?', [$newStatus, $paymentId]);
 						$messages[] = $bitcoinPay->getStatusMessage($newStatus);
-					}
-					//and when receive money, make invoice payed
-					if ($newStatus == 'received' || 'confirmed') {
-						$fakturoid->setInvoicePayed($fakturoidId);
-						Db::queryModify('UPDATE `payments`
-                            SET `bitcoinpay_payment_id` = ?, `payed_price_BTC` = ?
-                            WHERE `id_payment` = ?',
-							[$result['payment_id'], $result['price'], $paymentId]);
+						//and when receive money, make invoice payed
+						if ($newStatus == 'received' || 'confirmed') {
+							$fakturoid->setInvoicePayed($fakturoidId);
+							Db::queryModify('UPDATE `payments`
+								SET `payed_price_BTC` = ?
+								WHERE `id_payment` = ?',
+								[$result['price'], $paymentId]);
+						}
 					}
 				}
 			}
@@ -77,13 +75,13 @@ class Payments extends Model {
                 WHERE `id_payer` = ?
                 ORDER BY `payment_first_date` DESC', [$userId]
 			);
-			//new user
 			if (empty($startOfLastGeneratedMonth)) {
+				//new user
 				$startDate = $user['invoicing_start_date'];
 				$this->createPayment($user, $tariff, $startDate, $lang);
 				return true;
-				//old user
 			} else {
+				//old user
 				$new = false;
 				//TODO redesign - generate only payments from today, for example when he came back
 				$endOfLastGeneratedMonth = date('Y-m-d', strtotime($startOfLastGeneratedMonth.' + 1 month - 1 day'));
@@ -102,12 +100,13 @@ class Payments extends Model {
 		$userId = $user['id_user'];
 		$tariffId = $tariff['id_tariff'];
 		$tariffName = $this->getTariffName($tariffId, $lang);
+		$priceCZK = $tariff['priceCZK'];
 		$fakturoid = new FakturoidWrapper();
 		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate);
 		$fakturoidInvoiceId = $fakturoidInvoice->id;
 		$fakturoidInvoiceNumber = $fakturoidInvoice->number;
-		Db::queryModify('INSERT INTO `payments` (`id_payer`, `payment_first_date`, `status`, `time_generated`, `tariff`, `invoice_fakturoid_id`, `invoice_fakturoid_number`)
-                         VALUES (?, ?, ?, NOW(), ?, ?, ?)', [$userId, $beginningDate, 'unpaid', $tariffId, $fakturoidInvoiceId, $fakturoidInvoiceNumber]);
+		Db::queryModify('INSERT INTO `payments` (`id_payer`, `payment_first_date`, `status`, `time_generated`, `price_CZK`, `invoice_fakturoid_id`, `invoice_fakturoid_number`)
+                         VALUES (?, ?, ?, NOW(), ?, ?, ?)', [$userId, $beginningDate, 'unpaid', $priceCZK, $fakturoidInvoiceId, $fakturoidInvoiceNumber]);
 	}
 
 	private function getExchangeRate() {
@@ -146,7 +145,7 @@ class Payments extends Model {
 			],
 			'timeout' => [
 				'cs' => 'platnost vypršela',
-				'en' => 'payment payout'
+				'en' => 'timed out'
 			],
 			'paid_after_timeout' => [
 				'cs' => 'zaplaceno pozdě',
