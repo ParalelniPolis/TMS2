@@ -15,7 +15,7 @@ class PaymentsController extends Controller {
 			if (!in_array($userPlace, $placesIds)) $this->redirect('error');
 		}
 
-		$data = $user->getUserData($id, $this->language);
+		$data = $user->getUserData($id);
 
 		//TODO shift this two jobs into cron
 		//actualize old payments
@@ -24,10 +24,11 @@ class PaymentsController extends Controller {
 		//create new payments
 		$user->makeNewPayments($data['user'], $data['tariff'], $this->language);
 
-		//get new data for showing off user
-		$data = $user->getUserData($id, $this->language);
-
-		//show non-active user
+		//get new data for user view
+		$data = $user->getUserData($id);
+		$data['payments'] = $user->cleanupUserPayments($data['payments'], $data['tariff'], $this->language);
+		
+		//display non-active user
 		if (!$data['user']['active']) $this->messages[] = ['s' => 'info',
 			'cs' => 'Neaktivní uživatel - nové faktury se negenerují',
 			'en' => 'Inactive user - new invoices are not generated'];
@@ -38,6 +39,7 @@ class PaymentsController extends Controller {
 		$this->header['title'] = [
 			'cs' => 'Přehled plateb',
 			'en' => 'Payments overview'];
+		//TODO add nice sliding JS invoice detail directly into view
 		$this->view = 'payments';
 	}
 }

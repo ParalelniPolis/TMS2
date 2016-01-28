@@ -101,8 +101,7 @@ class Bitcoinpay extends Model {
 		return $data['data'];
 	}
 	
-	public function getTransactionDetails($paymentId) {
-		$bitcoinpayId = $this->getBitcoinpayId($paymentId);
+	public function getTransactionDetails($bitcoinpayId) {
 		$ch = curl_init();
 		
 		curl_setopt($ch, CURLOPT_URL, "https://www.bitcoinpay.com/api/v1/transaction-history/".$bitcoinpayId);
@@ -186,7 +185,7 @@ class Bitcoinpay extends Model {
 				break;
 			}
 			default: {
-				$this->newTicket('error', 'BitcoinPay->getStatusMessage', 'unexpected return value');
+				$this->newTicket('error', 'BitcoinPay->getStatusMessage', 'unexpected return value: '.$case);
 				$r = ['s' => 'error',
 					'cs' => 'Nečekaná návratová hodnota z bitcoinpay.com. Víme o tom a fičíme to spravit!',
 					'en' => 'Unexpected return value from bitcoinpay.com. We know about it and already on it!'];
@@ -207,11 +206,6 @@ class Bitcoinpay extends Model {
             WHERE `id_payment` = ?', [$paymentId]);
 	}
 	
-	private function getBitcoinpayId($paymentId) {
-		return Db::querySingleOne('SELECT `bitcoinpay_payment_id` FROM `payments`
-            WHERE `id_payment` = ?', [$paymentId]);
-	}
-	
 	public function returnPaymentStatus($paymentId) {
 		return Db::querySingleOne('SELECT `status` FROM `payments` WHERE id_payment = ?', [$paymentId]);
 	}
@@ -219,5 +213,10 @@ class Bitcoinpay extends Model {
 	private function returnPaymentBitcoinPayUrl($paymentId) {
 		return 'https://bitcoinpay.com/cs/sci/invoice/btc/'.$this->getBitcoinpayId($paymentId);
 		
+	}
+	
+	public function getBitcoinpayId($paymentId) {
+		return Db::querySingleOne('SELECT `bitcoinpay_payment_id` FROM `payments`
+            WHERE `id_payment` = ?', [$paymentId]);
 	}
 }

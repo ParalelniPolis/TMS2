@@ -1,7 +1,7 @@
 <?php
 
 class Payments extends Model {
-	public function getUserData($userId, $lang) {
+	public function getUserData($userId) {
 		$user = Db::queryOne('SELECT `id_user`,`first_name`,`last_name`,`telephone`,`address`,`ic`,`active`,`email`,`name`,`tariffCZE`,`tariffENG`,`invoicing_start_date`
                               FROM `users`
                               JOIN `tariffs` ON `id_tariff` = `user_tariff`
@@ -15,15 +15,19 @@ class Payments extends Model {
 		$payments = Db::queryAll('SELECT `id_payment`,`bitcoinpay_payment_id`,`id_payer`,`payed_price_BTC`,`payment_first_date`,`status`,`price_CZK`,`invoice_fakturoid_id`
                                   FROM `payments` WHERE `id_payer` = ?
                                   ORDER BY `payment_first_date` DESC', [$userId]);
-		//translation for messages
-		foreach ($payments as &$p) {
-			$p['status'] = $this->translatePaymentStatus($p['status'], $lang);
-			if (empty($p['payed_price_BTC'])) $p['payed_price_BTC'] = round($tariff['priceCZK'] / $this->getExchangeRate(), 5);
-		}
 
 		return ['user' => $user,
 			'tariff' => $tariff,
 			'payments' => $payments];
+	}
+	
+	public function cleanupUserPayments($payments, $tariff, $lang) {
+		//translation for messages and guessing of BTC price
+		foreach ($payments as &$p) {
+			$p['status'] = $this->translatePaymentStatus($p['status'], $lang);
+			if (empty($p['payed_price_BTC'])) $p['payed_price_BTC'] = round($tariff['priceCZK'] / $this->getExchangeRate(), 5);
+		}
+		return $payments;
 	}
 
 	public function actualizePayments($payments) {
@@ -36,7 +40,7 @@ class Payments extends Model {
 			$bitcoinpayId = $payment['bitcoinpay_payment_id'];
 			$fakturoidId = $payment['invoice_fakturoid_id'];
 
-			if (empty($result['status'])) $result['status'] = 'unpaid';
+			if (empty($payment['status'])) $payment['status'] = 'unpaid';
 			else {
 				$result = $bitcoinPay->getTransactionDetails($bitcoinpayId);
 				//catch invalid response
