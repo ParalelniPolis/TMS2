@@ -36,7 +36,7 @@ class PayInvoiceController extends Controller {
 
 					default:
 						//invoice already payed or error
-						$this->messages = $result;
+						$this->messages[] = $result;
 						break;
 				}
 				break;
@@ -60,7 +60,7 @@ class PayInvoiceController extends Controller {
 					case ('false'):
 					default: {
 						$bitcoinPay->newTicket('error', 'controller $bitcoinPay->case return->case false', 'error with bitcoinpay payment - something wrong happend');
-						$this->messages[] = ['error',
+						$this->messages[] = ['s' => 'error',
 							'cs' => 'S platbou se stalo něco zvláštního',
 							'en' => 'It\'s something unusual with the payment'];
 						break;
