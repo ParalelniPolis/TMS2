@@ -2,7 +2,8 @@
 
 class CheckUsers extends Model {
 
-	public function getMembers($placesIds, $lang) {
+	public function getMembers($adminId, $lang) {
+		$placesIds = $this->returnAdminPlacesIds($adminId);
 		$members = [];
 		foreach ($placesIds as $placeID) {
 			$tariffMembers = Db::queryAll('SELECT `id_user`,`first_name`,`last_name`,`telephone`,`active`,`email`,`tariffCZE`,`name`,`places`.`id` AS `id_of_place`

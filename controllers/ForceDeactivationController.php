@@ -5,9 +5,7 @@ class ForceDeactivationController extends Controller {
 	public function process($parameters) {
 		$deactivation = new Activation();
 		$userId = $parameters[0];
-		$placesIds = $deactivation->returnAdminPlacesIds();
-		$userPlace = $deactivation->getUserPlaceFromId($userId);
-		if (!in_array($userPlace, $placesIds)) $this->redirect('error');
+		if (!$deactivation->checkIfIsAdminOfUser($_SESSION['id_user'], $userId)) $this->redirect('error');
 
 		$csrfToken = $parameters[1];
 		if (!Csrf::validateCsrfRequest($csrfToken)) {

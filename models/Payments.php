@@ -40,7 +40,10 @@ class Payments extends Model {
 			$bitcoinpayId = $payment['bitcoinpay_payment_id'];
 			$fakturoidId = $payment['invoice_fakturoid_id'];
 
-			if (empty($payment['status'])) $payment['status'] = 'unpaid';
+			if (empty($payment['status']) || $payment['status'] == 'unpaid') {
+				$result['status'] = 'unpaid';
+				$result['price'] = null;
+			}
 			else {
 				$result = $bitcoinPay->getTransactionDetails($bitcoinpayId);
 				//catch invalid response
@@ -48,21 +51,21 @@ class Payments extends Model {
 					$messages[] = ['s' => 'info',
 						'cs' => 'Nepovedlo se nám spojit se se serverem bitcoinpay.com - některé platby můžou být neaktualizované',
 						'en' => 'We failed at connection with bitcoinpay.com - some payments can be outdated'];
-				} else {
-					$newStatus = $result['status'];
-					//when status is different (new), inform user
-					if ($newStatus != $payment['status']) {
-						Db::queryModify('UPDATE `payments` SET `status` = ? WHERE `id_payment` = ?', [$newStatus, $paymentId]);
-						$messages[] = $bitcoinPay->getStatusMessage($newStatus);
-						//and when receive money, make invoice payed
-						if ($newStatus == 'received' || 'confirmed') {
-							$fakturoid->setInvoicePayed($fakturoidId);
-							Db::queryModify('UPDATE `payments`
-								SET `payed_price_BTC` = ?
-								WHERE `id_payment` = ?',
-								[$result['price'], $paymentId]);
-						}
-					}
+					break;
+				}
+			}
+			$newStatus = $result['status'];
+			//when status is different (new), inform user
+			if ($newStatus != $payment['status']) {
+				Db::queryModify('UPDATE `payments` SET `status` = ? WHERE `id_payment` = ?', [$newStatus, $paymentId]);
+				$messages[] = $bitcoinPay->getStatusMessage($newStatus);
+				//and when receive money, make invoice in fakturoid payed
+				if ($newStatus == 'received' || 'confirmed') {
+					$fakturoid->setInvoicePayed($fakturoidId);
+					Db::queryModify('UPDATE `payments`
+						SET `payed_price_BTC` = ?
+						WHERE `id_payment` = ?',
+						[$result['price'], $paymentId]);
 				}
 			}
 		}

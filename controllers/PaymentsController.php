@@ -3,30 +3,29 @@
 class PaymentsController extends Controller {
 
 	function process($parameters) {
-		$user = new Payments();
-		if (!$user->checkLogin()) $this->redirect('error');
+		$payments = new Payments();
+		if (!$payments->checkLogin()) $this->redirect('error');
 		//if empty parameter, add there current user
-		if (isset($parameters[0])) $id = $parameters[0]; else $id = $_SESSION['id_user'];
+		if (isset($parameters[0])) $userId = $parameters[0]; else $userId = $_SESSION['id_user'];
 
-		if ($id != $_SESSION['id_user']) {
-			//if not admin of the right place, throw error
-			$placesIds = $user->returnAdminPlacesIds();
-			$userPlace = $user->getUserPlaceFromId($id);
-			if (!in_array($userPlace, $placesIds)) $this->redirect('error');
-		}
+		if ($userId != $_SESSION['id_user'] && !$payments->checkIfIsAdminOfUser($_SESSION['id_user'], $userId)) 
+			$this->redirect('error');
 
-		$data = $user->getUserData($id);
+		$data = $payments->getUserData($userId);
 
 		//TODO shift this two jobs into cron
-		//actualize old payments
-		$resultMessages = $user->actualizePayments($data['payments']);
-		$this->messages = array_merge($this->messages, $resultMessages);
 		//create new payments
-		$user->makeNewPayments($data['user'], $data['tariff'], $this->language);
+		if ($payments->makeNewPayments($data['user'], $data['tariff'], $this->language))
+			//actualize data if invoice was generated
+			$data = $payments->getUserData($userId);
+		//actualize old payments
+		$resultMessages = $payments->actualizePayments($data['payments']);
+		$this->messages = array_merge($this->messages, $resultMessages);
+		
 
 		//get new data for user view
-		$data = $user->getUserData($id);
-		$data['payments'] = $user->cleanupUserPayments($data['payments'], $data['tariff'], $this->language);
+		$data = $payments->getUserData($userId);
+		$data['payments'] = $payments->cleanupUserPayments($data['payments'], $data['tariff'], $this->language);
 		
 		//display non-active user
 		if (!$data['user']['active']) $this->messages[] = ['s' => 'info',

@@ -5,9 +5,7 @@ class ForceActivationController extends Controller {
 	public function process($parameters) {
 		$activation = new Activation();
 		$userId = $parameters[0];
-		$placesIds = $activation->returnAdminPlacesIds();
-		$userPlace = $activation->getUserPlaceFromId($userId);
-		if (!in_array($userPlace, $placesIds)) $this->redirect('error');
+		if (!$activation->checkIfIsAdminOfUser($_SESSION['id_user'], $userId)) $this->redirect('error');
 
 		$csrfToken = $parameters[1];
 		if (!Csrf::validateCsrfRequest($csrfToken)) {

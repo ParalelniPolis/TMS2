@@ -63,18 +63,23 @@ class Model {
 		//success
 		return true;
 	}
-
-	public function returnAdminPlacesIds() {
-		//check username with prevent session login spoofing
-		if (!$this->checkLogin()) return false;
-
-		$userId = $this->getUserIdFromEmail($_SESSION['username']);
+	
+	public function checkIfAdmin($adminId) {
+		if ($this->returnAdminPlacesIds($adminId)) return true; else return false;
+	}
+	
+	public function checkIfIsAdminOfUser($adminId, $userId) {
+		$placesIds = $this->returnAdminPlacesIds($adminId);
+		$userPlace = $this->getUserPlaceFromId($userId);
+		return in_array($userPlace, $placesIds);
+	}
+	
+	protected function returnAdminPlacesIds($adminId) {
 		$admin = Db::queryAll('SELECT `place_id` FROM `admins`
-                               WHERE `user_id` = ?', [$userId]);
-		if (empty($admin[0])) return false;
-
+                               WHERE `user_id` = ?', [$adminId]);
+		if (empty($admin)) return false;
 		$result = [];
-		foreach ($admin as $a) $result[] = $a["place_id"];
+		foreach ($admin as $a) $result[] = $a['place_id'];
 		return $result;
 	}
 

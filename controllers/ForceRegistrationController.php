@@ -4,7 +4,7 @@ class ForceRegistrationController extends Controller {
 
 	function process($parameters) {
 		$registration = new Registration();
-		if (empty($registration->returnAdminPlacesIds())) $this->redirect('error');
+		if (!$registration->checkIfAdmin($_SESSION['id_user'])) $this->redirect('error');
 
 		//catch registration (button is pressed)
 		if (isset($_POST['sent'])) {

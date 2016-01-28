@@ -21,7 +21,7 @@ class Render extends Model {
 
 	public function returnMainMenu($lang) {
 		$login = $this->checkLogin();
-		$adminPlacesIds = $this->returnAdminPlacesIds();
+		$admin = $this->checkIfAdmin($_SESSION['id_user']);
 
 		$labels = [
 			'cs' => [
@@ -48,13 +48,13 @@ class Render extends Model {
 		];
 
 		$result = '<li><a href="'.ROOT.'/'.$lang.'/intro">'.$labels[$lang]['intro'].'</a></li>';
-		if ($login == false) $result .= '<li><a href="'.ROOT.'/'.$lang.'/login">'.$labels[$lang]['login'].'</a></li>';
-		if ($login == false) $result .= '<li><a href="'.ROOT.'/'.$lang.'/registration">'.$labels[$lang]['registration'].'</a></li>';
-		if ($login == true) $result .= '<li><a href="'.ROOT.'/'.$lang.'/payments/'.$_SESSION["id_user"].'">'.$labels[$lang]['payments'].'</a></li>';
-		if ($login == true) $result .= '<li><a href="'.ROOT.'/'.$lang.'/booking/">'.$labels[$lang]['booking'].'</a></li>';
-		if ($login == true) $result .= '<li><a href="'.ROOT.'/'.$lang.'/changePersonals/'.$_SESSION["id_user"].'">'.$labels[$lang]['changePersonals'].'</a></li>';
-		if ($adminPlacesIds != false) $result .= '<li><a href="'.ROOT.'/'.$lang.'/checkUsers">'.$labels[$lang]['checkUsers'].'</a></li>';
-		if ($adminPlacesIds != false) $result .= '<li><a href="'.ROOT.'/'.$lang.'/forceRegistration">'.$labels[$lang]['forceRegistration'].'</a></li>';
+		if (!$login) $result .= '<li><a href="'.ROOT.'/'.$lang.'/login">'.$labels[$lang]['login'].'</a></li>';
+		if (!$login) $result .= '<li><a href="'.ROOT.'/'.$lang.'/registration">'.$labels[$lang]['registration'].'</a></li>';
+		if ($login) $result .= '<li><a href="'.ROOT.'/'.$lang.'/payments/'.$_SESSION["id_user"].'">'.$labels[$lang]['payments'].'</a></li>';
+		if ($login) $result .= '<li><a href="'.ROOT.'/'.$lang.'/booking/">'.$labels[$lang]['booking'].'</a></li>';
+		if ($login) $result .= '<li><a href="'.ROOT.'/'.$lang.'/changePersonals/'.$_SESSION["id_user"].'">'.$labels[$lang]['changePersonals'].'</a></li>';
+		if ($admin) $result .= '<li><a href="'.ROOT.'/'.$lang.'/checkUsers">'.$labels[$lang]['checkUsers'].'</a></li>';
+		if ($admin) $result .= '<li><a href="'.ROOT.'/'.$lang.'/forceRegistration">'.$labels[$lang]['forceRegistration'].'</a></li>';
 		$result .= '<li><a href="'.ROOT.'/'.$lang.'/contact">'.$labels[$lang]['contact'].'</a></li>';
 
 		return $result;

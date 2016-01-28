@@ -4,10 +4,10 @@ class CheckUsersController extends Controller {
 
 	function process($parameters) {
 		$checkUsers = new CheckUsers();
-		$placesIds = $checkUsers->returnAdminPlacesIds();
-		if ($placesIds == false) $this->redirect('error');
+		$userId = $_SESSION['id_user'];
+		if (!$checkUsers->checkIfAdmin($userId)) $this->redirect('error');
 
-		$members = $checkUsers->getMembers($placesIds, $this->language);
+		$members = $checkUsers->getMembers($userId, $this->language);
 
 		$this->data['csrf'] = Csrf::getCsrfToken();
 		$this->data['activeMemberMailList'] = $checkUsers->getActiveMemberMailList($members);

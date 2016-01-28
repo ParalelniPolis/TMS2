@@ -6,14 +6,12 @@ class ChangePersonalsController extends Controller {
 		$changePersonals = new ChangePersonals();
 		if (!$changePersonals->checkLogin()) $this->redirect('error');
 		//if empty parameter, add there current user
-		if (isset($parameters[0])) $id = $parameters[0]; else $id = $_SESSION['id_user'];
+		if (isset($parameters[0])) $userId = $parameters[0]; else $userId = $_SESSION['id_user'];
 
-		if ($id != $_SESSION['id_user']) {
-			//if not admin of the right place, throw error
-			$placesIds = $changePersonals->returnAdminPlacesIds();
-			$userPlace = $changePersonals->getUserPlaceFromId($id);
-			if (!in_array($userPlace, $placesIds)) $this->redirect('error');
-		}
+		//if not admin of the right place, throw error
+		if ($userId != $_SESSION['id_user'] && !$changePersonals->checkIfIsAdminOfUser($_SESSION['id_user'], $userId)) 
+			$this->redirect('error');
+		
 		//if form is sent
 		if (isset($_POST['sent'])) {
 			$data = $changePersonals->sanitize([
@@ -33,14 +31,14 @@ class ChangePersonalsController extends Controller {
 				$result = $changePersonals->validateData($data);
 
 				if ($result['s'] == 'success') {
-					$result = $changePersonals->changePersonalData($data, $id);
+					$result = $changePersonals->changePersonalData($data, $userId);
 				}
 				$this->messages[] = $result;
 			}
 		}
 
 		//data for form
-		$user = $changePersonals->getUserData($id, $this->language);
+		$user = $changePersonals->getUserData($userId, $this->language);
 		$this->data = $user['user'];
 		$this->data['csrf'] = Csrf::getCsrfToken();
 		$this->header['title'] = [

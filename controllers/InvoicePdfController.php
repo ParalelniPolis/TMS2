@@ -9,13 +9,10 @@ class InvoicePdfController extends Controller {
 		if (isset($parameters[0])) $fakturoidInvoiceId = $parameters[0]; else $this->redirect('error');
 
 		$userOfInvoice = $fakturoid->getUserIdFromInvoiceId($fakturoidInvoiceId);
-
-		if ($userOfInvoice != $_SESSION['id_user']) {
-			//if not admin of the right place then throw error
-			$placesIds = $fakturoid->returnAdminPlacesIds();
-			$userPlace = $fakturoid->getUserPlaceFromId($_SESSION['id_user']);
-			if (!in_array($userPlace, $placesIds)) $this->redirect('error');
-		}
+		
+		//if not admin of the right place then throw error
+		if ($userOfInvoice != $_SESSION['id_user'] && !$fakturoid->checkIfIsAdminOfUser($_SESSION['id_user'], $userOfInvoice)) 
+			$this->redirect('error');
 
 		$pdf = $fakturoid->getInvoiceAsPdf($fakturoidInvoiceId);
 		$this->displayPdf($pdf);
