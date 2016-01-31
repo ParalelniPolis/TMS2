@@ -106,12 +106,4 @@ If you don\'t recognize this email, please just ignore it. <br/>'
 			'cs' => 'Děkujeme za registraci!</br>Poslali jsme ti email Tam nalezneš link, kterým svou registraci aktivuješ',
 			'en' => 'Thanks for registration!</br>We sent you an email, where you can find a link to activate your account'];
 	}
-
-	public function returnMenuTariffs($lang) {
-		if ($lang == 'cs') return Db::queryAll('SELECT `id_tariff`, `tariffCZE`, `priceCZK`, `name`
-            FROM `tariffs` JOIN places ON places.id = tariffs.place_id', []);
-		if ($lang == 'en') return Db::queryAll('SELECT `id_tariff`, `tariffENG`, `priceCZK`, `name`
-            FROM `tariffs` JOIN places ON places.id = tariffs.place_id', []);
-		return false;
-	}
 }

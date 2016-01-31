@@ -108,7 +108,15 @@ class Model {
             WHERE `id_tariff` = ?', [$tariffId]);
 		return false;
 	}
-
+	
+	public function returnTariffsData($lang) {
+		if ($lang == 'cs') return Db::queryAll('SELECT `id_tariff`, `tariffCZE`, `priceCZK`, `name`
+            FROM `tariffs` JOIN places ON places.id = tariffs.place_id', []);
+		if ($lang == 'en') return Db::queryAll('SELECT `id_tariff`, `tariffENG`, `priceCZK`, `name`
+            FROM `tariffs` JOIN places ON places.id = tariffs.place_id', []);
+		return false;
+	}
+	
 	public function getRandomHash() {
 		return hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), false));
 	}

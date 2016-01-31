@@ -15,6 +15,6 @@ class ActivationController extends Controller {
 		$this->header['title'] = [
 			'cs' => 'Aktivace účtu',
 			'en' => 'Account activation'];
-		$this->view = 'activation';
+		$this->view = 'login';
 	}
 }

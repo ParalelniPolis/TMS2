@@ -60,7 +60,7 @@ class Payments extends Model {
 				Db::queryModify('UPDATE `payments` SET `status` = ? WHERE `id_payment` = ?', [$newStatus, $paymentId]);
 				$messages[] = $bitcoinPay->getStatusMessage($newStatus);
 				//and when receive money, make invoice in fakturoid payed
-				if ($newStatus == 'received' || 'confirmed') {
+				if ($newStatus == ('received' || 'confirmed')) {
 					$fakturoid->setInvoicePayed($fakturoidId);
 					Db::queryModify('UPDATE `payments`
 						SET `payed_price_BTC` = ?

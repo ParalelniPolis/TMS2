@@ -1,0 +1,25 @@
+﻿<h2>Activation of user</h2>
+<p>Please choose tariff for activation: </p>
+<form method="POST" action="">
+	<table>
+		<tr>
+			<td class="right"><label for="tariff">Place and tariff: </label></td>
+			<td class="left">
+				<select name="tariff" id="tariff">
+					<option value="X" selected="selected">Choose place and tariff...</option><?php
+					foreach ($tariffs as $tariff): ?>
+						<option value="<?= $tariff['id_tariff'] ?>"><?= $tariff['name'] ?>:
+							<?= $tariff['tariffENG'] ?> for <?= $tariff['priceCZK'] ?> CZK
+						</option>
+					<?php endforeach ?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="center">
+				<input type="hidden" name="csrf" value="<?=$csrf?>">
+				<input type="submit" name="sent" value="Activate!">
+			</td>
+		</tr>
+	</table>
+</form>

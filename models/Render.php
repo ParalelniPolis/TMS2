@@ -20,8 +20,10 @@ class Render extends Model {
 	}
 
 	public function returnMainMenu($lang) {
+		if (!empty($_SESSION['id_user'])) $userId = $_SESSION['id_user'];
+		else $userId = false;
 		$login = $this->checkLogin();
-		$admin = $this->checkIfAdmin($_SESSION['id_user']);
+		$admin = $this->checkIfAdmin($userId);
 
 		$labels = [
 			'cs' => [
