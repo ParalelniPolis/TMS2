@@ -17,6 +17,7 @@ define('EMAIL', 'TMS2@yourdomain.com'); //default email for communication with u
 define('BRUTEFORCE_LOCKED_TIME', 1800); //in seconds; time how long login anti-brutforce system will be active; default is 1800 (half an hour)
 define('BRUTEFORCE_NUMBER_OF_ATTEMPTS', 5); //max number of attempts before bruteforce send email and lock account; default is 5
 define('CHANGE_PASS_TIME_VALIDITY', 1800); //in seconds; time how long will be link for changing password; default is 1800 (half an hour)
+define('TOLERANCE_TIME_ON_SENDING_REMINDING_EMAILS', 7); //in days
 define('ALLOW_MAKE_ADMIN', false); //default false - true is INSECURE!
 
 //settings for localhost database

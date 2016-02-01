@@ -12,20 +12,17 @@ class PaymentsController extends Controller {
 			$this->redirect('error');
 
 		$data = $payments->getUserData($userId);
-
-		//TODO shift this two jobs into cron
-		//create new payments
-		if ($payments->makeNewPayments($data['user'], $data['tariff'], $this->language))
-			//actualize data if invoice was generated
-			$data = $payments->getUserData($userId);
+		
 		//actualize old payments
 		$resultMessages = $payments->actualizePayments($data['payments']);
+		//create new payments
+		$payments->makeNewPayments($data['user'], $data['tariff'], $this->language);
 		$this->messages = array_merge($this->messages, $resultMessages);
 		
 
 		//get new data for user view
 		$data = $payments->getUserData($userId);
-		$data['payments'] = $payments->cleanupUserPayments($data['payments'], $data['tariff'], $this->language);
+		$data['payments'] = $payments->cleanupUserPayments($data['payments'], $this->language);
 		
 		//display non-active user
 		if (!$data['user']['active']) $this->messages[] = ['s' => 'info',

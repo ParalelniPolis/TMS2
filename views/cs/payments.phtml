@@ -12,7 +12,6 @@
 		<td>Status faktury</td>
 		<td>Zaplatit</td>
 		<td>Link na stažení faktury</td>
-		<td>Tarif</td>
 		<!--<td>Fičurky</td>-->
 	</tr>
 	<?php foreach ($payments as $p): ?>
@@ -37,7 +36,6 @@
 					<button>PDF faktura</button>
 				</a>
 			</td>
-			<td><?= $tariff['tariffCZE'] ?></td>
 		</tr>
 	<?php endforeach ?>
 </table>

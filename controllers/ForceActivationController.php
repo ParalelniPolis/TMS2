@@ -16,13 +16,16 @@ class ForceActivationController extends Controller {
 				$this->redirect('error');
 			}
 			
-			$tariffId = $_POST['tariff'];
-			$result = $activation->validateTariffId($tariffId);
+			$tariffId = $activation->sanitize($_POST['tariff']);
+			$startDate = $activation->sanitize($_POST['startDate']);
+			$result = $activation->validateForceActivationData($tariffId, $startDate);
 			if ($result['s'] == 'success') {
-				$result = $activation->forceActivateUser($activation->getUserEmailFromId($userId), $tariffId);
+				//TODO resolve invoice total sum conflict (different total when change tariff in the middle)
+				$result = $activation->forceActivateUser($activation->getUserEmailFromId($userId), $tariffId, $startDate);
 			}
 			$this->messages[] = $result;
-			$this->redirect('checkUsers');
+			
+			if ($result['s'] == 'success') $this->redirect('payments/'.$userId);
 		}
 		
 		$this->data['csrf'] = $csfr->getCsrfToken();

@@ -27,9 +27,16 @@ class Registration extends Model {
 		if (strlen($data['address']) > 120) return ['s' => 'error',
 			'cs' => 'Adresa by měla být dlouhá max. 120 znaků',
 			'en' => 'Address should be long max. 120 characters'];
+		if ($data['startDate'] != date('Y-m-d', strtotime($data['startDate']))) {
+			$this->newTicket('error', 'function validateData in Registration', '\$_POST[startDate] is in bad format');
+			return ['s' => 'error',
+				'cs' => 'Špatný formát zadání prvního dne',
+				'en' => 'Bad format of starting date'];
+		}
 		if ($data['tariff'] == 'X') return ['s' => 'error',
+			//non-choosed tariff
 			'cs' => 'Prosím vyber svůj tarif',
-			'en' => 'Please choose your tariff']; //non-choosed tariff
+			'en' => 'Please choose your tariff'];
 		if (strlen($data['p']) != 128) {
 			$this->newTicket('error', 'function validateData in Registration', 'Something wrong with \'p\' in registration; p='.$_POST['p'].',strlen($p)='.strlen($data['p']));
 			return ['s' => 'error',
