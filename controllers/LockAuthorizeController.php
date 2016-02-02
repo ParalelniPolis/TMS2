@@ -1,18 +1,21 @@
 <?php
 
 class LockAuthorizeController extends Controller {
-	public function process ($parameters) {
-		
-		if (empty($parameters[0])) $result['access'] = false;
-		else $result['access'] = $this->isKeyInDb($parameters[0]);
-		
-		//send response
-		header('Content-Type: application/json');
-		echo json_encode($result);
-		die();
-	}
 	
-	private function isKeyInDb($key) {
-		return ($key == 'true');
+	public function process($parameters) {
+		$locks = new Locks();
+		$key = $locks->sanitize($parameters[0]);
+		$placeId = $locks->sanitize($parameters[1]);
+		
+		if (empty($key) || empty($placeId)) $result = false;
+		else {
+			$result = $locks->isKeyInDb($key, $placeId);
+			//dont store info when empty 
+			if ($result == false) $locks->storeKeyInDb($key);
+		}
+		
+		$locks->sendResponse($result, $placeId);
+		//stop rendering
+		die();
 	}
 }
