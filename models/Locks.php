@@ -10,6 +10,7 @@ class Locks extends Model {
 	}
 	
 	public function sendResponse($result, $placeId) {
+		//TODO add header 204
 		header('Content-Type: application/json');
 		$data[$placeId] = $result;
 		echo json_encode($data);
