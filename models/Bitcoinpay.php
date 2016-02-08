@@ -126,9 +126,10 @@ class Bitcoinpay extends Model {
 		$status = $data['status'];
 		Db::queryModify('UPDATE `payments` SET `bitcoinpay_payment_id` = ?, `status` = ?, `time_generated` = ?
                          WHERE `id_payment` = ?', [$bitcoinpayId, $status, $time, $id]);
-		if (!empty($price = $data['paid_amount']))
+		$priceBTC = $data['paid_amount'];
+		if (!empty($priceBTC))
 			Db::queryModify('UPDATE `payments` SET `payed_price_BTC` = ?
-                WHERE `id_payment` = ?', [$price, $id]);
+                WHERE `id_payment` = ?', [$priceBTC, $id]);
 	}
 	
 	function getStatusMessage($case) {
