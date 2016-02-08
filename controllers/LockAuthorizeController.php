@@ -10,8 +10,8 @@ class LockAuthorizeController extends Controller {
 		if (empty($key) || empty($placeId)) $result = false;
 		else {
 			$result = $locks->isKeyInDb($key, $placeId);
-			//dont store info when empty 
-			if ($result == false) $locks->storeKeyInDb($key);
+			//don't store info when card is found 
+			if ($result == false) $locks->storeKeyInDb($key, $placeId);
 		}
 		
 		$locks->sendResponse($result, $placeId);

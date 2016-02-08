@@ -51,7 +51,7 @@ class Bitcoinpay extends Model {
 	private function createPayment($paymentId, $lang) {
 		$payment = $this->getPaymentData($paymentId);
 		$idPayer = $payment['id_payer'];
-		$price = $payment['priceCZK'];
+		$priceCZK = $payment['priceCZK'];
 		$email = $payment['email'];
 		$fakturoidNumber = $payment['invoice_fakturoid_number'];
 		
@@ -72,7 +72,7 @@ class Bitcoinpay extends Model {
             "return_url": "'.ROOT.'/'.$lang.'/PayInvoice/return/'.$paymentId.'",
             "notify_url": "'.ROOT.'/'.$lang.'/PayInvoice/notify/'.$paymentId.'",
             "notify_email": "'.EMAIL.'",
-            "price": "'.$price.'",
+            "price": "'.$priceCZK.'",
             "currency": "CZK",
             "reference": {
                 "customer_id": "'.$idPayer.'",
@@ -126,7 +126,7 @@ class Bitcoinpay extends Model {
 		$status = $data['status'];
 		Db::queryModify('UPDATE `payments` SET `bitcoinpay_payment_id` = ?, `status` = ?, `time_generated` = ?
                          WHERE `id_payment` = ?', [$bitcoinpayId, $status, $time, $id]);
-		if (!empty($price = $data['paid_amount']))
+		if (!empty($price = $data['denominated_amount']))
 			Db::queryModify('UPDATE `payments` SET `payed_price_BTC` = ?
                 WHERE `id_payment` = ?', [$price, $id]);
 	}
