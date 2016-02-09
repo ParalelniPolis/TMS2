@@ -9,10 +9,11 @@ $useProduction = false;
 //---------------------------------------------------------------
 
 //main directory for TMS2
-if ($useProduction) define('ROOT', 'http://yourserver.com/TMS2');
+$scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
+if ($useProduction) define('ROOT', $scheme.'://yoursite.cz/TMS2');
 else define('ROOT', 'http://localhost/TMS2');
 define('NAME', 'TMS2'); //how will be this system called in application
-define('VERSION', '0.13'); //number of actual version for correct displaying
+define('VERSION', '0.15'); //number of actual version for correct displaying
 define('EMAIL', 'TMS2@yourdomain.com'); //default email for communication with users of TMS2
 define('BRUTEFORCE_LOCKED_TIME', 1800); //in seconds; time how long login anti-brutforce system will be active; default is 1800 (half an hour)
 define('BRUTEFORCE_NUMBER_OF_ATTEMPTS', 5); //max number of attempts before bruteforce send email and lock account; default is 5
