@@ -4,7 +4,8 @@ class Csrf extends Model {
 	public static function getCsrfToken() {
 		$csrfToken = self::getRandomHash();
 		//added extra layer with adding actual uri into hash
-		$actualUri = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		$scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
+		$actualUri = $scheme.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		$csrfRefererToken = hash('sha512', $actualUri.$csrfToken, false);
 		Db::queryModify('INSERT INTO `csrf` (`user_id`, `token`, `active`, `timestamp`)
                          VALUES (?, ?, 1, NOW())', [$_SESSION['id_user'], $csrfRefererToken]);

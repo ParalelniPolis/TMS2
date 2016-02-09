@@ -61,19 +61,18 @@ class Payments extends Model {
 				}
 			}
 			$newStatus = $data['status'];
-			//when status is different (or new), inform user
+			//when status is different (or new), save it and inform user
 			if ($newStatus != $payment['status']) {
 				Db::queryModify('UPDATE `payments` SET `status` = ? WHERE `id_payment` = ?', [$newStatus, $paymentId]);
 				$messages[] = $bitcoinPay->getStatusMessage($newStatus);
 				//and when receive money, make invoice in fakturoid payed
 				if ($newStatus == ('received' || 'confirmed')) {
 					$fakturoid = new FakturoidWrapper();
-
 					$fakturoid->setInvoicePayed($fakturoidId);
 					Db::queryModify('UPDATE `payments`
 						SET `payed_price_BTC` = ?
 						WHERE `id_payment` = ?',
-						[$data['price'], $paymentId]);
+						[$data['settled_amount'], $paymentId]);
 				}
 			}
 		}

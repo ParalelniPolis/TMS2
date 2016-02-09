@@ -122,11 +122,10 @@ class Bitcoinpay extends Model {
 	
 	public function updatePayment($id, $data) {
 		$bitcoinpayId = $data['payment_id'];
-		$time = $data['time'];
 		$status = $data['status'];
-		Db::queryModify('UPDATE `payments` SET `bitcoinpay_payment_id` = ?, `status` = ?, `time_generated` = ?
-                         WHERE `id_payment` = ?', [$bitcoinpayId, $status, $time, $id]);
-		$priceBTC = $data['paid_amount'];
+		Db::queryModify('UPDATE `payments` SET `bitcoinpay_payment_id` = ?, `status` = ?
+                         WHERE `id_payment` = ?', [$bitcoinpayId, $status, $id]);
+		$priceBTC = $data['settled_amount'];
 		if (!empty($priceBTC))
 			Db::queryModify('UPDATE `payments` SET `payed_price_BTC` = ?
                 WHERE `id_payment` = ?', [$priceBTC, $id]);
