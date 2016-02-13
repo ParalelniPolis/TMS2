@@ -4,17 +4,18 @@ class LockAuthorizeController extends Controller {
 	
 	public function process($parameters) {
 		$locks = new Locks();
-		$key = $locks->sanitize($parameters[0]);
-		$placeId = $locks->sanitize($parameters[1]);
 		
-		if (empty($key) || empty($placeId)) $result = false;
+		$lockId = $locks->sanitize($parameters[0]);
+		$key = $locks->sanitize($parameters[1]);
+		
+		if (empty($key) || empty($lockId)) $result = false;
 		else {
-			$result = $locks->isKeyInDb($key, $placeId);
-			//don't store info when card is found 
-			if ($result == false) $locks->storeKeyInDb($key, $placeId);
+			$result = $locks->isKeyValid($key, $lockId);
+			//store only unsuccessfull attempts for later assigmnents
+			if ($result == false) $locks->storeKeyInDb($key, $lockId);
 		}
 		
-		$locks->sendResponse($result, $placeId);
+		$locks->sendResponse($result, $lockId);
 		//stop rendering
 		die();
 	}
