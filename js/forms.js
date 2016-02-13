@@ -16,8 +16,6 @@ function formhash(form, password) {
     password.value = "password";
     form.password.setAttribute('disabled', 'disabled');
     // Finally submit the form.
-    //form.submit();
-    //return true;
 }
 function changeformhash(form, password) {
     var p = document.createElement("input");
@@ -26,9 +24,6 @@ function changeformhash(form, password) {
     p.type = "hidden";
     p.value = hex_sha512(password.value);
     password.value = "password";
-
-    //form.submit();
-    //return true;
 }
 
 function regformhash(form, password, pComfirmation) {
@@ -63,7 +58,5 @@ function regformhash(form, password, pComfirmation) {
     form.pComfirmation.setAttribute('disabled', 'disabled');
 
     // Finally submit the form.
-    //form.submit();
-    //return true;
 }
 
