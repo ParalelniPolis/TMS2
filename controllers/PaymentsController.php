@@ -36,6 +36,7 @@ class PaymentsController extends Controller {
 			'cs' => 'Přehled plateb',
 			'en' => 'Payments overview'];
 		//TODO add nice sliding JS invoice detail directly into view
+		//TODO hide table in view when empty (no data)
 		$this->view = 'payments';
 	}
 }
