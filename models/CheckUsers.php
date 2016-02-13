@@ -2,7 +2,7 @@
 
 class CheckUsers extends Model {
 
-	public function getMembers($adminId, $lang) {
+	public function getMembers($adminId) {
 		$placesIds = $this->returnAdminPlacesIds($adminId);
 		$members = [];
 		foreach ($placesIds as $placeID) {
@@ -12,10 +12,10 @@ class CheckUsers extends Model {
                                            JOIN `places` ON `tariffs`.`place_id` = `places`.`id`
                                            WHERE `place_id` = ?
                                            ORDER BY `active` DESC, `invoicing_start_date` ASC', [$placeID]);
-			//for equvivalent position between members
+			//for equvivalent position between all members
 			foreach ($tariffMembers as $tm) $members[] = $tm;
 		}
-		//add first payment date to each member
+		//add first payment date and status of all invoices to each member
 		foreach ($members as &$m) {
 			$m['firstPaymentDate'] = $this->getFirstPaymentDate($m['id_user']);
 			$m['paymentFlag'] = $this->getPaymentFlag($m['id_user']);
@@ -52,5 +52,4 @@ class CheckUsers extends Model {
 		}
 		return $result;
 	}
-
 }

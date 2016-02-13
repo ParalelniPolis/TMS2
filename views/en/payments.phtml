@@ -36,6 +36,39 @@
 				</a>
 			</td>
 		</tr>
+		<?php foreach ($p['extras'] as $e): ?>
+			<tr>
+				<td class="right">
+					<?php if ($admin): ?>
+						<a href="<?= ROOT ?>/en/extras/delete/<?= $e['id_extra'] ?>">
+							<button>Delete</button>
+						</a>
+					<?php endif; ?>
+				</td>
+				<td>
+					+ <?= $e['priceBTC'] * 1000 ?> mBTC
+				</td>
+				<td colspan="3">
+					<?= $e['description'] ?>
+				</td>
+			</tr>
+		<?php endforeach ?>
+		<?php if ($admin): ?>
+			<tr>
+				<td class="right">
+					<label for="price">Price: </label>
+				</td>
+				<td colspan="5">
+					<form method="POST" action="<?= ROOT ?>/en/extras/add">
+						<input type="hidden" name="paymentId" value="<?= $p['id_payment'] ?>">
+						<input id="price" name="price" type="number">
+						<label for="description">Description: </label>
+						<input id="description" name="description" type="text">
+						<button type="submit">Add</button>
+					</form>
+				</td>
+			</tr>
+		<?php endif ?>
 	<?php endforeach ?>
 </table>
-<p><a href="mailto:<?= EMAIL_HUB_MANAGER ?>">Contact Paper Hub Manager for the change of tariff.</a></p>
+<p><a href="mailto:<?= EMAIL_HUB_MANAGER ?>">Contact Paper Hub Manager for the change of tariff</a></p>

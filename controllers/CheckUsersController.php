@@ -7,7 +7,7 @@ class CheckUsersController extends Controller {
 		$userId = $_SESSION['id_user'];
 		if (!$checkUsers->checkIfAdmin($userId)) $this->redirect('error');
 
-		$members = $checkUsers->getMembers($userId, $this->language);
+		$members = $checkUsers->getMembers($userId);
 
 		$this->data['csrf'] = Csrf::getCsrfToken();
 		$this->data['activeMemberMailList'] = $checkUsers->getActiveMemberMailList($members);

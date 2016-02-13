@@ -12,7 +12,6 @@
 		<td>Status faktury</td>
 		<td>Zaplatit</td>
 		<td>Link na stažení faktury</td>
-		<!--<td>Fičurky</td>-->
 	</tr>
 	<?php foreach ($payments as $p): ?>
 		<tr>
@@ -37,6 +36,39 @@
 				</a>
 			</td>
 		</tr>
+		<?php foreach ($p['extras'] as $e): ?>
+			<tr>
+				<td class="right">
+					<?php if ($admin): ?>
+						<a href="<?= ROOT ?>/cs/extras/delete/<?= $e['id_extra'] ?>">
+							<button>Zrušit</button>
+						</a>
+					<?php endif; ?>
+				</td>
+				<td>
+					+ <?= $e['priceBTC'] * 1000 ?> mBTC
+				</td>
+				<td colspan="3">
+					<?= $e['description'] ?>
+				</td>
+			</tr>
+		<?php endforeach ?>
+		<?php if ($admin): ?>
+			<tr>
+				<td class="right">
+					<label for="price">Cena: </label>
+				</td>
+				<td colspan="5">
+					<form method="POST" action="<?= ROOT ?>/cs/extras/add">
+						<input type="hidden" name="paymentId" value="<?= $p['id_payment'] ?>">
+						<input id="price" name="price" type="number">
+						<label for="description">Popis: </label>
+						<input id="description" name="description" type="text">
+						<button type="submit">Přidat</button>
+					</form>
+				</td>
+			</tr>
+		<?php endif ?>
 	<?php endforeach ?>
 </table>
-<p><a href="mailto:<?= EMAIL_HUB_MANAGER ?>">Pro změnu tarifu kontaktuj prosím svého Paper Hub manažera.</a></p>
+<p><a href="mailto:<?= EMAIL_HUB_MANAGER ?>">Pro změnu tarifu kontaktuj prosím svého Paper Hub manažera</a></p>

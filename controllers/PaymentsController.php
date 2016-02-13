@@ -29,6 +29,7 @@ class PaymentsController extends Controller {
 			'cs' => 'Neaktivní uživatel - nové faktury se negenerují',
 			'en' => 'Inactive user - new invoices are not generated'];
 
+		$this->data['admin'] = $payments->checkIfIsAdminOfUser($_SESSION['id_user'], $userId);
 		$this->data['tariff'] = $data['tariff'];
 		$this->data['user'] = $data['user'];
 		$this->data['payments'] = $data['payments'];

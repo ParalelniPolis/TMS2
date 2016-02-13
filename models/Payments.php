@@ -15,6 +15,10 @@ class Payments extends Model {
 		$payments = Db::queryAll('SELECT `id_payment`,`bitcoinpay_payment_id`,`id_payer`,`payed_price_BTC`,`payment_first_date`,`status`,`tariff_id`,`price_CZK`,`invoice_fakturoid_id`
                                   FROM `payments` WHERE `id_payer` = ?
                                   ORDER BY `payment_first_date` DESC', [$userId]);
+		//add extras for each payment
+		foreach ($payments as &$p)
+			$p['extras'] = Db::queryAll('SELECT `id_extra`, `description`, `priceCZK` 
+										 FROM `extras` WHERE `payment_id` = ?', [$p['id_payment']]);
 		
 		return ['user' => $user,
 			'tariff' => $tariff,
@@ -27,6 +31,11 @@ class Payments extends Model {
 			$p['status'] = $this->translatePaymentStatus($p['status'], $lang);
 			//guessing BTC price
 			if (empty($p['payed_price_BTC'])) $p['payed_price_BTC'] = round($p['price_CZK'] / $this->getExchangeRate(), 5);
+			//and price for extras
+			$ratio = $p['payed_price_BTC'] / $p['price_CZK'];
+			foreach ($p['extras'] as &$e) {
+				$e['priceBTC'] = round($ratio * $e['priceCZK'], 5);
+			}
 		}
 		return $payments;
 	}
@@ -119,9 +128,9 @@ class Payments extends Model {
 		$priceCZK = $tariff['priceCZK'];
 		$fakturoid = new FakturoidWrapper();
 		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate);
-		if (!$fakturoidInvoice) return ['s' => 'error', 
-			'cs' => 'Nepovedlo se spojení s fakturoid.cz. Zkuste to prosím za pár minut', 
-			'en' => 'We cannot connect into fakturoid.cz. Try it again in a few minutes please']; 
+		if (!$fakturoidInvoice) return ['s' => 'error',
+			'cs' => 'Nepovedlo se spojení s fakturoid.cz. Zkuste to prosím za pár minut',
+			'en' => 'We cannot connect into fakturoid.cz. Try it again in a few minutes please'];
 		$fakturoidInvoiceId = $fakturoidInvoice->id;
 		$fakturoidInvoiceNumber = $fakturoidInvoice->number;
 		Db::queryModify('
@@ -135,13 +144,13 @@ class Payments extends Model {
 				`invoice_fakturoid_id`, 
 				`invoice_fakturoid_number`
 		  	) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)', [
-				$userId, 
-				$beginningDate, 
-				'unpaid', 
-				$tariffId,
-				$priceCZK, 
-				$fakturoidInvoiceId, 
-				$fakturoidInvoiceNumber
+			$userId,
+			$beginningDate,
+			'unpaid',
+			$tariffId,
+			$priceCZK,
+			$fakturoidInvoiceId,
+			$fakturoidInvoiceNumber
 		]);
 		return ['s' => 'success'];
 	}
@@ -214,7 +223,7 @@ class Payments extends Model {
 				'id_user' => $r['id_user'],
 				'email' => $r['email'],
 				'price_CZK' => $r['price_CZK']
-				];
+			];
 		}
 		return $result;
 	}

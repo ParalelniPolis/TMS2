@@ -65,7 +65,7 @@ class Model {
 	}
 	
 	public function checkIfAdmin($adminId) {
-		if ($this->returnAdminPlacesIds($adminId)) return true; else return false;
+		if (!empty($this->returnAdminPlacesIds($adminId))) return true; else return false;
 	}
 	
 	public function checkIfIsAdminOfUser($adminId, $userId) {
@@ -77,7 +77,6 @@ class Model {
 	protected function returnAdminPlacesIds($adminId) {
 		$admin = Db::queryAll('SELECT `place_id` FROM `admins`
                                WHERE `user_id` = ?', [$adminId]);
-		if (empty($admin)) return false;
 		$result = [];
 		foreach ($admin as $a) $result[] = $a['place_id'];
 		return $result;
