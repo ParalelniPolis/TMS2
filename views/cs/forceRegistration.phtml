@@ -1,5 +1,5 @@
-<h2>Registrace</h2>
-<form method="post" action="w" name="registrationForm">
+<h2>Registrace nového člena</h2>
+<form method="post" action="" name="registrationForm">
 	<table>
 		<tr>
 			<td class="right"><label for="email">Email - bude použit jako login: </label></td>
@@ -17,12 +17,17 @@
 									value="<?php if (!empty($surname)) echo($surname); ?>"/></td>
 		</tr>
 		<tr>
-			<td class="right"><label for="telephone">Telefon: </label></td>
+			<td class="right"><label for="telephone">Telefon (volitelně): </label></td>
 			<td class="left"><input type="text" name="telephone" id="telephone"
 									value="<?php if (!empty($telephone)) echo($telephone); ?>"/></td>
 		</tr>
 		<tr>
-			<td class="right"><label for="ic">IČ: </label></td>
+			<td class="right"><label for="address">Adresa (volitelně): </label></td>
+			<td class="left"><input type="text" name="address" id="address"
+									value="<?php if (!empty($address)) echo($address); ?>"/></td>
+		</tr>
+		<tr>
+			<td class="right"><label for="ic">IČ (volitelně): </label></td>
 			<td class="left"><input type="text" name="ic" id="ic"
 									value="<?php if (!empty($ic)) echo($ic); ?>"/></td>
 		</tr>

@@ -21,7 +21,7 @@ class GetLinkForNewPassword extends Model {
                                   VALUES (?, ?, 1, NOW())', [$randomHash, $result[0]])
 			) {
 				$this->newTicket('problem', $_SESSION['id_user'], 'nepovedlo se zapsat do restart_password ve funkci register');
-				return ['s' => 'chyba',
+				return ['s' => 'error',
 					'cs' => 'Pokus se nepovedl uložit; zkus to prosím znovu za pár minut',
 					'en' => 'We failed on saving data. Try it again please after couple of minutes'];
 			}

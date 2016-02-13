@@ -20,7 +20,7 @@ class Login extends Model {
 				Db::queryModify('INSERT INTO `login_attempts` (`login`,`success`,`timestamp`)
                                  VALUES (?, 0, NOW())', [$data['login']]);
 				return ['s' => 'error',
-					'cs' => 'Bohužel, heslo není správně. <br/><a href="'.ROOT.'/cz/GetLinkForNewPassword">Nepotřebuješ si nechat zaslat nové?</a>',
+					'cs' => 'Bohužel, heslo není správně. <br/><a href="'.ROOT.'/cs/GetLinkForNewPassword">Nepotřebuješ si nechat zaslat nové?</a>',
 					'en' => 'Sorry, password is not correct. <br/><a href="'.ROOT.'/en/GetLinkForNewPassword">Don\'t you need a new one?</a>'];
 				//corrent both login and password - success!
 			} else {

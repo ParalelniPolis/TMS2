@@ -14,6 +14,7 @@ class ForceRegistrationController extends Controller {
 				"firstname" => $_POST['firstname'],
 				"surname" => $_POST['surname'],
 				"telephone" => $_POST['telephone'],
+				'address' => $_POST['address'],
 				"startDate" => $_POST['startDate'],
 				"ic" => $_POST['ic'],
 				//make up password (especially its hash)
@@ -25,7 +26,10 @@ class ForceRegistrationController extends Controller {
 			if ($result['s'] == 'success') {
 				$result = $registration->registerUser($data, $this->language);
 			}
-
+			//change success message for admin
+			if ($result['s'] == 'success') $result = ['s' => 'success', 
+				'cs' => 'Nový uživatel je úspěšně zaregistrován', 
+				'en' => 'New member is successfully registred'];
 			$this->messages[] = $result;
 		}
 

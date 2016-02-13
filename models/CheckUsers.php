@@ -17,20 +17,22 @@ class CheckUsers extends Model {
 		}
 		//add first payment date to each member
 		foreach ($members as &$m) {
-			$m['firstPaymentDate'] = $this->getFirstPaymentDate($m['id_user'], $lang);
+			$m['firstPaymentDate'] = $this->getFirstPaymentDate($m['id_user']);
 			$m['paymentFlag'] = $this->getPaymentFlag($m['id_user']);
 		}
 		return $members;
 	}
 
-	private function getFirstPaymentDate($userId, $lang) {
-		$r = Db::querySingleOne('SELECT `payment_first_date` FROM `payments`
-                                 WHERE `id_payer` = ? ORDER BY `payment_first_date` ASC', [$userId]);
-		if (empty($r)) {
-			if ($lang == 'cs') return 'neznámé';
-			if ($lang == 'en') return 'unknown';
-			return 'unknown+error!';
-		}
+	private function getFirstPaymentDate($userId) {
+		$datePayments = Db::querySingleOne('SELECT `payment_first_date` FROM `payments`
+            WHERE `id_payer` = ? ORDER BY `payment_first_date` ASC', [$userId]);
+		$dateStart = Db::querySingleOne('SELECT `invoicing_start_date` FROM `users`
+			WHERE `id_user` = ?', [$userId]);
+		
+		if (!empty($datePayments)) $r = min($datePayments, $dateStart); 
+		else $r = $dateStart;  
+		
+		if (empty($r)) return 'unknown+error!';
 		return date('d/m Y', strtotime($r));
 	}
 

@@ -10,11 +10,12 @@ $useProduction = false;
 
 //main directory for TMS2
 $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
-if ($useProduction) define('ROOT', $scheme.'://yoursite.cz/TMS2');
+if ($useProduction) define('ROOT', $scheme.'://yoursite.com/TMS2');
 else define('ROOT', 'http://localhost/TMS2');
 define('NAME', 'TMS2'); //how will be this system called in application
-define('VERSION', '0.16'); //number of actual version for correct displaying
-define('EMAIL', 'TMS2@yourdomain.com'); //default email for communication with users of TMS2
+define('EMAIL_HUB_MANAGER', 'hub.manager@yoursite.com'); //email on your Hub Manager
+define('VERSION', '0.17'); //number of actual version for correct displaying
+define('EMAIL', 'TMS2@yoursite.com'); //default email for communication with users of TMS2
 define('BRUTEFORCE_LOCKED_TIME', 1800); //in seconds; time how long login anti-brutforce system will be active; default is 1800 (half an hour)
 define('BRUTEFORCE_NUMBER_OF_ATTEMPTS', 5); //max number of attempts before bruteforce send email and lock account; default is 5
 define('CHANGE_PASS_TIME_VALIDITY', 1800); //in seconds; time how long will be link for changing password; default is 1800 (half an hour)

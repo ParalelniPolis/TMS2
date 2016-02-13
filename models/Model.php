@@ -111,9 +111,11 @@ class Model {
 	
 	public function returnTariffsData($lang) {
 		if ($lang == 'cs') return Db::queryAll('SELECT `id_tariff`, `tariffCZE`, `priceCZK`, `name`
-            FROM `tariffs` JOIN places ON places.id = tariffs.place_id', []);
+            FROM `tariffs` JOIN places ON places.id = tariffs.place_id
+            ORDER BY `place_id` ASC, `priceCZK` ASC', []);
 		if ($lang == 'en') return Db::queryAll('SELECT `id_tariff`, `tariffENG`, `priceCZK`, `name`
-            FROM `tariffs` JOIN places ON places.id = tariffs.place_id', []);
+            FROM `tariffs` JOIN places ON places.id = tariffs.place_id
+            ORDER BY `place_id` ASC, `priceCZK` ASC', []);
 		return false;
 	}
 	

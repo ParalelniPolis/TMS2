@@ -38,8 +38,8 @@ class ChangePersonalsController extends Controller {
 		}
 
 		//data for form
-		$user = $changePersonals->getUserData($userId, $this->language);
-		$this->data = $user['user'];
+		$userData = $changePersonals->getUserData($userId);
+		$this->data = $userData['user'];
 		$this->data['csrf'] = Csrf::getCsrfToken();
 		$this->header['title'] = [
 			'cs' => 'Změna osobních údajů',
