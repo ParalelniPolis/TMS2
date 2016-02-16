@@ -6,7 +6,6 @@ class ExtrasController extends Controller {
 		$extras = new Extras();
 		$action = $extras->sanitize($parameters[0]);
 		
-		//TODO add Fakturoid updates
 		switch ($action) {
 			case 'add':
 				$paymentId = $extras->sanitize($_POST['paymentId']);
