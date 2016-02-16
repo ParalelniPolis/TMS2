@@ -2,7 +2,9 @@
 
 class Bitcoinpay extends Model {
 	
-	public function requestPayment($paymentId, $paymentStatus, $lang) {
+	public function requestPaymentStatus($paymentId, $lang) {
+		$paymentStatus = Db::querySingleOne('SELECT `status` FROM `payments` WHERE id_payment = ?', [$paymentId]);
+		
 		switch ($paymentStatus) {
 			case ('confirmed'):
 			case ('received'):
@@ -17,7 +19,7 @@ class Bitcoinpay extends Model {
 			case ('payed_after_timeout'):
 				//return stored payment url for payment/refund
 				$url = $this->returnPaymentBitcoinPayUrl($paymentId);
-				$result = ['s' => 'success', 
+				$result = ['s' => 'success',
 					'paymentType' => 'old',
 					'data' => ['payment_url' => $url]
 				];
@@ -131,7 +133,22 @@ class Bitcoinpay extends Model {
                 WHERE `id_payment` = ?', [$price, $id]);
 	}
 	
-	function getStatusMessage($case) {
+	public function deletePayment($id) {
+		$resultExtras = Db::queryModify('DELETE FROM `extras` WHERE `payment_id` = ?', [$id]);
+		$resultPayment = Db::queryModify('DELETE FROM `payments` WHERE `id_payment` = ?', [$id]);
+		
+		if ($resultPayment && $resultExtras) return ['s' => 'success', 
+			'cs' => 'Faktura úspěšně smazána', 
+			'en' => 'Invoice is successfully deleted'];
+		else {
+			$this->newTicket('error', 'deletePayment from BitcoinPay.php', 'error in deleting payment with extras');
+			return ['s' => 'error', 
+				'cs' => 'Neco se stalo špatně - zkus to prosím znovu za pár minut', 
+				'en' => 'Something went wrong - try it again in a few minutes please'];
+		}
+	}
+	
+	public function getStatusMessage($case) {
 		switch ($case) {
 			case 'pending': {
 				$r = ['s' => 'info',
@@ -204,10 +221,6 @@ class Bitcoinpay extends Model {
 	public function getPaymentUserId($paymentId) {
 		return Db::querySingleOne('SELECT `id_payer` FROM `payments`
             WHERE `id_payment` = ?', [$paymentId]);
-	}
-	
-	public function returnPaymentStatus($paymentId) {
-		return Db::querySingleOne('SELECT `status` FROM `payments` WHERE id_payment = ?', [$paymentId]);
 	}
 	
 	private function returnPaymentBitcoinPayUrl($paymentId) {

@@ -3,6 +3,7 @@
 class Model {
 
 	public function newTicket($type, $sender, $message) {
+		//TODO add automatic mail to webmaster
 		Db::queryModify('INSERT INTO tickets (type, title, message, `timestamp`)
                          VALUES (?,?,?,NOW())', [$type, $sender, $message]);
 	}

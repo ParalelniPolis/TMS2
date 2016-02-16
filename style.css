@@ -197,8 +197,8 @@ div.message {
 }
 
 .error {
-    background-color: #FF0000;
-    color: white
+    background-color: #ff9900;
+    /*color: white*/
 }
 
 .info {

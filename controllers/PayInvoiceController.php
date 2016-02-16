@@ -18,8 +18,7 @@ class PayInvoiceController extends Controller {
 		} else {
 			switch ($case) {
 				case ('pay'): {
-					$paymentStatus = $bitcoinPay->returnPaymentStatus($paymentId);
-					$result = $bitcoinPay->requestPayment($paymentId, $paymentStatus, $this->language);
+					$result = $bitcoinPay->requestPaymentStatus($paymentId, $this->language);
 					
 					switch ($result['paymentType']) {
 						case ('new'):
@@ -30,7 +29,7 @@ class PayInvoiceController extends Controller {
 							break;
 						
 						case ('old'):
-							//redirect to old payment (pending, refund etc.)
+							//redirect to old payment (pending, need refund etc.)
 							$data = $result['data'];
 							$this->redirectOut($data['payment_url']);
 							break;

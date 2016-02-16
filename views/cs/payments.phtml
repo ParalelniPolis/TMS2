@@ -12,6 +12,7 @@
 		<td>Status faktury</td>
 		<td>Zaplatit</td>
 		<td>Link na stažení faktury</td>
+		<?php if ($admin): ?><td>Rušení faktur</td><?php endif ?>
 	</tr>
 	<?php foreach ($payments as $p): ?>
 		<tr>
@@ -32,23 +33,30 @@
 			</td>
 			<td>
 				<a href="<?= ROOT ?>/cs/InvoicePdf/<?= $p['invoice_fakturoid_id'] ?>" target="_blank">
-					<button>PDF faktura</button>
+					<button>ukázat PDF</button>
 				</a>
 			</td>
+			<?php if ($admin): ?>
+				<td>
+					<a href="<?= ROOT ?>/cs/DeleteInvoice/<?= $p['id_payment'] ?>">
+						<button>Zrušit fakturu!</button>
+					</a>
+				</td>
+			<?php endif ?>
 		</tr>
 		<?php foreach ($p['extras'] as $e): ?>
 			<tr>
 				<td class="right">
 					<?php if ($admin): ?>
 						<a href="<?= ROOT ?>/cs/extras/delete/<?= $e['id_extra'] ?>">
-							<button>Zrušit</button>
+							<button>Smazat!</button>
 						</a>
 					<?php endif; ?>
 				</td>
 				<td>
 					+ <?= $e['priceBTC'] * 1000 ?> mBTC
 				</td>
-				<td colspan="3">
+				<td colspan="4">
 					<?= $e['description'] ?>
 				</td>
 			</tr>
