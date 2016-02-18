@@ -31,7 +31,16 @@ class ChangePersonalsController extends Controller {
 				$result = $changePersonals->validateData($data);
 
 				if ($result['s'] == 'success') {
-					$result = $changePersonals->changePersonalData($data, $userId);
+					$fakturoid = new FakturoidWrapper();
+					//add fakturoid_id into data
+					$data['fakturoid_id'] = $fakturoid->getFakturoidIdFromUserId($userId);
+					if ($fakturoid->updateCustomer($data) == false) {
+						$result = ['s' => 'error', 
+							'cs' => 'Bohužel se nepovedlo uložit data do Faktuoidu; zkus to prosím za pár minut', 
+							'en' => 'Sorry, we didn\'n safe your data into Fakturoid; try it again after a couple of minutes please'];
+					} else {
+						$result = $changePersonals->changePersonalData($data, $userId);
+					}
 				}
 				$this->messages[] = $result;
 			}

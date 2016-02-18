@@ -3,16 +3,51 @@
 class FakturoidWrapper extends Model {
 	
 	private $fakturoid;
-	private $subjectId;
 	
 	public function __construct() {
 		$this->fakturoid = new Fakturoid(FAKTUROID_SLUG, FAKTUROID_EMAIL, FAKTUROID_API_KEY, FAKTUROID_USER_AGENT);
-		$this->subjectId = FAKTUROID_SUBJECT_ID;
+	}
+	
+	public function createCustomer($user) {
+		try {
+			$data = ['name' => $user['firstname'].' '.$user['surname'], 
+				'registration_no' => $user['ic'],
+				'street' => $user['address']];
+			$customer = $this->fakturoid->create_subject($data);
+			return $customer;
+		} catch (FakturoidException $e) {
+			$code = $e->getCode();
+			$message = $e->getMessage();
+			$this->newTicket('error', 'Fakturoid', 'code: '.$code.', message: '.$message);
+			$_SESSION['messages'][] = ['s' => 'error',
+				'cs' => 'Nastal problém v komunikaci se serverem fakturoid.cz. Zkuste to prosím znovu za pár minut',
+				'en' => 'We encoured a problem in communication on fakturoid.cz. Please try it again after a few minutes'];
+			return false;
+		}
+	}
+	
+	public function updateCustomer($user) {
+		try {
+			$data = ['name' => $user['firstname'].' '.$user['surname'],
+				'registration_no' => $user['ic'],
+				'street' => $user['address']];
+			$id = $user['fakturoid_id'];
+			$result = $this->fakturoid->update_subject($id, $data);
+			return $result;
+		} catch (FakturoidException $e) {
+			$code = $e->getCode();
+			$message = $e->getMessage();
+			$this->newTicket('error', 'Fakturoid', 'code: '.$code.', message: '.$message);
+			$_SESSION['messages'][] = ['s' => 'error',
+				'cs' => 'Nastal problém v komunikaci se serverem fakturoid.cz. Zkuste to prosím znovu za pár minut',
+				'en' => 'We encoured a problem in communication on fakturoid.cz. Please try it again after a few minutes'];
+			return false;
+		}
 	}
 	
 	public function createInvoice($user, $price, $tariffName, $issuedDate, $lang) {
 		try {
-			$this->fakturoid->update_subject($this->subjectId, ['id' => $this->subjectId,
+			$this->fakturoid->update_subject($user['fakturoid_id'], ['id' => $user['fakturoid_id'],
 				'name' => $user['first_name'].' '.$user['last_name'],
 				'email' => $user['email'],
 				'registration_no' => $user['ic'],
@@ -25,11 +60,12 @@ class FakturoidWrapper extends Model {
 			$lines = [['name' => $tariffLine,
 				'quantity' => 1,
 				'unit_price' => $price]];
-			$invoice = $this->fakturoid->create_invoice(['subject_id' => $this->subjectId,
+			$invoice = $this->fakturoid->create_invoice(['subject_id' => $user['fakturoid_id'],
 				'issued_on' => $issuedDate,
 				'currency' => 'CZK',
 				'lines' => $lines]);
-			$this->fakturoid->fire_invoice($invoice->id, 'deliver');
+			//deliver the invoice
+			//$this->fakturoid->fire_invoice($invoice->id, 'deliver');
 			return $invoice;
 		} catch (FakturoidException $e) {
 			$code = $e->getCode();
@@ -111,4 +147,7 @@ class FakturoidWrapper extends Model {
 			WHERE `id_extra` = ?', [$extraId]);
 	}
 	
+	public function getFakturoidIdFromUserId($userId) {
+		return Db::querySingleOne('SELECT `fakturoid_id` FROM `users` WHERE `id_user` = ?', [$userId]);
+	}
 }

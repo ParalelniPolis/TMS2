@@ -2,7 +2,7 @@
 
 class Payments extends Model {
 	public function getUserData($userId) {
-		$user = Db::queryOne('SELECT `id_user`,`first_name`,`last_name`,`telephone`,`address`,`ic`,`active`,`email`,`name`,`tariffCZE`,`tariffENG`,`invoicing_start_date`
+		$user = Db::queryOne('SELECT `id_user`,`fakturoid_id`,`first_name`,`last_name`,`telephone`,`address`,`ic`,`active`,`email`,`name`,`tariffCZE`,`tariffENG`,`invoicing_start_date`
                               FROM `users`
                               JOIN `tariffs` ON `tariffs`.`id_tariff` = `users`.`user_tariff`
                               JOIN `places` ON `places`.`id` = `tariffs`.`place_id`

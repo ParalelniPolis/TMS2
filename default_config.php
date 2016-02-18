@@ -34,10 +34,10 @@ define('DB_LOGIN_PROD', 'your_login');
 define('DB_PASSWORD_PROD', 'your_password');
 define('DB_DATABASE_PROD', 'your_database');
 
-//settings for BitcoinPay
+//settings for BitcoinPay.com
 define('BITCOINPAY_TOKEN', 'your_bitcoinpay_token');
 
-//settings for Fakturoid
+//settings for Fakturoid.cz
 define('FAKTUROID_SLUG', 'your_slug'); //in Fakturoid know also as old subdomain
 define('FAKTUROID_EMAIL', 'your_fakturoid_email');
 define('FAKTUROID_API_KEY', 'your_api_key');

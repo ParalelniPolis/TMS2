@@ -67,12 +67,13 @@ class Registration extends Model {
 			$data['startDate'],
 			$data['telephone'],
 			$data['address'],
-			$data['ic']
+			$data['ic'],
+			$data['fakturoid_id']
 		];
 
 		//insert user into DB
-		if (!Db::queryModify('INSERT INTO `users` (`first_name`,`last_name`,`user_tariff`,`active`,`email`,`password`,`salt`,`invoicing_start_date`,`telephone`,`address`,`ic`)
-                              VALUES (?,?,?,0,?,?,?,?,?,?,?)', $databaseData)
+		if (!Db::queryModify('INSERT INTO `users` (`first_name`,`last_name`,`user_tariff`,`active`,`email`,`password`,`salt`,`invoicing_start_date`,`telephone`,`address`,`ic`,`fakturoid_id`)
+                              VALUES (?,?,?,0,?,?,?,?,?,?,?,?)', $databaseData)
 		) return ['s' => 'error',
 			'cs' => 'Nepovedlo se zapsat do databáze. Zkuste to prosím později',
 			'en' => 'We failed at wrinting into database. Please try this later'];

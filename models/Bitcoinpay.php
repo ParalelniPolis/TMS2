@@ -212,10 +212,18 @@ class Bitcoinpay extends Model {
 	}
 	
 	private function getPaymentData($paymentId) {
-		return Db::queryOne('SELECT `id_payer`,`email`,`priceCZK`,`invoice_fakturoid_number` FROM `payments`
-                             JOIN `users` ON `users`.`id_user` = `payments`.`id_payer`
-                             JOIN `tariffs` ON `users`.`user_tariff` = `tariffs`.`id_tariff`
-                             WHERE `id_payment` = ?', [$paymentId]);
+		$payment = Db::queryOne('SELECT `id_payer`,`email`,`priceCZK`,`invoice_fakturoid_number` FROM `payments`
+			JOIN `users` ON `users`.`id_user` = `payments`.`id_payer`
+			JOIN `tariffs` ON `users`.`user_tariff` = `tariffs`.`id_tariff`
+			WHERE `id_payment` = ?', [$paymentId]);
+		
+		//add sum of all extras
+		$extras = Db::queryAll('SELECT `priceCZK` FROM `extras` WHERE `payment_id` = ?', [$paymentId]);
+		$extrasSum = 0;
+		foreach($extras as $e) $extrasSum += $e['priceCZK'];
+		$payment['priceCZK'] += $extrasSum;
+		
+		return $payment;
 	}
 	
 	public function getPaymentUserId($paymentId) {

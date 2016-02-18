@@ -23,7 +23,17 @@ class RegistrationController extends Controller {
 
 			$result = $registration->validateData($data);
 			if ($result['s'] == 'success') {
-				$result = $registration->registerUser($data, $this->language);
+				$fakturoid = new FakturoidWrapper();
+				$newCustomer = $fakturoid->createCustomer($data);
+				if ($newCustomer == false) {
+					$result = ['s' => 'error',
+						'cs' => 'Bohužel se nepovedlo uložit data do Faktuoidu; zkus to prosím za pár minut',
+						'en' => 'Sorry, we didn\'n safe your data into Fakturoid; try it again after a couple of minutes please'];
+				} else {
+					//add fakturoid_id into data structure
+					$data['fakturoid_id'] = $newCustomer->id;
+					$result = $registration->registerUser($data, $this->language);
+				}
 			}
 
 			$this->messages[] = $result;

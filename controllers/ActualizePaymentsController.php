@@ -10,7 +10,7 @@ class ActualizePaymentsController extends Controller {
 		foreach ($userIds as $uId) {
 			$data = $payments->getUserData($uId);
 			//create new payments
-			$payments->makeNewPayments($data['user'], $data['tariff'], $this->language);
+			$payments->makeNewPayments($data['user'], $data['tariff'], $data['fakturoid_id'], $this->language);
 			//actualize old payments
 			$payments->actualizePayments($data['payments']);
 			
