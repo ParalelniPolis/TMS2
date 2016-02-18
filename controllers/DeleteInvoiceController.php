@@ -13,6 +13,9 @@ class DeleteInvoiceController extends Controller {
 			$this->redirect('error');
 		}
 		
+		$fakturoid = new FakturoidWrapper();
+		$paymentFakturoidId = $fakturoid->getFakturoidInvoiceIdFromPaymentId($paymentId);
+		$fakturoid->cancelInvoice($paymentFakturoidId);
 		$result = $bitcoinPay->deletePayment($paymentId);
 		$this->messages[] = $result;
 		

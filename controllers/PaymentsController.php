@@ -22,7 +22,7 @@ class PaymentsController extends Controller {
 
 		//get new data for user view
 		$data = $payments->getUserData($userId);
-		$data['payments'] = $payments->cleanupUserPayments($data['payments'], $this->language);
+		$data['payments'] = $payments->enhanceUserPayments($data['payments'], $this->language);
 		
 		//display non-active user
 		if (!$data['user']['active']) $this->messages[] = ['s' => 'info',

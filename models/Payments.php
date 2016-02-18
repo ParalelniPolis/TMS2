@@ -25,7 +25,7 @@ class Payments extends Model {
 			'payments' => $payments];
 	}
 	
-	public function cleanupUserPayments($payments, $lang) {
+	public function enhanceUserPayments($payments, $lang) {
 		foreach ($payments as &$p) {
 			//translation for statuses
 			$p['status'] = $this->translatePaymentStatus($p['status'], $lang);
@@ -127,7 +127,7 @@ class Payments extends Model {
 		$tariffName = $this->getTariffName($tariffId, $lang);
 		$priceCZK = $tariff['priceCZK'];
 		$fakturoid = new FakturoidWrapper();
-		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate);
+		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate, $lang);
 		if (!$fakturoidInvoice) return ['s' => 'error',
 			'cs' => 'Nepovedlo se spojení s fakturoid.cz. Zkuste to prosím za pár minut',
 			'en' => 'We cannot connect into fakturoid.cz. Try it again in a few minutes please'];
