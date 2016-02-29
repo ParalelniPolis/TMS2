@@ -5,7 +5,7 @@ class ChangePersonalsController extends Controller {
 	function process($parameters) {
 		$changePersonals = new ChangePersonals();
 		if (!$changePersonals->checkLogin()) $this->redirect('error');
-		//if empty parameter, add there current user
+		//if empty parameter, add the current user
 		if (isset($parameters[0])) $userId = $parameters[0]; else $userId = $_SESSION['id_user'];
 
 		//if not admin of the right place, throw error
@@ -26,7 +26,7 @@ class ChangePersonalsController extends Controller {
 			if (!Csrf::validateCsrfRequest($data['csrf'])) {
 				$this->messages[] = ['s' => 'error',
 					'cs' => 'Možný CSRF útok! Zkuste prosím změnit údaje znovu',
-					'en' => 'Possible CSRF attack! Please try change your personals again'];
+					'en' => 'Possible CSRF attack! Please try to change your personals again'];
 			} else {
 				$result = $changePersonals->validateData($data);
 
@@ -52,7 +52,7 @@ class ChangePersonalsController extends Controller {
 		$this->data['csrf'] = Csrf::getCsrfToken();
 		$this->header['title'] = [
 			'cs' => 'Změna osobních údajů',
-			'en' => 'Change Personal info'];
+			'en' => 'Change personal information'];
 		$this->view = 'changePersonals';
 	}
 }

@@ -13,17 +13,17 @@ abstract class Controller {
 		$this->language = $language;
 	}
 
-	//render the view with all extracted data with theid own keys
+	//render the view with all extracted data with their own keys
 	public function render() {
 		if (!empty($this->view)) {
 			extract($this->data);
 			require('views/'.$this->language.'/'.$this->view.'.phtml');
-		} else echo('Cannot find desired view :(');
+		} else echo('Unable to find desired view :(');
 	}
 
 	//redirection
 	public function redirect($url) {
-		//safe all previouses messages for next page
+		//safe all previous messages for next page
 		if (!empty($_SESSION['messages']))
 			$_SESSION['messages'] = array_merge($_SESSION['messages'], $this->messages);
 		else

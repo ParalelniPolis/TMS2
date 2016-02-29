@@ -12,7 +12,7 @@ class Activation extends Model {
 		if ($result[0] == null) {
 			return ['s' => 'error',
 				'cs' => 'Aktivační klíč není nalezen v databázi',
-				'en' => 'Activation key is not in our database'];
+				'en' => 'The activation key is not found in the database'];
 		}
 		return ['s' => 'success', 'email' => $result['email']];
 	}
@@ -23,7 +23,7 @@ class Activation extends Model {
 							  WHERE `email` = ?', [$tariffId, $startDate, $email])
 		) return ['s' => 'error',
 			'cs' => 'Nepovedlo se zapsat do databáze; zkuste to prosím za pár minut znovu',
-			'en' => 'Can\'t access database right now; please try it again later'];
+			'en' => 'Can\'t access database right now; please try again later'];
 		else return $this->activateUser($email);
 	}
 	
@@ -32,13 +32,13 @@ class Activation extends Model {
                               WHERE `email` = ?', [0, $email])
 		) return ['s' => 'error',
 			'cs' => 'Nepovedlo se zapsat do databáze; zkuste to prosím za pár minut znovu',
-			'en' => 'Can\'t access database right now; please try it again later'];
+			'en' => 'Can\'t access database right now; please try again later'];
 		
 		if (!Db::queryModify('UPDATE `users` SET `active` = ?
                               WHERE `email` = ?', [1, $email])
 		) return ['s' => 'error',
 			'cs' => 'Nepovedlo se zapsat do databáze; zkuste to prosím za pár minut znovu',
-			'en' => 'Can\'t access database right now; please try it again later'];
+			'en' => 'Can\'t access database right now; please try again later'];
 		
 		return ['s' => 'success',
 			'cs' => 'Uživatel '.$email.' úspěšně aktivován',
@@ -51,7 +51,7 @@ class Activation extends Model {
 		) {
 			return ['s' => 'error',
 				'cs' => 'Nepovedlo se zapsat do databáze; zkuste to prosím za pár minut znovu',
-				'en' => 'Can\'t access database right now; please try it again later'];
+				'en' => 'Can\'t access database right now; please try again later'];
 		}
 		return ['s' => 'info',
 			'cs' => 'Uživatel '.$email.' úspěšně deaktivován',
@@ -69,6 +69,6 @@ class Activation extends Model {
 		if ($result) return ['s' => 'success'];
 		else return ['s' => 'error',
 			'cs' => 'Špatně jsme zachytili vybraný tarif',
-			'en' => 'We didn\'t recognize your choosed tariff'];
+			'en' => 'We didn\'t recognize your selected tariff'];
 	}
 }

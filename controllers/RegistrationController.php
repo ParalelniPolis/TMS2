@@ -43,7 +43,7 @@ class RegistrationController extends Controller {
 
 		$this->header['title'] = [
 			'cs' => 'Registrace nového uživatele',
-			'en' => 'Registration of new user'];
+			'en' => 'New user registration'];
 		$this->data['tariffs'] = $registration->returnTariffsData($this->language);
 		$this->view = 'registration';
 	}

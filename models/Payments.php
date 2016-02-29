@@ -65,7 +65,7 @@ class Payments extends Model {
 				if (empty($data)) {
 					$messages[] = ['s' => 'info',
 						'cs' => 'Nepovedlo se nám spojit se se serverem bitcoinpay.com - některé platby můžou být neaktualizované',
-						'en' => 'We failed at connection with bitcoinpay.com - some payments can be outdated'];
+						'en' => 'We failed at connecting with bitcoinpay.com - some payments may be outdated'];
 					break;
 				}
 			}
@@ -130,7 +130,7 @@ class Payments extends Model {
 		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate, $lang);
 		if (!$fakturoidInvoice) return ['s' => 'error',
 			'cs' => 'Nepovedlo se spojení s fakturoid.cz. Zkuste to prosím za pár minut',
-			'en' => 'We cannot connect into fakturoid.cz. Try it again in a few minutes please'];
+			'en' => 'We are unable to connect to fakturoid.cz. Try again in a few minutes']; 
 		$fakturoidInvoiceId = $fakturoidInvoice->id;
 		$fakturoidInvoiceNumber = $fakturoidInvoice->number;
 		Db::queryModify('

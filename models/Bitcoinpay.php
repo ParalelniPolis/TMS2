@@ -11,7 +11,7 @@ class Bitcoinpay extends Model {
 				//all is shiny
 				$result = ['s' => 'info',
 					'cs' => 'Faktura již byla zaplacena',
-					'en' => 'Invoice is already payed'];
+					'en' => 'Invoice has already payed'];
 				break;
 			
 			case ('pending'):
@@ -44,7 +44,7 @@ class Bitcoinpay extends Model {
 				$this->newTicket('error', 'Payments->actualizePayments', 'unexpected return value (invalid or case missing');
 				$result = ['s' => 'error',
 					'cs' => 'Pardon, dostali jsme neočekávanou hodnotu z platebního serveru. Zkuste to prosím znovu za pár minut',
-					'en' => 'Sorry, we get unexpexted value from payment server. Please try it again after a couple of minutes'];
+					'en' => 'Sorry, we got an unexpected value of the payment server . Please try again in a few minutes'];
 				break;
 		}
 		return $result;
@@ -166,7 +166,7 @@ class Bitcoinpay extends Model {
 			case 'insufficient_amount': {
 				$r = ['s' => 'error',
 					'cs' => 'Poslána menší částka než je vyžadováno',
-					'en' => 'Sent smaller amount than we expected'];
+					'en' => 'Sent a smaller amount than required'];
 				break;
 			}
 			case 'invalid': {

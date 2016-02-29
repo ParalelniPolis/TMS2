@@ -20,7 +20,7 @@ class LoginController extends Controller {
 			$result = $login->tryLogin($data, $this->language);
 			if ($result['s'] == 'success') $this->redirect('payments');
 			else $this->messages[] = $result;
-			$this->data = $data; //for autofilling imputs from previous page
+			$this->data = $data; //for autofilling inputs from previous page
 		}
 
 		$this->header['title'] = [

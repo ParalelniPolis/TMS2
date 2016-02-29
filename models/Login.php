@@ -10,7 +10,7 @@ class Login extends Model {
 		//if user doesn't exists
 		if ($attempt == null) return ['s' => 'error',
 			'cs' => 'Bohužel, uživatel není v databázi. <br/><a href="'.ROOT.'/cs/registration">Nechceš se registrovat?</a>',
-			'en' => 'Sorry, this user is not in our database. <br/><a href="'.ROOT.'/en/registration">Maybe you want to register instead?</a>'];
+			'en' => 'Sorry, this user does not exist in our database. <br/><a href="'.ROOT.'/en/registration">Maybe you want to register instead?</a>'];
 
 		//account is not locked
 		if ($this->checkBrute($data['login']) == false) {
@@ -21,7 +21,7 @@ class Login extends Model {
                                  VALUES (?, 0, NOW())', [$data['login']]);
 				return ['s' => 'error',
 					'cs' => 'Bohužel, heslo není správně. <br/><a href="'.ROOT.'/cs/GetLinkForNewPassword">Nepotřebuješ si nechat zaslat nové?</a>',
-					'en' => 'Sorry, password is not correct. <br/><a href="'.ROOT.'/en/GetLinkForNewPassword">Don\'t you need a new one?</a>'];
+					'en' => 'Sorry, Incorrect password. <br/><a href="'.ROOT.'/en/GetLinkForNewPassword">Don\'t you need a new one?</a>'];
 				//corrent both login and password - success!
 			} else {
 				//store information about newly logged user
@@ -45,7 +45,7 @@ class Login extends Model {
 			//when email has been already sent
 			if ($unlockMailCheck[0] != null) return ['s' => 'error',
 				'cs' => 'Už byl poslán mail s odblokováním - jestli nedorazil, konktatuj prosím správce.',
-				'en' => 'Mail with unblock was already sent - if you did\'t recieve anything, please contact our webmaster'];
+				'en' => 'Mail with unblock was already sent - if you did\'t recieve anything, please contact the webmaster'];
 			//wirte into DB about unblocking key...
 			$randomHash = $this->getRandomHash();
 			Db::queryModify('INSERT INTO `restart_brutforce` (`validation_string`, `email`, `active`, `timestamp`)
@@ -54,7 +54,7 @@ class Login extends Model {
 			$activeLink = ROOT.'/'.$language.'/unlockBrutforce/'.$randomHash;
 			$subject = [
 				'cs' => NAME.' Paralelní polis - příliš neúspěšných přihlášení',
-				'en' => NAME.' Paralell polis - too many login attemps'];
+				'en' => NAME.' Paralelni polis - login attemps exceeded'];
 			$message = [
 				'cs' => 'Ahoj! <br/>
 <br/>
@@ -67,20 +67,20 @@ Kliknutí na tento link ti odemkne dalších pět pokusů: <a href="'.$activeLin
 <br/>
 Someone has tried to log in from this email more than '.BRUTEFORCE_NUMBER_OF_ATTEMPTS.' times into'.NAME.' from Paralell polis.<br/>
 <br/>
-<a href="'.ROOT.'/en/contact">If it wasn\'t you, you should contact the webmaster.</a><br/>
+<a href="'.ROOT.'/en/contact">If this wasn\'t you, you should immediately contact the webmaster.</a><br/>
 <br/>
 Clicking on this link will unlock '.BRUTEFORCE_NUMBER_OF_ATTEMPTS.' more tries: <a href="'.$activeLink.'">'.$activeLink.'</a><br/>'
 			];
 			$this->sendEmail(EMAIL, $data['login'], $subject[$language], $message[$language]);
 
-			$dataForTicket = ['sentUnlockBruteforce', $data['login'], 'mail with unlocking link is sent'];
+			$dataForTicket = ['sentUnlockBruteforce', $data['login'], 'email with unlocking link is sent'];
 			Db::queryModify('INSERT INTO `tickets` (`type`, `title`, `message`, `timestamp`)
                              VALUES (?,?,?, NOW())', $dataForTicket);
 			return ['s' => 'error',
 				'cs' => 'Zkusil jsi se přihlásit '.BRUTEFORCE_NUMBER_OF_ATTEMPTS.'krát za sebou.<br/>
                     Počkej '.round(BRUTEFORCE_LOCKED_TIME / 60).' minut nebo klikni v emailu na odemykací link, který jsme ti teď poslali',
 				'en' => 'You\'ve tried to login '.BRUTEFORCE_NUMBER_OF_ATTEMPTS.' times.<br/>
-                    Wait '.round(BRUTEFORCE_LOCKED_TIME / 60).' minutes or click on the link to unlock, which we have sent you on mail just now'];
+                    Wait '.round(BRUTEFORCE_LOCKED_TIME / 60).' minutes or click on the link to unlock, which has been sent to your email address'];
 		}
 	}
 

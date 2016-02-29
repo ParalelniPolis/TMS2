@@ -9,14 +9,14 @@ class RestartPasswordByLink extends Model {
 		//link is not in database
 		if ($link[0] == null) return ['s' => 'error',
 			'cs' => 'Link pro validaci není v databázi',
-			'en' => 'Link for validation is not in our database'];
+			'en' => 'Link validation is not in the database'];
 
 		$timeOfAttempt = date("Y-m-d H:i:s", time() - CHANGE_PASS_TIME_VALIDITY);
 		$restart = Db::queryOne('SELECT `timestamp` FROM `restart_password`
                                  WHERE `validation_string` = ? && `active` = ?', [$validationLink, 1]);
 		if ($restart[0] == null) return ['s' => 'error',
 			'cs' => 'Link už byl použit. <a href"'.ROOT.'/cs/GetLinkForNewPassword">Získat nový link pro změnu hesla?</a>',
-			'en' => 'Link is already used. <a href"'.ROOT.'/en/GetLinkForNewPassword">Get a new restart password link?</a>'];
+			'en' => 'Link has already been used. <a href"'.ROOT.'/en/GetLinkForNewPassword">Get a new restart password link?</a>'];
 		if ($restart['timestamp'] < $timeOfAttempt) return ['s' => 'error',
 			'cs' => 'Vypršela časová platnost linku. <a href"'.ROOT.'/cs/GetLinkForNewPassword">Získat nový link pro změnu hesla?</a>',
 			'en' => 'Link is timed up. <a href"'.ROOT.'/en/GetLinkForNewPassword">Get a new restart password link?</a>'];
@@ -43,7 +43,7 @@ class RestartPasswordByLink extends Model {
 			$this->newTicket('problem', $link, 'hash ve funkci zkontrolovatFormular nemá delku 128 znaků - link: '.$link.' a možná přihlášený uživatel: '.$_SESSION['username']);
 			return ['s' => 'error',
 				'cs' => 'Stalo se něco divného v hashování hesla. Prosím zkuste to znovu',
-				'en' => 'Something wierd happend in password hashing. Please try it again'];
+				'en' => 'An error has occurred in hashing passwords . Please try again'];
 		}
 
 		$randomSalt = $this->getRandomHash();

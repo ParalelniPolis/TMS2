@@ -8,7 +8,7 @@ class PayInvoiceController extends Controller {
 		$paymentId = false;
 		if (is_numeric($parameters[1])) $paymentId = $parameters[1]; else $this->redirect('error');
 		
-		//allow pay only for payment's user 
+		//finds out if that payment belongs to logged user. If not, redirect to error
 		$paymentUserId = $bitcoinPay->getPaymentUserId($paymentId);
 		if ($paymentUserId != $_SESSION['id_user']) {
 			$bitcoinPay->newTicket('warning', 'payInvoiceController->user mischmasch violence', 'logged user: '.$_SESSION['id_user'].' is trying something with payment of user id: '.$paymentUserId);
@@ -29,7 +29,7 @@ class PayInvoiceController extends Controller {
 							break;
 						
 						case ('old'):
-							//redirect to old payment (pending, need refund etc.)
+						//redirect to old payment (pending, refund etc.)
 							$data = $result['data'];
 							$this->redirectOut($data['payment_url']);
 							break;
@@ -72,7 +72,7 @@ class PayInvoiceController extends Controller {
 					if (empty($data)) {
 						$this->messages[] = ['s' => 'error',
 							'cs' => 'Pardon, nepovedlo se spojení s platebním serverem bitcoinpay.com - zkuste to prosím za pár minut',
-							'en' => 'Sorry, we cannot connect payment server bitcoinpay.com - try it again after couple of minutes'];
+						'en' => 'Sorry, could not make the connection with the payment server bitcoinpay.com - please try again in a few minutes'];
 					} else {
 						//update payment info and show result message
 						$bitcoinPay->updatePayment($paymentId, $data);

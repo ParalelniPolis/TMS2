@@ -35,7 +35,7 @@
 			<td class="right"><label for="tariff">Place and tariff: </label></td>
 			<td class="left">
 				<select name="tariff" id="tariff">
-					<option value="X" selected="selected">Choose place and tariff...</option><?php
+					<option value="X" selected="selected">Select place and tariff...</option><?php
 					foreach ($tariffs as $tariff): ?>
 						<option value="<?= $tariff['id_tariff'] ?>"><?= $tariff['name'] ?>:
 							<?= $tariff['tariffENG'] ?> for <?= $tariff['priceCZK'] ?> CZK
