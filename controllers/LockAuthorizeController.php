@@ -5,17 +5,17 @@ class LockAuthorizeController extends Controller {
 	public function process($parameters) {
 		$locks = new Locks();
 		
-		$lockId = $locks->sanitize($parameters[0]);
+		$lockName = $locks->sanitize($parameters[0]);
 		$key = $locks->sanitize($parameters[1]);
 		
-		if (empty($key) || empty($lockId)) $result = false;
+		if (empty($key) || empty($lockName)) $result = false;
 		else {
-			$result = $locks->isKeyValid($key, $lockId);
+			$result = $locks->isKeyValid($key, $lockName);
 			//store only unsuccessfull attempts for later assigmnents
-			if ($result == false) $locks->storeKeyInDb($key, $lockId);
+			if ($result == false) $locks->storeKeyInDb($key, $lockName);
 		}
 		
-		$locks->sendResponse($result, $lockId);
+		$locks->sendResponse($result, $lockName);
 		//stop rendering
 		die();
 	}
