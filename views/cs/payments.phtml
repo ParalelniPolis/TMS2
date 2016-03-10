@@ -17,8 +17,8 @@
 	<?php foreach ($payments as $p): ?>
 		<tr>
 			<td>
-				<?= date("j. n. Y", strtotime($p['payment_first_date'])) ?>
-				až <?= date("j. n. Y", strtotime($p['payment_first_date']."+1 month -1 day")) ?>
+				<?= date("j/n y", strtotime($p['payment_first_date'])) ?>
+				až <?= date("j/n y", strtotime($p['payment_first_date']."+1 month -1 day")) ?>
 			</td>
 			<td>
 				<?= $p['payed_price_BTC'] * 1000 ?> mBTC
@@ -69,7 +69,7 @@
 				<td colspan="5">
 					<form method="POST" action="<?= ROOT ?>/cs/extras/add">
 						<input type="hidden" name="paymentId" value="<?= $p['id_payment'] ?>">
-						<input id="price" name="price" type="number">
+						<input id="price" name="price" type="number" step="any">
 						<label for="description">Popis: </label>
 						<input id="description" name="description" type="text">
 						<button type="submit">Přidat</button>

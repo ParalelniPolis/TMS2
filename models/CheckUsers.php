@@ -33,7 +33,7 @@ class CheckUsers extends Model {
 		else $r = $dateStart;  
 		
 		if (empty($r)) return 'unknown+error!';
-		return date('d/m Y', strtotime($r));
+		return date('d/m y', strtotime($r));
 	}
 
 	private function getPaymentFlag($userId) {
