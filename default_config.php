@@ -22,6 +22,9 @@ define('CHANGE_PASS_TIME_VALIDITY', 1800); //in seconds; time how long will be l
 define('TOLERANCE_TIME_ON_SENDING_REMINDING_EMAILS', 7); //in days
 define('ALLOW_MAKE_ADMIN', false); //default false - true is INSECURE!
 
+//settings for locks
+define('MASTER_LOCK_PASS', 'your_master_password');
+
 //settings for localhost database
 define('DB_SERVER_LOCAL', 'localhost');
 define('DB_LOGIN_LOCAL', 'root');

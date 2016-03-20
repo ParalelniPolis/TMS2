@@ -15,11 +15,11 @@ class RestartPasswordByLink extends Model {
 		$restart = Db::queryOne('SELECT `timestamp` FROM `restart_password`
                                  WHERE `validation_string` = ? && `active` = ?', [$validationLink, 1]);
 		if ($restart[0] == null) return ['s' => 'error',
-			'cs' => 'Link už byl použit. <a href"'.ROOT.'/cs/GetLinkForNewPassword">Získat nový link pro změnu hesla?</a>',
-			'en' => 'Link has already been used. <a href"'.ROOT.'/en/GetLinkForNewPassword">Get a new restart password link?</a>'];
+			'cs' => 'Link už byl použit. <a href="'.ROOT.'/cs/GetLinkForNewPassword">Získat nový link pro změnu hesla?</a>',
+			'en' => 'Link has already been used. <a href="'.ROOT.'/en/GetLinkForNewPassword">Get a new restart password link?</a>'];
 		if ($restart['timestamp'] < $timeOfAttempt) return ['s' => 'error',
-			'cs' => 'Vypršela časová platnost linku. <a href"'.ROOT.'/cs/GetLinkForNewPassword">Získat nový link pro změnu hesla?</a>',
-			'en' => 'Link is timed up. <a href"'.ROOT.'/en/GetLinkForNewPassword">Get a new restart password link?</a>'];
+			'cs' => 'Vypršela časová platnost linku. <a href="'.ROOT.'/cs/GetLinkForNewPassword">Získat nový link pro změnu hesla?</a>',
+			'en' => 'Link is timed up. <a href="'.ROOT.'/en/GetLinkForNewPassword">Get a new restart password link?</a>'];
 		return ['success'];
 	}
 
