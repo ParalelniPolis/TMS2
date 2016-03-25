@@ -6,7 +6,7 @@
                 <label for="email">Email - bude použit jako login: </label>
             </td>
             <td class="left">
-                <input type="email" name="email" id="email" value="<?php if (!empty($email)) echo($email); ?>" />
+                <input type="email" name="email" id="email" value="<?php if (!empty($email)) echo($email); ?>" required autocomplete="email">
             </td>
         </tr>
         <tr>
@@ -14,7 +14,7 @@
                 <label for="firstname">Jméno: </label>
             </td>
             <td class="left">
-                <input type="text" name="firstname" id="firstname" value="<?php if (!empty($firstname)) echo($firstname); ?>" />
+                <input type="text" name="firstname" id="firstname" value="<?php if (!empty($firstname)) echo($firstname); ?>" required autocomplete="given-name">
             </td>
         </tr>
         <tr>
@@ -22,7 +22,7 @@
                 <label for="surname">Příjmení: </label>
             </td>
             <td class="left">
-                <input type="text" name="surname" id="surname" value="<?php if (!empty($surname)) echo($surname); ?>" />
+                <input type="text" name="surname" id="surname" value="<?php if (!empty($surname)) echo($surname); ?>" required autocomplete="family-name">
             </td>
         </tr>
         <tr>
@@ -30,7 +30,7 @@
                 <label for="telephone">Telefon (volitelně pro rychlejší kontakt): </label>
             </td>
             <td class="left">
-                <input type="text" name="telephone" id="telephone" value="<?php if (!empty($telephone)) echo($telephone); ?>" />
+                <input type="tel" name="telephone" id="telephone" value="<?php if (!empty($telephone)) echo($telephone); ?>">
             </td>
         </tr>
         <tr>
@@ -38,7 +38,7 @@
                 <label for="address">Adresa (potřeba pro správnou fakturu): </label>
             </td>
             <td class="left">
-                <input type="text" name="address" id="address" value="<?php if (!empty($address)) echo($address); ?>" />
+                <input type="text" name="address" id="address" value="<?php if (!empty($address)) echo($address); ?>">
             </td>
         </tr>
         <tr>
@@ -46,7 +46,7 @@
                 <label for="ic">IČ (potřeba pro správnou fakturu): </label>
             </td>
             <td class="left">
-                <input type="text" name="ic" id="ic" value="<?php if (!empty($ic)) echo($ic); ?>" />
+                <input type="text" name="ic" id="ic" value="<?php if (!empty($ic)) echo($ic); ?>">
             </td>
         </tr>
         <tr>
@@ -54,8 +54,8 @@
                 <label for="tariff">Místo a tarif: </label>
             </td>
             <td class="left">
-                <select name="tariff" id="tariff">
-                    <option value="X" selected="selected">Vyber místo a tarif...</option>
+                <select name="tariff" id="tariff" required>
+                    <option value="X" selected>Vyber místo a tarif...</option>
                     <?php
 					foreach ($tariffs as $tariff): ?>
                         <option value="<?= $tariff['id_tariff'] ?>">
@@ -81,7 +81,7 @@
                 <label for="password">Heslo (alespoň 6 znaků): </label>
             </td>
             <td class="left">
-                <input type="password" name="password" id="password" />
+                <input type="password" name="password" id="password" required autocomplete="new-password">
             </td>
         </tr>
         <tr>
@@ -89,12 +89,12 @@
                 <label for="passwordComfirm">Potvrzení hesla: </label>
             </td>
             <td class="left">
-                <input type="password" name="passwordComfirm" id="passwordComfirm" />
+                <input type="password" name="passwordComfirm" id="passwordComfirm" required autocomplete="new-password">
             </td>
         </tr>
         <tr>
             <td colspan="2" class="center">
-                <input type="submit" name="sent" value="Registrovat!" onclick="return regformhash(this.form, this.form.password, this.form.passwordComfirm);" />
+                <button type="submit" name="sent" onclick="return regformhash(this.form, this.form.password, this.form.passwordComfirm);" />Registrovat!</button>
             </td>
         </tr>
     </table>
