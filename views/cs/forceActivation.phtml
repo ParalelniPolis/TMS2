@@ -1,30 +1,38 @@
 <h2>Aktivace uživatele</h2>
 <p>Prosím vyber tarif pro aktivaci: </p>
 <form method="POST" action="">
-	<table>
-		<tr>
-			<td class="right"><label for="tariff">Místo a tarif: </label></td>
-			<td class="left">
-				<select name="tariff" id="tariff">
-					<option value="X" selected="selected">Prosím vyber místo a tarif...</option><?php
+    <table>
+        <tr>
+            <td class="right">
+                <label for="tariff">Místo a tarif: </label>
+            </td>
+            <td class="left">
+                <select name="tariff" id="tariff">
+                    <option value="X" selected="selected">Prosím vyber místo a tarif...</option>
+                    <?php
 					foreach ($tariffs as $tariff): ?>
-						<option value="<?= $tariff['id_tariff'] ?>"><?= $tariff['name'] ?>:
-							<?= $tariff['tariffCZE'] ?> za <?= $tariff['priceCZK'] ?> CZK
-						</option>
-					<?php endforeach ?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class="right"><label for="startDate">Datum začátku fakturace: </label></td>
-			<td class="left"><input type="date" id="startDate" name="startDate" value="<?= date('Y-m-d', time()); ?>">
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="center">
-				<input type="hidden" name="csrf" value="<?=$csrf?>">
-				<input type="submit" name="sent" value="Aktivovat!">
-			</td>
-		</tr>
-	</table>
+                        <option value="<?= $tariff['id_tariff'] ?>">
+                            <?= $tariff['name'] ?>:
+                                <?= $tariff['tariffCZE'] ?> za
+                                    <?= $tariff['priceCZK'] ?> CZK
+                        </option>
+                        <?php endforeach ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="startDate">Datum začátku fakturace: </label>
+            </td>
+            <td class="left">
+                <input type="date" id="startDate" name="startDate" value="<?= date('Y-m-d', time()); ?>">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="center">
+                <input type="hidden" name="csrf" value="<?=$csrf?>">
+                <input type="submit" name="sent" value="Aktivovat!">
+            </td>
+        </tr>
+    </table>
 </form>

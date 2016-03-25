@@ -1,36 +1,40 @@
 <!DOCTYPE html>
-<html lang="cs-cz">
+<html lang="cs">
+
 <head>
-	<base href="/localhost"/> <!-- na produkci přepsat natvrdo url-->
-	<meta charset="UTF-8"/>
-	<title><?= $title ?></title>
-	<meta name="description" content="<?= $description ?>"/>
-	<meta name="keywords" content="<?= $keywords ?>"/>
-	<meta name="author" content="Tomáš Klíma"/>
-	<link rel="stylesheet" href="<?= ROOT ?>/style.css" type="text/css"/>
-	<!-- TODO optimalzation - get JS scripts only when needed -->
-	<script type="text/JavaScript" src="<?= ROOT ?>/js/sha512.js"></script>
-	<script type="text/JavaScript" src="<?= ROOT ?>/js/forms.js"></script>
+    <base href="/localhost" />
+    <!-- na produkci přepsat natvrdo url-->
+    <meta charset="UTF-8" />
+    <title>
+        <?= $title ?>
+    </title>
+    <meta name="description" content="<?= $description ?>" />
+    <meta name="keywords" content="<?= $keywords ?>" />
+    <meta name="author" content="Tomáš Klíma" />
+    <link rel="stylesheet" href="<?= ROOT ?>/style.css" type="text/css" />
+    <!-- TODO optimalzation - get JS scripts only when needed -->
+    <script type="text/JavaScript" src="<?= ROOT ?>/js/sha512.js"></script>
+    <script type="text/JavaScript" src="<?= ROOT ?>/js/forms.js"></script>
 </head>
 
 <body>
-<header>
-	<div class="upperRow">
-		<?= $languageSwitch ?>
-		<?= $loginCredentials ?>
-	</div>
-	<h1><?= NAME ?> - Paralelní polis</h1>
-</header>
+    <header>
+        <div class="upperRow">
+            <?= $languageSwitch ?>
+                <?= $loginCredentials ?>
+        </div>
+        <h1><?= NAME ?> - Paralelní polis</h1>
+    </header>
 
-<nav>
-	<ul>
-		<?= $mainMenu ?>
-	</ul>
-</nav>
-<br clear="both"/>
+    <nav>
+        <ul>
+            <?= $mainMenu ?>
+        </ul>
+    </nav>
+    <br clear="both" />
 
-<article>
-	<?php
+    <article>
+        <?php
 	//load all stored (and empty them) and new messages
 	if (!empty($_SESSION['messages'])) {
 		$messages = array_merge($_SESSION['messages'], $messages);
@@ -39,11 +43,14 @@
 	if (!empty($messages)) foreach ($messages as $m) echo('<div class="message '.$m['s'].'">'.$m['cs'].'</div>');
 	$this->controller->render();
 	?>
-</article>
+    </article>
 
-<footer>
-	<p>verze <?= VERSION ?> Tenant Management System pro Paralelní polis by TomK<br/>
-		<a href="<?= ROOT ?>/cs/contact">Něco nefunguje? Napiš správci webu!</a></p>
-</footer>
+    <footer>
+        <p>verze
+            <?= VERSION ?> Tenant Management System pro Paralelní polis by TomK
+                <br/>
+                <a href="<?= ROOT ?>/cs/contact">Něco nefunguje? Napiš správci webu!</a></p>
+    </footer>
 </body>
+
 </html>

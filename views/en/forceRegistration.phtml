@@ -1,59 +1,84 @@
 <h2>Registration of new member</h2>
 <form method="post" action="" name="registrationForm">
-	<table>
-		<tr>
-			<td class="right"><label for="email">Email - will be used as login: </label></td>
-			<td class="left"><input type="email" name="email" id="email"
-									value="<?php if (!empty($email)) echo($email); ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="firstname">First name: </label></td>
-			<td class="left"><input type="text" name="firstname" id="firstname"
-									value="<?php if (!empty($firstname)) echo($firstname); ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="surname">Surname: </label></td>
-			<td class="left"><input type="text" name="surname" id="surname"
-									value="<?php if (!empty($surname)) echo($surname); ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="telephone">Telephone (non-required): </label></td>
-			<td class="left"><input type="text" name="telephone" id="telephone"
-									value="<?php if (!empty($telephone)) echo($telephone); ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="address">Address (non-required): </label></td>
-			<td class="left"><input type="text" name="address" id="address"
-									value="<?php if (!empty($address)) echo($address); ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="ic">IČ/VAT number (non-required): </label></td>
-			<td class="left"><input type="text" name="ic" id="ic"
-									value="<?php if (!empty($ic)) echo($ic); ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="tariff">Place and tariff: </label></td>
-			<td class="left">
-				<select name="tariff" id="tariff">
-					<option value="X" selected="selected">Select place and tariff...</option><?php
+    <table>
+        <tr>
+            <td class="right">
+                <label for="email">Email - will be used as login: </label>
+            </td>
+            <td class="left">
+                <input type="email" name="email" id="email" value="<?php if (!empty($email)) echo($email); ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="firstname">First name: </label>
+            </td>
+            <td class="left">
+                <input type="text" name="firstname" id="firstname" value="<?php if (!empty($firstname)) echo($firstname); ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="surname">Surname: </label>
+            </td>
+            <td class="left">
+                <input type="text" name="surname" id="surname" value="<?php if (!empty($surname)) echo($surname); ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="telephone">Telephone (non-required): </label>
+            </td>
+            <td class="left">
+                <input type="text" name="telephone" id="telephone" value="<?php if (!empty($telephone)) echo($telephone); ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="address">Address (non-required): </label>
+            </td>
+            <td class="left">
+                <input type="text" name="address" id="address" value="<?php if (!empty($address)) echo($address); ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="ic">IČ/VAT number (non-required): </label>
+            </td>
+            <td class="left">
+                <input type="text" name="ic" id="ic" value="<?php if (!empty($ic)) echo($ic); ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="tariff">Place and tariff: </label>
+            </td>
+            <td class="left">
+                <select name="tariff" id="tariff">
+                    <option value="X" selected="selected">Select place and tariff...</option>
+                    <?php
 					foreach ($tariffs as $tariff): ?>
-						<option value="<?= $tariff['id_tariff'] ?>"><?= $tariff['name'] ?>:
-							<?= $tariff['tariffENG'] ?> for <?= $tariff['priceCZK'] ?> CZK
-						</option>
-					<?php endforeach ?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class="right"><label for="startDate">Begin: </label></td>
-			<td class="left"><input type="date" id="startDate" name="startDate" value="<?= date('Y-m-d', time()); ?>">
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="center">
-				<input type="submit" name="sent" value="Register!"
-					   onclick="return regformhash(this.form, this.form.password, this.form.passwordComfirm);"/>
-			</td>
-		</tr>
-	</table>
+                        <option value="<?= $tariff['id_tariff'] ?>">
+                            <?= $tariff['name'] ?>:
+                                <?= $tariff['tariffENG'] ?> for
+                                    <?= $tariff['priceCZK'] ?> CZK
+                        </option>
+                        <?php endforeach ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="startDate">Begin: </label>
+            </td>
+            <td class="left">
+                <input type="date" id="startDate" name="startDate" value="<?= date('Y-m-d', time()); ?>">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="center">
+                <input type="submit" name="sent" value="Register!" onclick="return regformhash(this.form, this.form.password, this.form.passwordComfirm);" />
+            </td>
+        </tr>
+    </table>
 </form>

@@ -1,4 +1,5 @@
-﻿<h2>
+
+<h2>
 	<i><?= $user['first_name'] ?> <?= $user['last_name'] ?></i>
 </h2>
 <h3>
@@ -6,77 +7,81 @@
 </h3>
 
 <table class="user">
-	<tr class="firstRow">
-		<td>Date</td>
-		<td>Price in BTC</td>
-		<td>Status of the invoice</td>
-		<td>Payment</td>
-		<td>PDF download</td>
-		<?php if ($admin): ?><td>Canceling invoices</td><?php endif ?>
-	</tr>
-	<?php foreach ($payments as $p): ?>
-		<tr>
-			<td>
-				<?= date("j/n y", strtotime($p['payment_first_date'])) ?>
-				to <?= date("j/n y", strtotime($p['payment_first_date']."+1 month -1 day")) ?>
-			</td>
-			<td>
-				<?= $p['payed_price_BTC'] * 1000 ?> mBTC
-			</td>
-			<td>
-				<b><?= $p['status'] ?></b>
-			</td>
-			<td>
-				<a href="<?= ROOT ?>/en/PayInvoice/pay/<?= $p['id_payment'] ?>">
-					<button>Pay</button>
-				</a>
-			</td>
-			<td>
-				<a href="<?= ROOT ?>/en/InvoicePdf/<?= $p['invoice_fakturoid_id'] ?>" target="_blank">
-					<button>PDF invoice</button>
-				</a>
-			</td>
-			<?php if ($admin): ?>
-				<td>
-					<a href="<?= ROOT ?>/en/DeleteInvoice/<?= $p['id_payment'] ?>">
-						<button>Cancel invoice!</button>
-					</a>
-				</td>
-			<?php endif ?>
-		</tr>
-		<?php foreach ($p['extras'] as $e): ?>
-			<tr>
-				<td class="right">
-					<?php if ($admin): ?>
-						<a href="<?= ROOT ?>/en/extras/delete/<?= $e['id_extra'] ?>">
-							<button>Delete!</button>
-						</a>
-					<?php endif; ?>
-				</td>
-				<td>
-					+ <?= $e['priceBTC'] * 1000 ?> mBTC
-				</td>
-				<td colspan="4">
-					<?= $e['description'] ?>
-				</td>
-			</tr>
-		<?php endforeach ?>
-		<?php if ($admin): ?>
-			<tr>
-				<td class="right">
-					<label for="price">Price: </label>
-				</td>
-				<td colspan="5">
-					<form method="POST" action="<?= ROOT ?>/en/extras/add">
-						<input type="hidden" name="paymentId" value="<?= $p['id_payment'] ?>">
-						<input id="price" name="price" type="number" step="any">
-						<label for="description">Description: </label>
-						<input id="description" name="description" type="text">
-						<button type="submit">Add</button>
-					</form>
-				</td>
-			</tr>
-		<?php endif ?>
-	<?php endforeach ?>
+    <tr class="firstRow">
+        <td>Date</td>
+        <td>Price in BTC</td>
+        <td>Status of the invoice</td>
+        <td>Payment</td>
+        <td>PDF download</td>
+        <?php if ($admin): ?>
+            <td>Canceling invoices</td>
+            <?php endif ?>
+    </tr>
+    <?php foreach ($payments as $p): ?>
+        <tr>
+            <td>
+                <?= date("j/n y", strtotime($p['payment_first_date'])) ?>
+                    to
+                    <?= date("j/n y", strtotime($p['payment_first_date']."+1 month -1 day")) ?>
+            </td>
+            <td>
+                <?= $p['payed_price_BTC'] * 1000 ?> mBTC
+            </td>
+            <td>
+                <b><?= $p['status'] ?></b>
+            </td>
+            <td>
+                <a href="<?= ROOT ?>/en/PayInvoice/pay/<?= $p['id_payment'] ?>">
+                    <button>Pay</button>
+                </a>
+            </td>
+            <td>
+                <a href="<?= ROOT ?>/en/InvoicePdf/<?= $p['invoice_fakturoid_id'] ?>" target="_blank">
+                    <button>PDF invoice</button>
+                </a>
+            </td>
+            <?php if ($admin): ?>
+                <td>
+                    <a href="<?= ROOT ?>/en/DeleteInvoice/<?= $p['id_payment'] ?>">
+                        <button>Cancel invoice!</button>
+                    </a>
+                </td>
+                <?php endif ?>
+        </tr>
+        <?php foreach ($p['extras'] as $e): ?>
+            <tr>
+                <td class="right">
+                    <?php if ($admin): ?>
+                        <a href="<?= ROOT ?>/en/extras/delete/<?= $e['id_extra'] ?>">
+                            <button>Delete!</button>
+                        </a>
+                        <?php endif; ?>
+                </td>
+                <td>
+                    +
+                    <?= $e['priceBTC'] * 1000 ?> mBTC
+                </td>
+                <td colspan="4">
+                    <?= $e['description'] ?>
+                </td>
+            </tr>
+            <?php endforeach ?>
+                <?php if ($admin): ?>
+                    <tr>
+                        <td class="right">
+                            <label for="price">Price: </label>
+                        </td>
+                        <td colspan="5">
+                            <form method="POST" action="<?= ROOT ?>/en/extras/add">
+                                <input type="hidden" name="paymentId" value="<?= $p['id_payment'] ?>">
+                                <input id="price" name="price" type="number" step="any">
+                                <label for="description">Description: </label>
+                                <input id="description" name="description" type="text">
+                                <button type="submit">Add</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endif ?>
+                        <?php endforeach ?>
 </table>
 <p><a href="mailto:<?= EMAIL_HUB_MANAGER ?>">Contact Paper Hub Manager for the change of tariff</a></p>

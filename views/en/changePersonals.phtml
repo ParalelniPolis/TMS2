@@ -1,39 +1,63 @@
-﻿<h2>Change your personal data</h2>
+
+<h2>Change your personal data</h2>
 <form method="post" action="">
-	<table>
-		<tr>
-			<td class="right"><label for="password">Current password - compulsory: </label></td>
-			<td class="left"><input type="password" name="password" id="password" value=""/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="firstname">First name: </label></td>
-			<td class="left"><input type="text" name="firstname" id="firstname" value="<?= $first_name ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="surname">Surname: </label></td>
-			<td class="left"><input type="text" name="surname" id="surname" value="<?= $last_name ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="telephone">Telephone: </label></td>
-			<td class="left"><input type="text" name="telephone" id="telephone" value="<?= $telephone ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="address">Address: </label></td>
-			<td class="left"><input type="text" name="address" id="address" value="<?= $address ?>"/></td>
-		</tr>
-		<tr>
-			<td class="right"><label for="ic">IČ/VAT number: </label></td>
-			<td class="left"><input type="text" name="ic" id="ic" value="<?php if (!empty($ic)) echo($ic) ?>"/></td>
-		</tr>
-		<tr>
-			<td colspan="2" class="center">
-				<input type="hidden" name="csrf" value="<?= $csrf ?>">
-				<input type="submit" name="sent" value="Change your personals!"
-					   onclick="return changeformhash(this.form, this.form.password);"/>
-			</td>
-		</tr>
-	</table>
+    <table>
+        <tr>
+            <td class="right">
+                <label for="password">Current password - compulsory: </label>
+            </td>
+            <td class="left">
+                <input type="password" name="password" id="password" value="" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="firstname">First name: </label>
+            </td>
+            <td class="left">
+                <input type="text" name="firstname" id="firstname" value="<?= $first_name ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="surname">Surname: </label>
+            </td>
+            <td class="left">
+                <input type="text" name="surname" id="surname" value="<?= $last_name ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="telephone">Telephone: </label>
+            </td>
+            <td class="left">
+                <input type="text" name="telephone" id="telephone" value="<?= $telephone ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="address">Address: </label>
+            </td>
+            <td class="left">
+                <input type="text" name="address" id="address" value="<?= $address ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <label for="ic">IČ/VAT number: </label>
+            </td>
+            <td class="left">
+                <input type="text" name="ic" id="ic" value="<?php if (!empty($ic)) echo($ic) ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="center">
+                <input type="hidden" name="csrf" value="<?= $csrf ?>">
+                <input type="submit" name="sent" value="Change your personals!" onclick="return changeformhash(this.form, this.form.password);" />
+            </td>
+        </tr>
+    </table>
 </form>
 <form method="POST" action="<?= ROOT ?>/en/getLinkForNewPassword">
-	<input type="submit" value="I want to change my password"/>
+    <input type="submit" value="I want to change my password" />
 </form>
