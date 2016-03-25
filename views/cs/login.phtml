@@ -6,7 +6,7 @@
                 <label for="login">Email: </label>
             </td>
             <td class="left">
-                <input type="email" name="login" id="login" required="required" value="<?php if (isset($login)) echo($login); ?>" />
+                <input type="email" name="login" id="login" value="<?php if (isset($login)) echo($login); ?>" required autocomplete="email">
             </td>
         </tr>
         <tr>
@@ -14,11 +14,12 @@
                 <label for="password">Heslo: </label>
             </td>
             <td class="right">
-                <input type="password" name="password" id="password" required="required" </td>
+                <input type="password" name="password" id="password" required autocomplete="current-password">
+            </td>
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" name="sent" value="Přihlásit se" onclick="return formhash(this.form, this.form.password);" />
+                <button type="submit" name="sent" onclick="return formhash(this.form, this.form.password);">Přihlásit se</button>
             </td>
         </tr>
     </table>
