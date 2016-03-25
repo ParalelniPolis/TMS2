@@ -17,7 +17,7 @@ class ActualizePaymentsController extends Controller {
 			
 			//check for expired invoices
 			$expiredPayments = $payments->getExpiredPayments(TOLERANCE_TIME_ON_SENDING_REMINDING_EMAILS);
-			//TODO resolve expired invoices
+			//TODO resolve expired invoices (send email or whatever)
 			
 		}
 		header("HTTP/1.0 204 No Content");

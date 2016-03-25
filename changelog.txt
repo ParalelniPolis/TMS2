@@ -2,7 +2,8 @@ TMS 2nd generation for PP by TK
 restructuralized onto MVC and shifted from handmade payments into BitcoinPay.com system
 
 
-v0.18-2 polishing
+v0.19-2 added assiging members to locks
+v0.18-2+2 polishing
 v0.17-4+2+4 adding extras
 v0.16-2+2 added version for https+payment fixes, minor improvements
 v0.15-5+3+1+2 added changing tariffs after forceActivation and tool for locks

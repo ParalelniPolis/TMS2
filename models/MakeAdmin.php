@@ -1,6 +1,6 @@
 <?php
 
-class makeAdmin extends Model {
+class MakeAdmin extends Model {
 
 	public function checkInputs($newAdminId, $newAdminPlacesId) {
 		if (!Db::querySingleOne('SELECT id_user FROM users WHERE id_user = ?', [$newAdminId]))
