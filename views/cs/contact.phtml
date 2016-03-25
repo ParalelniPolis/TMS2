@@ -6,7 +6,7 @@
                 <label for="email">Email pro odpověď: </label>
             </td>
             <td class="left">
-                <input type="email" id="email" name="email" required="required" value="<?php if (isset($email)) echo($email); ?>" />
+                <input type="email" id="email" name="email" value="<?php if (isset($email)) echo($email); ?>" required>
             </td>
         </tr>
         <tr>
@@ -14,7 +14,7 @@
                 <label for="year">Antispam - zadej následující rok: </label>
             </td>
             <td class="left">
-                <input type="text" id="year" name="year" required="required">
+                <input type="text" id="year" name="year" required>
             </td>
         </tr>
         <tr>
@@ -26,7 +26,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" name="send" value="Odeslat" />
+                <button type="submit" name="send">Odeslat</button>
             </td>
         </tr>
     </table>
