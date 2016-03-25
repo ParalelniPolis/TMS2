@@ -4,22 +4,21 @@ body {
     width: 950px;
     margin: 0 auto;
 }
-
-h1 {
+h1,
+h2,
+h3 {
     text-align: center;
     color: #444444;
+}
+h1 {
     font-size: 26px;
 }
 
 h2 {
-    text-align: center;
-    color: #444444;
     font-size: 22px;
 }
 
 h3 {
-    text-align: center;
-    color: #444444;
     font-size: 18px;
 }
 
@@ -62,12 +61,18 @@ button {
 
 }
 
-button:hover, input[type="submit"]:hover, nav a:hover {
+button:hover,
+input[type="submit"]:hover,
+button[type="submit"]:hover,
+nav a:hover {
     background: #eeeeee;
     color: #444444;
 }
 
-button:active, input[type="submit"]:active, nav a:active {
+button:active,
+input[type="submit"]:active,
+button[type="submit"]:active,
+nav a:active {
     background: #ffffff;
     color: #000000;
 }
@@ -81,12 +86,12 @@ button.logout {
     margin-left: 20px;
 }
 
-button:hover.logout {
+button.logout:hover {
     background: #eeeeee;
     color: #444444;
 }
 
-button:active.logout {
+button.logout:active {
     background: #ffffff;
     color: #000000;
 }
@@ -95,7 +100,8 @@ form {
     text-align: center;
 }
 
-input[type="submit"] {
+input[type="submit"],
+button[type="submit"] {
     padding: 10px 25px;
     display: block;
     margin: 20px auto 0;
@@ -105,11 +111,16 @@ input[type="submit"] {
     border: 0;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+button[type="submit"]:hover {
     cursor: pointer;
 }
 
-input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="date"] {
     width: 280px;
     height: 16px;
     border: 1px solid #444444;
