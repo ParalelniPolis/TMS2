@@ -7,7 +7,7 @@
                 <label for="tariff">Místo a tarif: </label>
             </td>
             <td class="left">
-                <select name="tariff" id="tariff">
+                <select name="tariff" id="tariff" required>
                     <option value="X" selected="selected">Prosím vyber místo a tarif...</option>
                     <?php
 					foreach ($tariffs as $tariff): ?>
@@ -31,7 +31,7 @@
         <tr>
             <td colspan="2" class="center">
                 <input type="hidden" name="csrf" value="<?=$csrf?>">
-                <input type="submit" name="sent" value="Aktivovat!">
+                <button type="submit" name="sent">Aktivovat!</button>
             </td>
         </tr>
     </table>
