@@ -3,9 +3,11 @@
 class DeleteInvoiceController extends Controller {
 	function process($parameters) {
 		$bitcoinPay = new Bitcoinpay();
-		if (!$bitcoinPay->checkLogin()) $this->redirect('error');
+		if (!$bitcoinPay->checkLogin())
+			$this->redirect('error');
 		$paymentId = false;
-		if (is_numeric($parameters[0])) $paymentId = $parameters[0]; else $this->redirect('error');
+		if (is_numeric($parameters[0]))
+			$paymentId = $parameters[0]; else $this->redirect('error');
 		
 		//allow delete only for admin
 		$paymentUserId = $bitcoinPay->getPaymentUserId($paymentId);

@@ -8,11 +8,12 @@ class LockAuthorizeController extends Controller {
 		$lockName = $locks->sanitize($parameters[0]);
 		$key = $locks->sanitize($parameters[1]);
 		
-		if (empty($key) || empty($lockName)) $result = false;
-		else {
+		if (empty($key) || empty($lockName))
+			$result = false; else {
 			$result = $locks->isKeyValid($key, $lockName);
 			//store only unsuccessfull attempts for later assigmnents
-			if ($result == false) $locks->storeKeyInDb($key, $lockName);
+			if ($result == false)
+				$locks->storeKeyInDb($key, $lockName);
 		}
 		
 		$locks->sendResponse($result, $lockName);

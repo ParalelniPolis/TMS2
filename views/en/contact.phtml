@@ -1,33 +1,35 @@
 <h2>Contact the webmaster</h2>
 <form method="post" id="sendEmail">
-    <table>
-        <tr>
-            <td class="right">
-                <label for="email">Your email: </label>
-            </td>
-            <td class="left">
-                <input type="email" id="email" name="email" value="<?php if (isset($email)) echo($email); ?>" required>
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="year">Anti-spam - Please enter the next year: </label>
-            </td>
-            <td class="left">
-                <input type="text" id="year" name="year" required>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
+	<table>
+		<tr>
+			<td class="right">
+				<label for="email">Your email: </label>
+			</td>
+			<td class="left">
+				<input type="email" id="email" name="email" value="<?php if (isset($email))
+					echo($email); ?>" required>
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="year">Anti-spam - Please enter the next year: </label>
+			</td>
+			<td class="left">
+				<input type="text" id="year" name="year" required>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
                 <textarea name="message" required>
-                    <?php if (isset($message)) echo($message); ?>
+                    <?php if (isset($message))
+	                    echo($message); ?>
                 </textarea>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button type="submit" name="send">Send</button>
-            </td>
-        </tr>
-    </table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<button type="submit" name="send">Send</button>
+			</td>
+		</tr>
+	</table>
 </form>

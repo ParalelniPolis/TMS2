@@ -1,62 +1,65 @@
 <h2>Změna osobních údajů</h2>
 <form method="post" action="">
-    <table>
-        <tr>
-            <td class="right">
-                <label for="password">Současné heslo - povinné: </label>
-            </td>
-            <td class="left">
-                <input type="password" name="password" id="password" value="" required autocomplete="current-password">
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="firstname">Jméno: </label>
-            </td>
-            <td class="left">
-                <input type="text" name="firstname" id="firstname" value="<?= $first_name ?>" required>
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="surname">Příjmení: </label>
-            </td>
-            <td class="left">
-                <input type="text" name="surname" id="surname" value="<?= $last_name ?>" required>
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="telephone">Telefonní číslo: </label>
-            </td>
-            <td class="left">
-                <input type="tel" name="telephone" id="telephone" value="<?= $telephone ?>">
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="address">Adresa: </label>
-            </td>
-            <td class="left">
-                <input type="text" name="address" id="address" value="<?= $address ?>">
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="ic">IČ: </label>
-            </td>
-            <td class="left">
-                <input type="text" name="ic" id="ic" value="<?php if (!empty($ic)) echo($ic) ?>">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" class="center">
-                <input type="hidden" name="csrf" value="<?= $csrf ?>">
-                <button type="submit" name="sent" onclick="return changeformhash(this.form, this.form.password);">Změnit údaje!</button>
-            </td>
-        </tr>
-    </table>
+	<table>
+		<tr>
+			<td class="right">
+				<label for="password">Současné heslo - povinné: </label>
+			</td>
+			<td class="left">
+				<input type="password" name="password" id="password" value="" required autocomplete="current-password">
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="firstname">Jméno: </label>
+			</td>
+			<td class="left">
+				<input type="text" name="firstname" id="firstname" value="<?=$first_name?>" required>
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="surname">Příjmení: </label>
+			</td>
+			<td class="left">
+				<input type="text" name="surname" id="surname" value="<?=$last_name?>" required>
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="telephone">Telefonní číslo: </label>
+			</td>
+			<td class="left">
+				<input type="tel" name="telephone" id="telephone" value="<?=$telephone?>">
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="address">Adresa: </label>
+			</td>
+			<td class="left">
+				<input type="text" name="address" id="address" value="<?=$address?>">
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="ic">IČ: </label>
+			</td>
+			<td class="left">
+				<input type="text" name="ic" id="ic" value="<?php if (!empty($ic))
+					echo($ic) ?>">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="center">
+				<input type="hidden" name="csrf" value="<?=$csrf?>">
+				<button type="submit" name="sent" onclick="return changeformhash(this.form, this.form.password);">Změnit
+					údaje!
+				</button>
+			</td>
+		</tr>
+	</table>
 </form>
-<form method="POST" action="<?= ROOT ?>/cs/getLinkForNewPassword">
-    <button type="submit">Chci si změnit heslo</button>
+<form method="POST" action="<?=ROOT?>/cs/getLinkForNewPassword">
+	<button type="submit">Chci si změnit heslo</button>
 </form>

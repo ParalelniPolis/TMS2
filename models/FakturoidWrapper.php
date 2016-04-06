@@ -10,60 +10,79 @@ class FakturoidWrapper extends Model {
 	
 	public function createCustomer($user) {
 		try {
-			$data = ['name' => $user['firstname'].' '.$user['surname'], 
+			$data = [
+				'name' => $user['firstname'].' '.$user['surname'],
 				'registration_no' => $user['ic'],
-				'street' => $user['address']];
+				'street' => $user['address']
+			];
 			$customer = $this->fakturoid->create_subject($data);
+			
 			return $customer;
 		} catch (FakturoidException $e) {
 			$code = $e->getCode();
 			$message = $e->getMessage();
 			$this->newTicket('error', 'Fakturoid', 'code: '.$code.', message: '.$message);
-			$_SESSION['messages'][] = ['s' => 'error',
+			$_SESSION['messages'][] = [
+				's' => 'error',
 				'cs' => 'Nastal problém v komunikaci se serverem fakturoid.cz. Zkuste to prosím znovu za pár minut',
-				'en' => 'We encoured a problem in communication on fakturoid.cz. Please try it again after a few minutes'];
+				'en' => 'We encoured a problem in communication on fakturoid.cz. Please try it again after a few minutes'
+			];
+			
 			return false;
 		}
 	}
 	
 	public function updateCustomer($user) {
 		try {
-			$data = ['name' => $user['firstname'].' '.$user['surname'],
+			$data = [
+				'name' => $user['firstname'].' '.$user['surname'],
 				'registration_no' => $user['ic'],
-				'street' => $user['address']];
+				'street' => $user['address']
+			];
 			$id = $user['fakturoid_id'];
 			$result = $this->fakturoid->update_subject($id, $data);
+			
 			return $result;
 		} catch (FakturoidException $e) {
 			$code = $e->getCode();
 			$message = $e->getMessage();
 			$this->newTicket('error', 'Fakturoid', 'code: '.$code.', message: '.$message);
-			$_SESSION['messages'][] = ['s' => 'error',
+			$_SESSION['messages'][] = [
+				's' => 'error',
 				'cs' => 'Nastal problém v komunikaci se serverem fakturoid.cz. Zkuste to prosím znovu za pár minut',
-				'en' => 'We encoured a problem in communication on fakturoid.cz. Please try it again after a few minutes'];
+				'en' => 'We encoured a problem in communication on fakturoid.cz. Please try it again after a few minutes'
+			];
+			
 			return false;
 		}
 	}
 	
 	public function createInvoice($user, $price, $tariffName, $issuedDate, $lang) {
 		try {
-			$this->fakturoid->update_subject($user['fakturoid_id'], ['id' => $user['fakturoid_id'],
+			$this->fakturoid->update_subject($user['fakturoid_id'], [
+				'id' => $user['fakturoid_id'],
 				'name' => $user['first_name'].' '.$user['last_name'],
 				'email' => $user['email'],
 				'registration_no' => $user['ic'],
 				'street' => $user['address'],
 			]);
 			
-			if ($lang == 'cs') $tariffLine = 'Tarif: '.$tariffName.' s začátkem ke dni '.date('d. m. Y', strtotime($issuedDate));
-			else $tariffLine = 'Tariff: '.$tariffName.' with beginning from '.date('d. m. Y', strtotime($issuedDate));
+			if ($lang == 'cs')
+				$tariffLine = 'Tarif: '.$tariffName.' se začátkem ke dni '.date('d. m. Y', strtotime($issuedDate)); else $tariffLine = 'Tariff: '.$tariffName.' with beginning from '.date('d. m. Y', strtotime($issuedDate));
 			
-			$lines = [['name' => $tariffLine,
-				'quantity' => 1,
-				'unit_price' => $price]];
-			$invoice = $this->fakturoid->create_invoice(['subject_id' => $user['fakturoid_id'],
+			$lines = [
+				[
+					'name' => $tariffLine,
+					'quantity' => 1,
+					'unit_price' => $price
+				]
+			];
+			$invoice = $this->fakturoid->create_invoice([
+				'subject_id' => $user['fakturoid_id'],
 				'issued_on' => $issuedDate,
 				'currency' => 'CZK',
-				'lines' => $lines]);
+				'lines' => $lines
+			]);
 			//deliver the invoice
 			//$this->fakturoid->fire_invoice($invoice->id, 'deliver');
 			return $invoice;
@@ -71,9 +90,12 @@ class FakturoidWrapper extends Model {
 			$code = $e->getCode();
 			$message = $e->getMessage();
 			$this->newTicket('error', 'Fakturoid', 'code: '.$code.', message: '.$message);
-			$_SESSION['messages'][] = ['s' => 'error',
+			$_SESSION['messages'][] = [
+				's' => 'error',
 				'cs' => 'Nastal problém v komunikaci se serverem fakturoid.cz. Zkuste to prosím znovu za pár minut',
-				'en' => 'We encoured a problem in communication on fakturoid.cz. Please try it again after a few minutes'];
+				'en' => 'We encoured a problem in communication on fakturoid.cz. Please try it again after a few minutes'
+			];
+			
 			return false;
 		}
 	}
@@ -100,23 +122,33 @@ class FakturoidWrapper extends Model {
 	
 	public function addExtra($invoiceFakturoidId, $price, $description) {
 		try {
-			$lines = [['name' => $description,
-				'quantity' => 1,
-				'unit_price' => $price]];
+			$lines = [
+				[
+					'name' => $description,
+					'quantity' => 1,
+					'unit_price' => $price
+				]
+			];
 			$invoice = $this->fakturoid->update_invoice($invoiceFakturoidId, ['lines' => $lines]);
+			
 			return $extraFakturoidId = end($invoice->lines)->id;
 		} catch (FakturoidException $e) {
 			$code = $e->getCode();
 			$message = $e->getMessage();
 			$this->newTicket('error', 'class FakturoidWrapper func. addExtra', 'code: '.$code.' with message: '.$message);
 		}
+		
 		return false;
 	}
 	
 	public function deleteExtra($invoiceFakturoidId, $extraFakturoidId) {
 		try {
-			$lines = [['id' => $extraFakturoidId,
-				"_destroy" => true]];
+			$lines = [
+				[
+					'id' => $extraFakturoidId,
+					"_destroy" => true
+				]
+			];
 			$this->fakturoid->update_invoice($invoiceFakturoidId, ['lines' => $lines]);
 		} catch (FakturoidException $e) {
 			$code = $e->getCode();

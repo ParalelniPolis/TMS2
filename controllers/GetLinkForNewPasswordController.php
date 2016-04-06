@@ -1,10 +1,10 @@
 <?php
 
 class GetLinkForNewPasswordController extends Controller {
-
+	
 	public function process($parameters) {
 		$getLinkForNewPassword = new GetLinkForNewPassword();
-
+		
 		if (isset($_POST['sent'])) {
 			$result = $getLinkForNewPassword->trySendLink($_POST['email'], $_POST["year"], $this->language);
 			$this->messages[] = $result;
@@ -14,6 +14,7 @@ class GetLinkForNewPasswordController extends Controller {
 		}
 		$this->header['title'] = [
 			'cs' => 'Restart hesla',
-			'en' => 'Restart password'];
+			'en' => 'Restart password'
+		];
 	}
 }

@@ -1,60 +1,61 @@
 <h2>Přehled členů</h2>
 <table class="checkUsers">
-    <tr class="firstRow">
-        <td>Aktivace</td>
-        <td>Osobní data</td>
-        <td>Jméno</td>
-        <td>Email</td>
-        <td>Tel. číslo</td>
-        <td>Místo</td>
-        <td>První členství</td>
-        <td>Tarif</td>
-    </tr>
-    <?php foreach ($members as $m) : ?>
-        <tr>
-            <td>
-                <?php if ($m['active']) { ?>
-                    <a href="<?= ROOT ?>/cs/forceDeactivation/<?= $m['id_user'] ?>/<?= $csrf ?>">
-                        <button>Deaktivovat</button>
-                    </a>
-                    <?php }
+	<tr class="firstRow">
+		<td>Aktivace</td>
+		<td>Osobní data</td>
+		<td>Jméno</td>
+		<td>Email</td>
+		<td>Tel. číslo</td>
+		<td>Místo</td>
+		<td>První členství</td>
+		<td>Tarif</td>
+	</tr>
+	<?php foreach ($members as $m) : ?>
+		<tr>
+			<td>
+				<?php if ($m['active']) { ?>
+					<a href="<?=ROOT?>/cs/forceDeactivation/<?=$m['id_user']?>/<?=$csrf?>">
+						<button>Deaktivovat</button>
+					</a>
+				<?php }
 				if (!$m['active']) { ?>
-                        <a href="<?= ROOT ?>/cs/forceActivation/<?= $m['id_user'] ?>">
-                            <button>Aktivovat!</button>
-                        </a>
-                        <?php } ?>
-            </td>
-            <td>
-                <a href="<?= ROOT ?>/cs/changePersonals/<?= $m['id_user'] ?>/<?= $csrf ?>">
-                    <button>Změnit!</button>
-                </a>
-            </td>
-            <td>
-                <a href="<?= ROOT ?>/cs/payments/<?= $m['id_user'] ?>">
-                    <?= $m['first_name'] ?>
-                        <?= $m['last_name'] ?>
-                </a>
-            </td>
-            <td>
-                <?= $m['email'] ?>
-            </td>
-            <td>
-                <?= $m['telephone'] ?>
-            </td>
-            <td>
-                <?= $m['id_of_place'] ?> -
-                    <?= $m['name'] ?>
-            </td>
-            <td>
-                <?= $m['firstPaymentDate'] ?>
-            </td>
-            <td>
-                <div class="<?= $m['paymentFlag'] ?>">
-                    <?= $m['tariffCZE'] ?>
-                </div>
-            </td>
-        </tr>
-        <?php endforeach ?>
+					<a href="<?=ROOT?>/cs/forceActivation/<?=$m['id_user']?>">
+						<button>Aktivovat!</button>
+					</a>
+				<?php } ?>
+			</td>
+			<td>
+				<a href="<?=ROOT?>/cs/changePersonals/<?=$m['id_user']?>/<?=$csrf?>">
+					<button>Změnit!</button>
+				</a>
+			</td>
+			<td>
+				<a href="<?=ROOT?>/cs/payments/<?=$m['id_user']?>">
+					<?=$m['first_name']?>
+					<?=$m['last_name']?>
+				</a>
+			</td>
+			<td>
+				<a href="mailto:<?=$m['email']?>"><?=$m['email']?></a>
+			</td>
+			<td>
+				<?=$m['telephone']?>
+			</td>
+			<td>
+				<?=$m['id_of_place']?> -
+				<?=$m['name']?>
+			</td>
+			<td>
+				<?=$m['firstPaymentDate']?>
+			</td>
+			<td>
+				<div class="<?=$m['paymentFlag']?>">
+					<?=$m['tariffCZE']?>
+				</div>
+			</td>
+		</tr>
+	<?php endforeach ?>
 </table>
 
-<p><a target="_blank" href="mailto:<?php foreach ($activeMemberMailList as $a) echo $a.',' ?>">Poslat mail všem aktivním členům</a></p>
+<p><a target="_blank" href="mailto:<?php foreach ($activeMemberMailList as $a)
+		echo $a.',' ?>">Poslat mail všem aktivním členům</a></p>

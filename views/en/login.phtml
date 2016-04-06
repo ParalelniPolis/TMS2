@@ -1,27 +1,28 @@
-
 <h2>Login</h2>
 <form method="post" action="" name="loginForm">
-    <table>
-        <tr>
-            <td class="right">
-                <label for="login">Email: </label>
-            </td>
-            <td class="left">
-                <input type="email" name="login" id="login" value="<?php if (isset($login)) echo($login); ?>" required autocomplete="email">
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="password">Password: </label>
-            </td>
-            <td class="right">
-                <input type="password" name="password" id="password" required autocomplete="current-password">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button type="submit" name="sent" onclick="return formhash(this.form, this.form.password);">Login</button>
-            </td>
-        </tr>
-    </table>
+	<table>
+		<tr>
+			<td class="right">
+				<label for="login">Email: </label>
+			</td>
+			<td class="left">
+				<input type="email" name="login" id="login" value="<?php if (isset($login))
+					echo($login); ?>" required autocomplete="email">
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="password">Password: </label>
+			</td>
+			<td class="right">
+				<input type="password" name="password" id="password" required autocomplete="current-password">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<button type="submit" name="sent" onclick="return formhash(this.form, this.form.password);">Login
+				</button>
+			</td>
+		</tr>
+	</table>
 </form>

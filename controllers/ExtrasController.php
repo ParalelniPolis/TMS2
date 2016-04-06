@@ -19,9 +19,11 @@ class ExtrasController extends Controller {
 					
 					//allow add extra only when new payment will be generated
 					if (!in_array($status, ['unpaid', 'refund', 'timeout'])) {
-						$this->messages[] = ['s' => 'error',
+						$this->messages[] = [
+							's' => 'error',
 							'cs' => 'Bohužel, položka nebyla přidána; platba se právě platí nebo je již zaplacená',
-							'en' => 'Sorry, we cannot add an extra; payment is processing'];
+							'en' => 'Sorry, we cannot add an extra; payment is processing'
+						];
 					} else {
 						$invoiceFakturoidId = $fakturoid->getFakturoidInvoiceIdFromPaymentId($paymentId);
 						$extraFakturoidId = $fakturoid->addExtra($invoiceFakturoidId, $price, $description);
@@ -38,9 +40,11 @@ class ExtrasController extends Controller {
 				
 				//allow add extra only when new payment will be generated
 				if (!in_array($status, ['unpaid', 'refund', 'timeout'])) {
-					$this->messages[] = ['s' => 'error',
+					$this->messages[] = [
+						's' => 'error',
 						'cs' => 'Bohužel, položka nebyla zrušena; platba se právě platí nebo je již zaplacená',
-						'en' => 'Sorry, we cannot cancel an extra; payment is processing'];
+						'en' => 'Sorry, we cannot cancel an extra; payment is processing'
+					];
 				} else {
 					$extraFakturoidId = $fakturoid->getExtraFakturoidId($extraId);
 					$invoiceFakturoidId = $fakturoid->getInvoiceFakturoidIdFromExtraId($extraId);

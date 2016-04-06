@@ -20,9 +20,11 @@ class Payments extends Model {
 			$p['extras'] = Db::queryAll('SELECT `id_extra`, `description`, `priceCZK` 
 										 FROM `extras` WHERE `payment_id` = ?', [$p['id_payment']]);
 		
-		return ['user' => $user,
+		return [
+			'user' => $user,
 			'tariff' => $tariff,
-			'payments' => $payments];
+			'payments' => $payments
+		];
 	}
 	
 	public function enhanceUserPayments($payments, $lang) {
@@ -30,20 +32,24 @@ class Payments extends Model {
 			//translation for statuses
 			$p['status'] = $this->translatePaymentStatus($p['status'], $lang);
 			//guessing BTC price
-			if (empty($p['payed_price_BTC'])) $p['payed_price_BTC'] = round($p['price_CZK'] / $this->getExchangeRate(), 5);
+			if (empty($p['payed_price_BTC']))
+				$p['payed_price_BTC'] = round($p['price_CZK'] / $this->getExchangeRate(), 5);
 			//and price for extras
 			$ratio = $p['payed_price_BTC'] / $p['price_CZK'];
 			foreach ($p['extras'] as &$e) {
 				$e['priceBTC'] = round($ratio * $e['priceCZK'], 5);
 			}
 		}
+		
 		return $payments;
 	}
 	
 	public function getUsersIds() {
 		$dbResult = Db::queryAll('SELECT `id_user` FROM `users` WHERE `active` = 1', []);
 		$result = [];
-		foreach ($dbResult as $r) $result[] = $r['id_user'];
+		foreach ($dbResult as $r)
+			$result[] = $r['id_user'];
+		
 		return $result;
 	}
 	
@@ -63,9 +69,11 @@ class Payments extends Model {
 				$data = $bitcoinPay->getTransactionDetails($bitcoinpayId);
 				//invalid response
 				if (empty($data)) {
-					$messages[] = ['s' => 'info',
+					$messages[] = [
+						's' => 'info',
 						'cs' => 'Nepovedlo se nám spojit se se serverem bitcoinpay.com - některé platby můžou být neaktualizované',
-						'en' => 'We failed at connecting with bitcoinpay.com - some payments may be outdated'];
+						'en' => 'We failed at connecting with bitcoinpay.com - some payments may be outdated'
+					];
 					break;
 				}
 			}
@@ -80,11 +88,11 @@ class Payments extends Model {
 					$fakturoid->setInvoicePayed($fakturoidId);
 					Db::queryModify('UPDATE `payments`
 						SET `payed_price_BTC` = ?
-						WHERE `id_payment` = ?',
-						[$data['settled_amount'], $paymentId]);
+						WHERE `id_payment` = ?', [$data['settled_amount'], $paymentId]);
 				}
 			}
 		}
+		
 		return $messages;
 	}
 	
@@ -98,8 +106,7 @@ class Payments extends Model {
 			$startOfLastGeneratedMonth = Db::querySingleOne('
                 SELECT `payment_first_date` FROM `payments`
                 WHERE `id_payer` = ?
-                ORDER BY `payment_first_date` DESC', [$userId]
-			);
+                ORDER BY `payment_first_date` DESC', [$userId]);
 			
 			if (empty($startOfLastGeneratedMonth)) {
 				//add beginning for new user
@@ -107,8 +114,7 @@ class Payments extends Model {
 			} else {
 				//or deside when if use last day of previous payment or newly begin set
 				if (strtotime($startOfLastGeneratedMonth) >= strtotime($dbStartDate))
-					$startDate = date('Y-m-d', strtotime($startOfLastGeneratedMonth.' +1 month'));
-				else $startDate = $dbStartDate;
+					$startDate = date('Y-m-d', strtotime($startOfLastGeneratedMonth.' +1 month')); else $startDate = $dbStartDate;
 			}
 			
 			//and add following invoices till today
@@ -117,7 +123,8 @@ class Payments extends Model {
 				$startDate = date('Y-m-d', strtotime($startDate.' +1 month'));
 				$new = true;
 			}
-			if ($new == true) return true; else return false;
+			if ($new == true)
+				return true; else return false;
 		} else return false;
 	}
 	
@@ -128,9 +135,12 @@ class Payments extends Model {
 		$priceCZK = $tariff['priceCZK'];
 		$fakturoid = new FakturoidWrapper();
 		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate, $lang);
-		if (!$fakturoidInvoice) return ['s' => 'error',
-			'cs' => 'Nepovedlo se spojení s fakturoid.cz. Zkuste to prosím za pár minut',
-			'en' => 'We are unable to connect to fakturoid.cz. Try again in a few minutes']; 
+		if (!$fakturoidInvoice)
+			return [
+				's' => 'error',
+				'cs' => 'Nepovedlo se spojení s fakturoid.cz. Zkuste to prosím za pár minut',
+				'en' => 'We are unable to connect to fakturoid.cz. Try again in a few minutes'
+			];
 		$fakturoidInvoiceId = $fakturoidInvoice->id;
 		$fakturoidInvoiceNumber = $fakturoidInvoice->number;
 		Db::queryModify('
@@ -152,6 +162,7 @@ class Payments extends Model {
 			$fakturoidInvoiceId,
 			$fakturoidInvoiceNumber
 		]);
+		
 		return ['s' => 'success'];
 	}
 	
@@ -167,16 +178,19 @@ class Payments extends Model {
 		
 		$result = json_decode($response, true);
 		foreach ($result as $r) {
-			if (array_key_exists('CZK', $r)) return $r['CZK'];
+			if (array_key_exists('CZK', $r))
+				return $r['CZK'];
 		}
+		
 		return false;
 	}
 	
 	private function translatePaymentStatus($status, $lang) {
-		$a = ['pending' => [
-			'cs' => 'čekající',
-			'en' => 'pending'
-		],
+		$a = [
+			'pending' => [
+				'cs' => 'čekající',
+				'en' => 'pending'
+			],
 			'confirmed' => [
 				'cs' => 'potvrzená',
 				'en' => 'confirmed'
@@ -210,6 +224,7 @@ class Payments extends Model {
 				'en' => 'refund'
 			],
 		];
+		
 		return $a[$status][$lang];
 	}
 	
@@ -225,6 +240,7 @@ class Payments extends Model {
 				'price_CZK' => $r['price_CZK']
 			];
 		}
+		
 		return $result;
 	}
 }

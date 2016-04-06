@@ -1,20 +1,20 @@
 <?php
 
 class RestartPasswordByLinkController extends Controller {
-
+	
 	public function process($parameters) {
 		$restartPasswordByLink = new RestartPasswordByLink();
 		$link = $parameters[0];
-
+		
 		//if form is filled (button si clicked)
 		if (isset($_POST['sent'])) {
 			$result = $restartPasswordByLink->checkForm($link, $_POST['p']);
 			$this->messages[] = $result;
-
+			
 			//when user is logged, logout him, else show intro
-			if (isset($_SESSION['username'])) $this->redirect('logout');
-			else $this->view = 'intro';
-
+			if (isset($_SESSION['username']))
+				$this->redirect('logout'); else $this->view = 'intro';
+			
 			//if not, then show form (or not ;)
 		} else {
 			$result = $restartPasswordByLink->isLinkValid($link);
@@ -29,6 +29,7 @@ class RestartPasswordByLinkController extends Controller {
 		}
 		$this->header['title'] = [
 			'cs' => 'Obnov heslo linkem',
-			'en' => 'Renew password by link'];
+			'en' => 'Renew password by link'
+		];
 	}
 }

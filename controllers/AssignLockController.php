@@ -19,8 +19,10 @@ class AssignLockController extends Controller {
 				$result = $assignLock->assignKey($userId, $keyId);
 			}
 			$this->messages[] = $result;
-			$this->header['title'] = ['cs' => 'Přiřadit přístup',
-				'en' => 'Assign an access'];
+			$this->header['title'] = [
+				'cs' => 'Přiřadit přístup',
+				'en' => 'Assign an access'
+			];
 			$this->redirect('checkUsers');
 		}
 	}

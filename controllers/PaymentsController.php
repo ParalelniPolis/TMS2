@@ -1,16 +1,18 @@
 <?php
 
 class PaymentsController extends Controller {
-
+	
 	function process($parameters) {
 		$payments = new Payments();
-		if (!$payments->checkLogin()) $this->redirect('error');
-		//if empty parameter, add there current user
-		if (isset($parameters[0])) $userId = $parameters[0]; else $userId = $_SESSION['id_user'];
-
-		if ($userId != $_SESSION['id_user'] && !$payments->checkIfIsAdminOfUser($_SESSION['id_user'], $userId)) 
+		if (!$payments->checkLogin())
 			$this->redirect('error');
-
+		//if empty parameter, add there current user
+		if (isset($parameters[0]))
+			$userId = $parameters[0]; else $userId = $_SESSION['id_user'];
+		
+		if ($userId != $_SESSION['id_user'] && !$payments->checkIfIsAdminOfUser($_SESSION['id_user'], $userId))
+			$this->redirect('error');
+		
 		$data = $payments->getUserData($userId);
 		
 		//actualize old payments
@@ -19,23 +21,27 @@ class PaymentsController extends Controller {
 		$payments->makeNewPayments($data['user'], $data['tariff'], $this->language);
 		$this->messages = array_merge($this->messages, $resultMessages);
 		
-
+		
 		//get new data for user view
 		$data = $payments->getUserData($userId);
 		$data['payments'] = $payments->enhanceUserPayments($data['payments'], $this->language);
 		
 		//display non-active user
-		if (!$data['user']['active']) $this->messages[] = ['s' => 'info',
-			'cs' => 'Neaktivní uživatel - nové faktury se negenerují',
-			'en' => 'Inactive user - new invoices are not generated'];
-
+		if (!$data['user']['active'])
+			$this->messages[] = [
+				's' => 'info',
+				'cs' => 'Neaktivní uživatel - nové faktury se negenerují',
+				'en' => 'Inactive user - new invoices are not generated'
+			];
+		
 		$this->data['admin'] = $payments->checkIfIsAdminOfUser($_SESSION['id_user'], $userId);
 		$this->data['tariff'] = $data['tariff'];
 		$this->data['user'] = $data['user'];
 		$this->data['payments'] = $data['payments'];
 		$this->header['title'] = [
 			'cs' => 'Přehled plateb',
-			'en' => 'Payments overview'];
+			'en' => 'Payments overview'
+		];
 		//TODO add nice sliding JS invoice detail directly into view
 		//TODO hide table in view when empty (no data)
 		$this->view = 'payments';

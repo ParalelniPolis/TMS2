@@ -9,9 +9,11 @@ class Bitcoinpay extends Model {
 			case ('confirmed'):
 			case ('received'):
 				//all is shiny
-				$result = ['s' => 'info',
+				$result = [
+					's' => 'info',
 					'cs' => 'Faktura již byla zaplacena',
-					'en' => 'Invoice has already payed'];
+					'en' => 'Invoice has already payed'
+				];
 				break;
 			
 			case ('pending'):
@@ -19,7 +21,8 @@ class Bitcoinpay extends Model {
 			case ('payed_after_timeout'):
 				//return stored payment url for payment/refund
 				$url = $this->returnPaymentBitcoinPayUrl($paymentId);
-				$result = ['s' => 'success',
+				$result = [
+					's' => 'success',
 					'paymentType' => 'old',
 					'data' => ['payment_url' => $url]
 				];
@@ -30,23 +33,30 @@ class Bitcoinpay extends Model {
 			case ('timeout'):
 				//provide new payment
 				$data = $this->createPayment($paymentId, $lang);
-				if ($data == false) $result = ['s' => 'error',
-					'cs' => 'Pardon, nepovedlo se spojení s platebním serverem; zkuste to prosím později',
-					'en' => 'Sorry, connection to payment server failed'];
-				else $result = ['s' => 'success',
+				if ($data == false)
+					$result = [
+						's' => 'error',
+						'cs' => 'Pardon, nepovedlo se spojení s platebním serverem; zkuste to prosím později',
+						'en' => 'Sorry, connection to payment server failed'
+					]; else $result = [
+					's' => 'success',
 					'paymentType' => 'new',
-					'data' => $data];
+					'data' => $data
+				];
 				break;
 			
 			case ('invalid'):
 				//invalid case better here for disabling silent errors witch generate new payment over the buggy one
 			default:
 				$this->newTicket('error', 'Payments->actualizePayments', 'unexpected return value (invalid or case missing');
-				$result = ['s' => 'error',
+				$result = [
+					's' => 'error',
 					'cs' => 'Pardon, dostali jsme neočekávanou hodnotu z platebního serveru. Zkuste to prosím znovu za pár minut',
-					'en' => 'Sorry, we got an unexpected value of the payment server . Please try again in a few minutes'];
+					'en' => 'Sorry, we got an unexpected value of the payment server . Please try again in a few minutes'
+				];
 				break;
 		}
+		
 		return $result;
 	}
 	
@@ -59,8 +69,7 @@ class Bitcoinpay extends Model {
 		
 		//make warning ticket if paying user is different from the owner
 		if ($email != $_SESSION['username'])
-			$this->newTicket('warning', 'function BitcoinPay->TryPayInvoice',
-				'users '.$_SESSION['username'].' invoice with id:'.$paymentId.' is payed by:'.$email);
+			$this->newTicket('warning', 'function BitcoinPay->TryPayInvoice', 'users '.$_SESSION['username'].' invoice with id:'.$paymentId.' is payed by:'.$email);
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, "https://www.bitcoinpay.com/api/v1/payment/btc"); //production
@@ -94,6 +103,7 @@ class Bitcoinpay extends Model {
 		$response = curl_exec($ch);
 		if ($response == false) {
 			$this->newTicket('error', 'BitcoinPay curl', 'Error Number:'.curl_errno($ch)."Error String:".curl_error($ch));
+			
 			return false;
 		}
 		
@@ -137,77 +147,101 @@ class Bitcoinpay extends Model {
 		$resultExtras = Db::queryModify('DELETE FROM `extras` WHERE `payment_id` = ?', [$id]);
 		$resultPayment = Db::queryModify('DELETE FROM `payments` WHERE `id_payment` = ?', [$id]);
 		
-		if ($resultPayment && $resultExtras) return ['s' => 'success', 
-			'cs' => 'Faktura úspěšně smazána', 
-			'en' => 'Invoice is successfully deleted'];
-		else {
+		if ($resultPayment && $resultExtras)
+			return [
+				's' => 'success',
+				'cs' => 'Faktura úspěšně smazána',
+				'en' => 'Invoice is successfully deleted'
+			]; else {
 			$this->newTicket('error', 'deletePayment from BitcoinPay.php', 'error in deleting payment with extras');
-			return ['s' => 'error', 
-				'cs' => 'Neco se stalo špatně - zkus to prosím znovu za pár minut', 
-				'en' => 'Something went wrong - try it again in a few minutes please'];
+			
+			return [
+				's' => 'error',
+				'cs' => 'Neco se stalo špatně - zkus to prosím znovu za pár minut',
+				'en' => 'Something went wrong - try it again in a few minutes please'
+			];
 		}
 	}
 	
 	public function getStatusMessage($case) {
 		switch ($case) {
 			case 'pending': {
-				$r = ['s' => 'info',
+				$r = [
+					's' => 'info',
 					'cs' => 'Čekáme na zaplacení',
-					'en' => 'Waiting for payment'];
+					'en' => 'Waiting for payment'
+				];
 				break;
 			}
 			case 'confirmed':
 			case 'received': {
-				$r = ['s' => 'success',
+				$r = [
+					's' => 'success',
 					'cs' => 'Úspěšně zaplaceno. Děkujeme!',
-					'en' => 'Successfully payed. Thanks!'];
+					'en' => 'Successfully payed. Thanks!'
+				];
 				break;
 			}
 			case 'insufficient_amount': {
-				$r = ['s' => 'error',
+				$r = [
+					's' => 'error',
 					'cs' => 'Poslána menší částka než je vyžadováno',
-					'en' => 'Sent a smaller amount than required'];
+					'en' => 'Sent a smaller amount than required'
+				];
 				break;
 			}
 			case 'invalid': {
 				$this->newTicket('error', 'BitcoinPay->getStatusMessage', 'returned "invalid" value');
-				$r = ['s' => 'error',
+				$r = [
+					's' => 'error',
 					'cs' => 'Bohužel se něco po cestě pokazilo. Ozvěte se nám a dáme to do pořádku',
-					'en' => 'Sorry, something wrong on the way. Let us know and we will fix it'];
+					'en' => 'Sorry, something wrong on the way. Let us know and we will fix it'
+				];
 				break;
 			}
 			case 'timeout': {
-				$r = ['s' => 'info',
+				$r = [
+					's' => 'info',
 					'cs' => 'Platba nebyla zaplacena v daném čase a tak vypršela její platnost',
-					'en' => 'Payment was not payed in time and it\'s no longer valid'];
+					'en' => 'Payment was not payed in time and it\'s no longer valid'
+				];
 				break;
 			}
 			case 'paid_after_timeout': {
-				$r = ['s' => 'error',
+				$r = [
+					's' => 'error',
 					'cs' => 'Platba byla odeslána po splatnosti',
-					'en' => 'Payment was send after timeout'];
+					'en' => 'Payment was send after timeout'
+				];
 				break;
 			}
 			case 'refund': {
-				$r = ['s' => 'info',
+				$r = [
+					's' => 'info',
 					'cs' => 'Platba Vám byla vrácena',
-					'en' => 'Payment was refunded'];
+					'en' => 'Payment was refunded'
+				];
 				break;
 			}
 			//internal status (not from BitcoinPay)
 			case 'unpaid': {
-				$r = ['s' => 'info',
+				$r = [
+					's' => 'info',
 					'cs' => 'Nová nezaplacená faktura',
-					'en' => 'New unpaid invoice'];
+					'en' => 'New unpaid invoice'
+				];
 				break;
 			}
 			default: {
 				$this->newTicket('error', 'BitcoinPay->getStatusMessage', 'unexpected return value: '.$case);
-				$r = ['s' => 'error',
+				$r = [
+					's' => 'error',
 					'cs' => 'Nečekaná návratová hodnota z bitcoinpay.com. Víme o tom a fičíme to spravit!',
-					'en' => 'Unexpected return value from bitcoinpay.com. We know about it and already on it!'];
+					'en' => 'Unexpected return value from bitcoinpay.com. We know about it and already on it!'
+				];
 			}
 		}
+		
 		return $r;
 	}
 	
@@ -220,7 +254,8 @@ class Bitcoinpay extends Model {
 		//add sum of all extras
 		$extras = Db::queryAll('SELECT `priceCZK` FROM `extras` WHERE `payment_id` = ?', [$paymentId]);
 		$extrasSum = 0;
-		foreach($extras as $e) $extrasSum += $e['priceCZK'];
+		foreach ($extras as $e)
+			$extrasSum += $e['priceCZK'];
 		$payment['priceCZK'] += $extrasSum;
 		
 		return $payment;

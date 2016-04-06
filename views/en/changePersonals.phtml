@@ -1,63 +1,65 @@
-
 <h2>Change your personal data</h2>
 <form method="post" action="">
-    <table>
-        <tr>
-            <td class="right">
-                <label for="password">Current password - compulsory: </label>
-            </td>
-            <td class="left">
-                <input type="password" name="password" id="password" value="" required autocomplete="current-password">
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="firstname">First name: </label>
-            </td>
-            <td class="left">
-                <input type="text" name="firstname" id="firstname" value="<?= $first_name ?>" required>
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="surname">Surname: </label>
-            </td>
-            <td class="left">
-                <input type="text" name="surname" id="surname" value="<?= $last_name ?>" required>
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="telephone">Telephone: </label>
-            </td>
-            <td class="left">
-                <input type="tel" name="telephone" id="telephone" value="<?= $telephone ?>">
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="address">Address: </label>
-            </td>
-            <td class="left">
-                <input type="text" name="address" id="address" value="<?= $address ?>">
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <label for="ic">IČ/VAT number: </label>
-            </td>
-            <td class="left">
-                <input type="text" name="ic" id="ic" value="<?php if (!empty($ic)) echo($ic) ?>">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" class="center">
-                <input type="hidden" name="csrf" value="<?= $csrf ?>">
-                <button type="submit" name="sent" onclick="return changeformhash(this.form, this.form.password);">Change your personals!</button>
-            </td>
-        </tr>
-    </table>
+	<table>
+		<tr>
+			<td class="right">
+				<label for="password">Current password - compulsory: </label>
+			</td>
+			<td class="left">
+				<input type="password" name="password" id="password" value="" required autocomplete="current-password">
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="firstname">First name: </label>
+			</td>
+			<td class="left">
+				<input type="text" name="firstname" id="firstname" value="<?=$first_name?>" required>
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="surname">Surname: </label>
+			</td>
+			<td class="left">
+				<input type="text" name="surname" id="surname" value="<?=$last_name?>" required>
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="telephone">Telephone: </label>
+			</td>
+			<td class="left">
+				<input type="tel" name="telephone" id="telephone" value="<?=$telephone?>">
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="address">Address: </label>
+			</td>
+			<td class="left">
+				<input type="text" name="address" id="address" value="<?=$address?>">
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="ic">IČ/VAT number: </label>
+			</td>
+			<td class="left">
+				<input type="text" name="ic" id="ic" value="<?php if (!empty($ic))
+					echo($ic) ?>">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="center">
+				<input type="hidden" name="csrf" value="<?=$csrf?>">
+				<button type="submit" name="sent" onclick="return changeformhash(this.form, this.form.password);">Change
+					your personals!
+				</button>
+			</td>
+		</tr>
+	</table>
 </form>
-<form method="POST" action="<?= ROOT ?>/en/getLinkForNewPassword">
-    <button type="submit">I want to change my password</button>
+<form method="POST" action="<?=ROOT?>/en/getLinkForNewPassword">
+	<button type="submit">I want to change my password</button>
 </form>

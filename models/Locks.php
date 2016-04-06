@@ -23,11 +23,13 @@ class Locks extends Model {
 	
 	public function sendPythonResponse($hashUid, $lockName, $result, $signature, $timestamp) {
 		header('Content-Type: application/json');
-		$data = ["hash_uid" => $hashUid, 
+		$data = [
+			"hash_uid" => $hashUid,
 			"lock_name" => $lockName,
 			"result" => $result,
 			"timestamp" => $timestamp,
-			"sig" => $signature];
+			"sig" => $signature
+		];
 		echo json_encode($data);
 	}
 	

@@ -1,10 +1,10 @@
 <?php
 
 class ActualizePaymentsController extends Controller {
-
+	
 	function process($parameters) {
 		$payments = new Payments();
-
+		
 		$userIds = $payments->getUsersIds();
 		
 		foreach ($userIds as $uId) {
