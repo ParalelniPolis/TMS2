@@ -119,6 +119,11 @@ class Model {
 		return false;
 	}
 	
+	public function getLastAttempts($numberOfAtetmpts) {
+		$attempts = Db::queryAll('SELECT `id`, `uid_key` FROM `lock_attempts` ORDER BY `timestamp` DESC LIMIT ?', [$numberOfAtetmpts]);
+		return $attempts;
+	}
+	
 	public function getRandomHash() {
 		return hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), false));
 	}

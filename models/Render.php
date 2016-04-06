@@ -46,8 +46,8 @@ class Render extends Model {
 				'contact' => 'Contact'
 			]
 		];
-
-		$result = '<li><a href="'.ROOT.'/'.$lang.'/intro">'.$labels[$lang]['intro'].'</a></li>';
+		
+		if (!$login) $result = '<li><a href="'.ROOT.'/'.$lang.'/intro">'.$labels[$lang]['intro'].'</a></li>';
 		if (!$login) $result .= '<li><a href="'.ROOT.'/'.$lang.'/login">'.$labels[$lang]['login'].'</a></li>';
 		if (!$login) $result .= '<li><a href="'.ROOT.'/'.$lang.'/registration">'.$labels[$lang]['registration'].'</a></li>';
 		if ($login) $result .= '<li><a href="'.ROOT.'/'.$lang.'/payments/'.$_SESSION["id_user"].'">'.$labels[$lang]['payments'].'</a></li>';

@@ -122,7 +122,7 @@ input[type="tel"],
 input[type="password"],
 input[type="date"] {
     width: 280px;
-    height: 16px;
+    /*height: 16px;*/
     border: 1px solid #444444;
     padding: 3px;
     margin: 0;
@@ -130,7 +130,7 @@ input[type="date"] {
 
 select {
     width: 288px;
-    height: 20px;
+    /*height: 20px;*/
 }
 
 textarea {

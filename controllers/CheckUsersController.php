@@ -11,6 +11,7 @@ class CheckUsersController extends Controller {
 
 		$this->data['csrf'] = Csrf::getCsrfToken();
 		$this->data['activeMemberMailList'] = $checkUsers->getActiveMemberMailList($members);
+		$this->data['listOfLastKeys'] = $checkUsers->getLastAttempts(10);
 		$this->data['members'] = $members;
 		$this->header['title'] = [
 			'cs' => 'Ostatní členové',
