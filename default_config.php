@@ -4,6 +4,8 @@ $useProduction = false;
 //you may delete 'default_' prefix for custom config
 //--------------------------------------------------
 
+//TODO - make nice installation script (where all this will be set)
+
 //---------------------------------------------------------------
 //settings for TMS2 - please edit the second string on every line
 //---------------------------------------------------------------

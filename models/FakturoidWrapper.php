@@ -67,9 +67,9 @@ class FakturoidWrapper extends Model {
 				'street' => $user['address'],
 			]);
 			
-			if ($lang == 'cs')
-				$tariffLine = 'Tarif: '.$tariffName.' se začátkem ke dni '.date('d. m. Y', strtotime($issuedDate)); else $tariffLine = 'Tariff: '.$tariffName.' with beginning from '.date('d. m. Y', strtotime($issuedDate));
-			
+			//disabled multilingual genereation fo texts
+			//if ($lang == 'cs') $tariffLine = 'Tarif: '.$tariffName.' se začátkem ke dni '.date('d. m. Y', strtotime($issuedDate)); else $tariffLine = 'Tariff: '.$tariffName.' with beginning from '.date('d. m. Y', strtotime($issuedDate));
+			$tariffLine = 'Tarif: '.$tariffName.' se začátkem ke dni '.date('d. m. Y', strtotime($issuedDate));
 			$lines = [
 				[
 					'name' => $tariffLine,

@@ -55,7 +55,7 @@ We registered request about password change on the page <a href="'.ROOT.'/'.$lan
 <br/>
 You can change your password by clicking on this link: <a href="'.$activeLink.'">'.$activeLink.'</a>. Time validity of this link is <b>'.round(CHANGE_PASS_TIME_VALIDITY / 60).'</b> minutes.<br/>
 <br/>
-If you don\'t except this mail, just ignore it. But if you want to know what to do next,
+If you don\'t expect this mail, just ignore it. But if you want to know what to do next,
 please contact our webmaster on this page: <a href="'.ROOT.'/'.$language.'/contact">'.ROOT.'/'.$language.'/contact</a><br/>'
 			];
 			
