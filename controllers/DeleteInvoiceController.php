@@ -18,6 +18,7 @@ class DeleteInvoiceController extends Controller {
 		$fakturoid = new FakturoidWrapper();
 		$paymentFakturoidId = $fakturoid->getFakturoidInvoiceIdFromPaymentId($paymentId);
 		$fakturoid->cancelInvoice($paymentFakturoidId);
+		//TODO disable delete for already payed invoices
 		$result = $bitcoinPay->deletePayment($paymentId);
 		$this->messages[] = $result;
 		

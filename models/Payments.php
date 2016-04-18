@@ -134,7 +134,7 @@ class Payments extends Model {
 		$tariffName = $this->getTariffName($tariffId, $lang);
 		$priceCZK = $tariff['priceCZK'];
 		$fakturoid = new FakturoidWrapper();
-		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate, $lang);
+		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, strtotime("Y-m-d", time()), $lang);
 		if (!$fakturoidInvoice)
 			return [
 				's' => 'error',
@@ -153,7 +153,7 @@ class Payments extends Model {
 				`price_CZK`, 
 				`invoice_fakturoid_id`, 
 				`invoice_fakturoid_number`
-		  	) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)', [
+		  	) VALUES (?, ?, ?, CURRENT_TIMESTAMP(), ?, ?, ?, ?)', [
 			$userId,
 			$beginningDate,
 			'unpaid',
