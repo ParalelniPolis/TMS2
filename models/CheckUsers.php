@@ -41,7 +41,6 @@ class CheckUsers extends Model {
 	}
 	
 	private function getPaymentFlag($userId) {
-		//TODO more robust check over all payments
 		$r = Db::querySingleOne('SELECT `status` FROM `payments`
                                  WHERE `id_payer` = ? ORDER BY ?, ?, `status` DESC', [
 			$userId,

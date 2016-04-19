@@ -39,11 +39,11 @@
 		</tr>
 		<tr>
 			<td class="right">
-				<label for="address">Adresa (potřeba pro správnou fakturu): </label>
+				<label for="address">Adresa (ulice, č.p., PSČ, město): </label>
 			</td>
 			<td class="left">
 				<input type="text" name="address" id="address" value="<?php if (!empty($address))
-					echo($address); ?>">
+					echo($address); ?>" required>
 			</td>
 		</tr>
 		<tr>
@@ -75,7 +75,7 @@
 		</tr>
 		<tr>
 			<td class="right">
-				<label for="startDate">Datum začátku fakturace: </label>
+				<label for="startDate">Datum začátku členského období: </label>
 			</td>
 			<td class="left">
 				<input type="date" id="startDate" name="startDate" value="<?=date('Y-m-d', time());?>">

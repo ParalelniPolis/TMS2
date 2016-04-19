@@ -23,7 +23,6 @@ class ForceActivationController extends Controller {
 			$startDate = $activation->sanitize($_POST['startDate']);
 			$result = $activation->validateForceActivationData($tariffId, $startDate);
 			if ($result['s'] == 'success') {
-				//TODO resolve invoice total sum conflict (different total when change tariff in the middle)
 				$result = $activation->forceActivateUser($activation->getUserEmailFromId($userId), $tariffId, $startDate);
 			}
 			$this->messages[] = $result;

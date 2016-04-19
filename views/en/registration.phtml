@@ -39,11 +39,11 @@
 		</tr>
 		<tr>
 			<td class="right">
-				<label for="address">Address (required for proper invoicing): </label>
+				<label for="address">Address ((street, house number, ZIP code, city): </label>
 			</td>
 			<td class="left">
 				<input type="text" name="address" id="address" value="<?php if (!empty($address))
-					echo($address); ?>">
+					echo($address); ?>" required>
 			</td>
 		</tr>
 		<tr>
@@ -75,7 +75,7 @@
 		</tr>
 		<tr>
 			<td class="right">
-				<label for="startDate">Start: </label>
+				<label for="startDate">Membership start day: </label>
 			</td>
 			<td class="left">
 				<input type="date" id="startDate" name="startDate" value="<?=date('Y-m-d', time());?>">
@@ -101,7 +101,7 @@
 		<tr>
 			<td colspan="2" class="center">
 				<button type="submit" name="sent"
-				        onclick="return regformhash(this.form, this.form.password, this.form.passwordComfirm);"/>
+				        onclick="return regformhash(this.form, this.form.password, this.form.passwordComfirm);">
 				Registrovat!</button>
 			</td>
 		</tr>

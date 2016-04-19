@@ -11,10 +11,10 @@ class DeleteInvoiceController extends Controller {
 		
 		//allow delete only for admin
 		$paymentUserId = $bitcoinPay->getPaymentUserId($paymentId);
-		if (!$bitcoinPay->checkIfIsAdminOfUser($_SESSION['id_user'], $paymentUserId)) {
+		if (!$bitcoinPay->checkIfIsAdminOfUser($_SESSION['id_user'], $paymentUserId))
 			$this->redirect('error');
-		}
 		
+		//disable delete invoice, which is already payed
 		$fakturoid = new FakturoidWrapper();
 		$paymentFakturoidId = $fakturoid->getFakturoidInvoiceIdFromPaymentId($paymentId);
 		$fakturoid->cancelInvoice($paymentFakturoidId);

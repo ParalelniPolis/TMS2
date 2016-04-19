@@ -47,36 +47,7 @@ class PayInvoiceController extends Controller {
 				}
 				
 				case ('return'): {
-					//first via GET returning status about actual action of user (spoofable, info only for ordinary folks)
-					switch ($_GET['bitcoinpay-status']) {
-						case ('true'):
-							$this->messages[] = [
-								's' => 'success',
-								'cs' => 'Platbu jsme přijali v pořádku',
-								'en' => 'Payment was successfully accepted'
-							];
-							break;
-						
-						case ('cancel'):
-							$this->messages[] = [
-								's' => 'info',
-								'cs' => 'Platba byla přerušena',
-								'en' => 'Payment was interrupted'
-							];
-							break;
-						
-						case ('false'):
-						default:
-							$bitcoinPay->newTicket('error', 'controller $bitcoinPay->case return->case false', 'error with bitcoinpay payment - something wrong happend');
-							$this->messages[] = [
-								's' => 'error',
-								'cs' => 'S platbou se stalo něco zvláštního',
-								'en' => 'It\'s something unusual with the payment'
-							];
-							break;
-					}
-					
-					//second get status from bitcoinpay.com directly
+					//get status from bitcoinpay.com
 					$data = $bitcoinPay->getTransactionDetails($bitcoinPay->getBitcoinpayId($paymentId));
 					
 					if (empty($data)) {
