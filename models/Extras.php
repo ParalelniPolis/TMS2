@@ -2,16 +2,29 @@
 
 class Extras extends Model {
 	
-	//TODO make more specific errors
 	public function checkAddValues($paymentId, $price, $description) {
 		$paymentIdFromDb = Db::querySingleOne('SELECT `id_payment` FROM `payments`
 			WHERE `id_payment` = ?', [$paymentId]);
-		if ($paymentId == $paymentIdFromDb && is_numeric($price) && strlen($description) <= 120)
+		if (empty($paymentIdFromDb))
+			return [
+				's' => 'error',
+				'cs' => 'Nepovedlo se najít platbu v databázi',
+				'en' => 'We cannot find correct payment in database'
+			];
+		
+		if (!is_numeric($price))
+			return [
+				's' => 'error',
+				'cs' => 'Částka musí být číslo',
+				'en' => 'Value must be a number'
+			];
+		
+		if (strlen($description) <= 120)
 			return ['s' => 'success']; else
 			return [
 				's' => 'error',
-				'cs' => 'Neplatné zadání',
-				'en' => 'Incorrect input'
+				'cs' => 'Popis musí být do 120 znaků',
+				'en' => 'Description must be up to 120 characters'
 			];
 	}
 	
