@@ -39,11 +39,11 @@
 		</tr>
 		<tr>
 			<td class="right">
-				<label for="address">Adresa (volitelně): </label>
+				<label for="address">Adresa: </label>
 			</td>
 			<td class="left">
 				<input type="text" name="address" id="address" value="<?php if (!empty($address))
-					echo($address); ?>">
+					echo($address); ?>" required>
 			</td>
 		</tr>
 		<tr>
@@ -84,7 +84,7 @@
 		<tr>
 			<td colspan="2" class="center">
 				<button type="submit" name="sent"
-				        onclick="return regformhash(this.form, this.form.password, this.form.passwordComfirm);"/>
+				        onclick="return regformhash(this.form, this.form.password, this.form.passwordComfirm);">
 				Registrovat!</button>
 			</td>
 		</tr>

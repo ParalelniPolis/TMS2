@@ -2,6 +2,7 @@
 
 class Bitcoinpay extends Model {
 	
+	//TODO implement the possibility of more than one Bitcoinpay account
 	public function requestPaymentStatus($paymentId, $lang) {
 		$paymentStatus = Db::querySingleOne('SELECT `status` FROM `payments` WHERE id_payment = ?', [$paymentId]);
 		
@@ -274,5 +275,15 @@ class Bitcoinpay extends Model {
 	public function getBitcoinpayId($paymentId) {
 		return Db::querySingleOne('SELECT `bitcoinpay_payment_id` FROM `payments`
             WHERE `id_payment` = ?', [$paymentId]);
+	}
+	
+	public function getPaymentStatus($paymentId) {
+		return Db::querySingleOne('SELECT `status` FROM `payments` 
+			WHERE id_payment = ?', [$paymentId]);
+	}
+	
+	public function updatePaymentStatus($paymentId, $newStatus) {
+		Db::queryModify('UPDATE `payments` SET `status` = ? 
+			WHERE id_payment = ?', [$newStatus, $paymentId]);
 	}
 }

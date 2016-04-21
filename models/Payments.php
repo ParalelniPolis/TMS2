@@ -131,10 +131,10 @@ class Payments extends Model {
 	private function createPayment($user, $tariff, $beginningDate, $lang) {
 		$userId = $user['id_user'];
 		$tariffId = $tariff['id_tariff'];
-		$tariffName = $this->getTariffName($tariffId, $lang);
+		$tariffName = $this->getTariffName($tariffId, 'cs'); //invoice is in czech only
 		$priceCZK = $tariff['priceCZK'];
 		$fakturoid = new FakturoidWrapper();
-		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, strtotime("Y-m-d", time()), $lang);
+		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, time(), $lang);
 		if (!$fakturoidInvoice)
 			return [
 				's' => 'error',
@@ -143,6 +143,7 @@ class Payments extends Model {
 			];
 		$fakturoidInvoiceId = $fakturoidInvoice->id;
 		$fakturoidInvoiceNumber = $fakturoidInvoice->number;
+		$now = date('Y-m-d H-i-s');
 		Db::queryModify('
 			INSERT INTO `payments` (
 				`id_payer`, 
@@ -153,10 +154,11 @@ class Payments extends Model {
 				`price_CZK`, 
 				`invoice_fakturoid_id`, 
 				`invoice_fakturoid_number`
-		  	) VALUES (?, ?, ?, CURRENT_TIMESTAMP(), ?, ?, ?, ?)', [
+		  	) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [
 			$userId,
 			$beginningDate,
 			'unpaid',
+			$now,
 			$tariffId,
 			$priceCZK,
 			$fakturoidInvoiceId,

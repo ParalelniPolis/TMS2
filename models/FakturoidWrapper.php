@@ -69,7 +69,8 @@ class FakturoidWrapper extends Model {
 			
 			//disabled multilingual genereation fo texts
 			//if ($lang == 'cs') $tariffLine = 'Tarif: '.$tariffName.' se začátkem ke dni '.date('d. m. Y', strtotime($issuedDate)); else $tariffLine = 'Tariff: '.$tariffName.' with beginning from '.date('d. m. Y', strtotime($issuedDate));
-			$tariffLine = 'Tarif: '.$tariffName.' se začátkem ke dni '.date('d. m. Y', strtotime($issuedDate));
+			
+			$tariffLine = 'Tarif: '.$tariffName.' se začátkem ke dni '.date('d. m. Y', $issuedDate);
 			$lines = [
 				[
 					'name' => $tariffLine,
@@ -79,7 +80,7 @@ class FakturoidWrapper extends Model {
 			];
 			$invoice = $this->fakturoid->create_invoice([
 				'subject_id' => $user['fakturoid_id'],
-				'issued_on' => $issuedDate,
+				'issued_on' => strtotime('Y-m-d', $issuedDate),
 				'currency' => 'CZK',
 				'lines' => $lines
 			]);

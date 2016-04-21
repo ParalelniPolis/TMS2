@@ -1,5 +1,6 @@
 <?php
 $useProduction = false;
+//TODO add automatic recognition of dev/prod
 //--------------------------------------------------
 //you may delete 'default_' prefix for custom config
 //--------------------------------------------------
@@ -41,6 +42,7 @@ define('DB_DATABASE_PROD', 'your_database');
 
 //settings for BitcoinPay.com
 define('BITCOINPAY_TOKEN', 'your_bitcoinpay_token');
+define('BITOINPAY_CALLBACK_PASS', 'your_bitcoinpay_callback_password'); //it should be set in Settings->API
 
 //settings for Fakturoid.cz
 define('FAKTUROID_SLUG', 'your_slug'); //in Fakturoid know also as old subdomain
