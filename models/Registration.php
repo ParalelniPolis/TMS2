@@ -36,12 +36,13 @@ class Registration extends Model {
 				'cs' => 'Telefoní číslo musí být číslo (volitelně i s národní předvolbou)',
 				'en' => 'Telephone number must be a number (optionally with country prefix)'
 			];
-		if (!empty($data['ic']) && !is_numeric($data['ic']))
-			return [
-				's' => 'error',
-				'cs' => 'IČ musí být číslo',
-				'en' => 'VAT must be a number'
-			];
+		if (!empty($data['ic']))
+			if (!is_numeric($data['ic']))
+				return [
+					's' => 'error',
+					'cs' => 'IČ musí být číslo',
+					'en' => 'VAT must be a number'
+				];
 		if (strlen($data['address']) > 120)
 			return [
 				's' => 'error',
