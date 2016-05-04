@@ -65,7 +65,8 @@ class Payments extends Model {
 			if (empty($payment['status']) || $payment['status'] == 'unpaid') {
 				$data['status'] = 'unpaid';
 				$data['price'] = null;
-			} else {
+			}
+			else {
 				$data = $bitcoinPay->getTransactionDetails($bitcoinpayId);
 				//invalid response
 				if (empty($data)) {
@@ -101,8 +102,9 @@ class Payments extends Model {
 		if ($active) {
 			$new = false;
 			$userId = $user['id_user'];
-			$dbStartDate = $user['invoicing_start_date'];
-			$currentDate = date('Y-m-d');
+			list($year, $month, $day) = explode('-', $user['invoicing_start_date']);
+			$dbStartDate = mktime(0, 0, 0, $month, $day, $year);
+			$currentDate = time();
 			$startOfLastGeneratedMonth = Db::querySingleOne('
                 SELECT `payment_first_date` FROM `payments`
                 WHERE `id_payer` = ?
@@ -111,21 +113,27 @@ class Payments extends Model {
 			if (empty($startOfLastGeneratedMonth)) {
 				//add beginning for new user
 				$startDate = $dbStartDate;
-			} else {
+			}
+			else {
+				list($year, $month, $day) = explode('-', $startOfLastGeneratedMonth);
+				$startOfLastGeneratedMonth = mktime(0, 0, 0, $month, $day, $year);
 				//or deside when if use last day of previous payment or newly begin set
-				if (strtotime($startOfLastGeneratedMonth) >= strtotime($dbStartDate))
-					$startDate = date('Y-m-d', strtotime($startOfLastGeneratedMonth.' +1 month')); else $startDate = $dbStartDate;
+				if ($startOfLastGeneratedMonth >= $dbStartDate)
+					$startDate = strtotime('+1 month', $startOfLastGeneratedMonth);
+				else $startDate = $dbStartDate;
 			}
 			
 			//and add following invoices till today
-			while (strtotime($startDate) <= strtotime($currentDate)) {
+			while ($startDate <= $currentDate) {
 				$this->createPayment($user, $tariff, $startDate, $lang);
-				$startDate = date('Y-m-d', strtotime($startDate.' +1 month'));
+				$startDate = strtotime(' +1 month', $startDate);
 				$new = true;
 			}
 			if ($new == true)
-				return true; else return false;
-		} else return false;
+				return true;
+			else return false;
+		}
+		else return false;
 	}
 	
 	private function createPayment($user, $tariff, $beginningDate, $lang) {
@@ -134,7 +142,7 @@ class Payments extends Model {
 		$tariffName = $this->getTariffName($tariffId, 'cs'); //invoice is in czech only
 		$priceCZK = $tariff['priceCZK'];
 		$fakturoid = new FakturoidWrapper();
-		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, time(), $lang);
+		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate, $lang);
 		if (!$fakturoidInvoice)
 			return [
 				's' => 'error',
@@ -156,7 +164,7 @@ class Payments extends Model {
 				`invoice_fakturoid_number`
 		  	) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [
 			$userId,
-			$beginningDate,
+			date('Y-m-d', $beginningDate),
 			'unpaid',
 			$now,
 			$tariffId,

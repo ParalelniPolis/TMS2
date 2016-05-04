@@ -80,7 +80,7 @@ class FakturoidWrapper extends Model {
 			];
 			$invoice = $this->fakturoid->create_invoice([
 				'subject_id' => $user['fakturoid_id'],
-				'issued_on' => strtotime('Y-m-d', $issuedDate),
+				'issued_on' => date('Y-m-d'),
 				'currency' => 'CZK',
 				'lines' => $lines
 			]);
