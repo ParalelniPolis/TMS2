@@ -1,5 +1,9 @@
 <?php
-$useProduction = false;
+if ($_SERVER['HTTP_HOST'] == 'localhost')
+	$useProduction = false;
+else
+	$useProduction = true;
+
 //TODO add automatic recognition of dev/prod
 //--------------------------------------------------
 //you may delete 'default_' prefix for custom config
@@ -23,6 +27,7 @@ define('BRUTEFORCE_LOCKED_TIME', 1800); //in seconds; time how long login anti-b
 define('BRUTEFORCE_NUMBER_OF_ATTEMPTS', 5); //max number of attempts before bruteforce send email and lock account; default is 5
 define('CHANGE_PASS_TIME_VALIDITY', 1800); //in seconds; time how long will be link for changing password; default is 1800 (half an hour)
 define('TOLERANCE_TIME_ON_SENDING_REMINDING_EMAILS', 7); //in days
+define('SEND_TICKET_EMAILS', false); //set true when you want to copy all ticket messages into your email, else set false
 define('ALLOW_MAKE_ADMIN', false); //default false - true is INSECURE!
 
 //settings for locks

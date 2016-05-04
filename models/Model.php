@@ -5,7 +5,7 @@ class Model {
 	public function newTicket($type, $sender, $message) {
 		Db::queryModify('INSERT INTO tickets (type, title, message, `timestamp`)
                          VALUES (?,?,?,NOW())', [$type, $sender, $message]);
-		$this->sendEmail(EMAIL, EMAIL, 'Ticket from'.NAME, $message);
+		 if (SEND_TICKET_EMAILS) $this->sendEmail(EMAIL, EMAIL, 'Ticket from'.NAME, $message);
 	}
 	
 	public function getLanguage($parameter) {
@@ -28,7 +28,7 @@ class Model {
 	}
 	
 	public function forceChangeLanguage($lang) {
-		setcookie('language', $lang, time() + 60 * 60 * 24 * 365);
+		setcookie('language', $lang, time() + 60 * 60 * 24 * 365); //one year
 		$_COOKIE['language'] = $lang;
 	}
 	

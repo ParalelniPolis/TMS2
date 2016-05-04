@@ -15,13 +15,17 @@ spl_autoload_register("autoloadFunction");
 
 //load settings
 if (file_exists('config.php'))
-	require_once('config.php'); else require_once('default_config.php');
+	require_once('config.php');
+else
+	require_once('default_config.php');
 session_start();
 
 //connnect to DB
 try {
 	if ($useProduction)
-		Db::connect(DB_SERVER_PROD, DB_LOGIN_PROD, DB_PASSWORD_PROD, DB_DATABASE_PROD); else Db::connect(DB_SERVER_LOCAL, DB_LOGIN_LOCAL, DB_PASSWORD_LOCAL, DB_DATABASE_LOCAL);
+		Db::connect(DB_SERVER_PROD, DB_LOGIN_PROD, DB_PASSWORD_PROD, DB_DATABASE_PROD);
+	else
+		Db::connect(DB_SERVER_LOCAL, DB_LOGIN_LOCAL, DB_PASSWORD_LOCAL, DB_DATABASE_LOCAL);
 } catch (PDOException $e) {
 	if (!$useProduction)
 		echo $e->getMessage();
@@ -37,10 +41,12 @@ if (!function_exists('apache_request_headers')) {
 			if (substr($key, 0, 5) == "HTTP_") {
 				$key = str_replace(" ", "-", ucwords(strtolower(str_replace("_", " ", substr($key, 5)))));
 				$out[$key] = $value;
-			} else {
+			}
+			else {
 				$out[$key] = $value;
 			}
 		}
+		
 		return $out;
 	}
 }

@@ -25,7 +25,8 @@ class Render extends Model {
 	
 	public function returnMainMenu($lang) {
 		if (!empty($_SESSION['id_user']))
-			$userId = $_SESSION['id_user']; else $userId = false;
+			$userId = $_SESSION['id_user'];
+		else $userId = false;
 		$login = $this->checkLogin();
 		$admin = $this->checkIfAdmin($userId);
 		
@@ -52,23 +53,24 @@ class Render extends Model {
 			]
 		];
 		
+		$output = '';
 		if (!$login)
-			$result = '<li><a href="'.ROOT.'/'.$lang.'/intro">'.$labels[$lang]['intro'].'</a></li>';
+			$output = '<li><a href="'.ROOT.'/'.$lang.'/intro">'.$labels[$lang]['intro'].'</a></li>';
 		if (!$login)
-			$result .= '<li><a href="'.ROOT.'/'.$lang.'/login">'.$labels[$lang]['login'].'</a></li>';
+			$output .= '<li><a href="'.ROOT.'/'.$lang.'/login">'.$labels[$lang]['login'].'</a></li>';
 		if (!$login)
-			$result .= '<li><a href="'.ROOT.'/'.$lang.'/registration">'.$labels[$lang]['registration'].'</a></li>';
+			$output .= '<li><a href="'.ROOT.'/'.$lang.'/registration">'.$labels[$lang]['registration'].'</a></li>';
 		if ($login)
-			$result .= '<li><a href="'.ROOT.'/'.$lang.'/payments/'.$_SESSION["id_user"].'">'.$labels[$lang]['payments'].'</a></li>';
+			$output .= '<li><a href="'.ROOT.'/'.$lang.'/payments/'.$_SESSION["id_user"].'">'.$labels[$lang]['payments'].'</a></li>';
 		if ($login)
-			$result .= '<li><a href="'.ROOT.'/'.$lang.'/changePersonals/'.$_SESSION["id_user"].'">'.$labels[$lang]['changePersonals'].'</a></li>';
+			$output .= '<li><a href="'.ROOT.'/'.$lang.'/changePersonals/'.$_SESSION["id_user"].'">'.$labels[$lang]['changePersonals'].'</a></li>';
 		if ($admin)
-			$result .= '<li><a href="'.ROOT.'/'.$lang.'/checkUsers">'.$labels[$lang]['checkUsers'].'</a></li>';
+			$output .= '<li><a href="'.ROOT.'/'.$lang.'/checkUsers">'.$labels[$lang]['checkUsers'].'</a></li>';
 		if ($admin)
-			$result .= '<li><a href="'.ROOT.'/'.$lang.'/forceRegistration">'.$labels[$lang]['forceRegistration'].'</a></li>';
-		$result .= '<li><a href="'.ROOT.'/'.$lang.'/contact">'.$labels[$lang]['contact'].'</a></li>';
+			$output .= '<li><a href="'.ROOT.'/'.$lang.'/forceRegistration">'.$labels[$lang]['forceRegistration'].'</a></li>';
+		$output .= '<li><a href="'.ROOT.'/'.$lang.'/contact">'.$labels[$lang]['contact'].'</a></li>';
 		
-		return $result;
+		return $output;
 	}
 	
 }
