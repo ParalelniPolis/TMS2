@@ -98,9 +98,10 @@ class Payments extends Model {
 	}
 	
 	public function makeNewPayments($user, $tariff, $lang) {
+		$new = false;
 		$active = $user['active'];
+		//generate new payments
 		if ($active) {
-			$new = false;
 			$userId = $user['id_user'];
 			list($year, $month, $day) = explode('-', $user['invoicing_start_date']);
 			$dbStartDate = mktime(0, 0, 0, $month, $day, $year);
@@ -129,11 +130,12 @@ class Payments extends Model {
 				$startDate = strtotime(' +1 month', $startDate);
 				$new = true;
 			}
-			if ($new == true)
-				return true;
-			else return false;
+			
 		}
-		else return false;
+		if ($new == true)
+			return true;
+		else
+			return false;
 	}
 	
 	private function createPayment($user, $tariff, $beginningDate, $lang) {
@@ -142,6 +144,7 @@ class Payments extends Model {
 		$tariffName = $this->getTariffName($tariffId, 'cs'); //invoice is in czech only
 		$priceCZK = $tariff['priceCZK'];
 		$fakturoid = new FakturoidWrapper();
+		
 		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate, $lang);
 		if (!$fakturoidInvoice)
 			return [
@@ -172,6 +175,20 @@ class Payments extends Model {
 			$fakturoidInvoiceId,
 			$fakturoidInvoiceNumber
 		]);
+		
+		//add blank extras
+		$extras = new Extras;
+		$blankExtras = $extras->getBlankExtras($user['id_user']);
+		if (!empty($blankExtras)) {
+			foreach ($blankExtras as $extra) {
+				$extraId = $extra['id_extra'];
+				$price = $extra['priceCZK'];
+				$description = $extra['description'];
+				$fakturoidExtraId = $fakturoid->addExtra($fakturoidInvoiceId, $extra['priceCZK'], $extra['description']);
+				$paymentId = $this->getPaymentIdFromFakturoidInvoiceId($fakturoidInvoiceId);
+				$extras->assignBlankExtra($paymentId, $price, $description, $fakturoidExtraId, $extraId);
+			}
+		}
 		
 		return ['s' => 'success'];
 	}
@@ -252,5 +269,9 @@ class Payments extends Model {
 		}
 		
 		return $result;
+	}
+	
+	private function getPaymentIdFromFakturoidInvoiceId($fakturoidInvoiceId) {
+		return Db::querySingleOne('SELECT `id_payment` FROM `payments` WHERE `invoice_fakturoid_id` = ?', [$fakturoidInvoiceId]);
 	}
 }

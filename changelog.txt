@@ -2,7 +2,8 @@ TMS 2nd generation for PP by TK
 restructuralized onto MVC and shifted from handmade payments into BitcoinPay.com system
 
 
-v0.20-4+1+4+2 requests no.4 & minor changes + implement bitcoinpay.com notify feature 
+extra-1+4 hotfix and repairs of hotfix
+v0.20-4+1+4+2+3 requests no.4 & minor changes + implement bitcoinpay.com notify feature 
 v0.19-2 added assiging members to locks
 v0.18-2+2 polishing
 v0.17-4+2+4 adding extras

@@ -68,7 +68,7 @@
 		<?php if ($admin): ?>
 			<tr>
 				<td class="right">
-					<label for="price">Cena: </label>
+					<label for="price">Cena (Kč): </label>
 				</td>
 				<td colspan="5">
 					<form method="POST" action="<?=ROOT?>/cs/extras/add">
@@ -83,4 +83,20 @@
 		<?php endif ?>
 	<?php endforeach ?>
 </table>
+
+<?php if ($admin): ?>
+	<p><b>Položky na další fakturu</b></p>
+	<?php foreach ($blankExtras as $blankExtra): ?>
+		<p><?=$blankExtra['description']?> - <?=$blankExtra['priceCZK']?> Kč</p>
+	<?php endforeach ?>
+		<form method="POST" action="<?=ROOT?>/cs/extras/addBlank">
+			<label for="price">Cena (Kč): </label>
+			<input type="hidden" name="userId" value="<?=$user['id_user']?>">
+			<input id="price" name="price" type="number" step="any">
+			<label for="description">Popis: </label>
+			<input id="description" name="description" type="text">
+			<button type="submit">Přidat položku k budoucí faktuře</button>
+		</form>
+<?php endif ?>
+
 <p><a href="mailto:<?=EMAIL_HUB_MANAGER?>">Pro změnu tarifu kontaktuj prosím svého Paper Hub manažera</a></p>

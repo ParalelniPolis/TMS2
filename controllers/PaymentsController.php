@@ -25,6 +25,9 @@ class PaymentsController extends Controller {
 		//get new data for user view
 		$data = $payments->getUserData($userId);
 		$data['payments'] = $payments->enhanceUserPayments($data['payments'], $this->language);
+		$extras = new Extras;
+		$this->data['blankExtras'] = $extras->getBlankExtras($userId);
+		
 		
 		//display non-active user
 		if (!$data['user']['active'])
