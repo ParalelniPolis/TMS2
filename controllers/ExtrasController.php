@@ -53,8 +53,8 @@ class ExtrasController extends Controller {
 				$extraId = $parameters[1];
 				$status = $extras->getStatusOfPaymentFromExtraId($extraId);
 				
-				//allow add extra only when new payment will be generated
-				if (!in_array($status, ['unpaid', 'refund', 'timeout'])) {
+				//allow add extra only when new payment will be generated or is blank
+				if (!in_array($status, ['unpaid', 'refund', 'timeout', null])) {
 					$this->messages[] = [
 						's' => 'error',
 						'cs' => 'Bohužel, položka nebyla zrušena; platba se právě platí nebo je již zaplacená',

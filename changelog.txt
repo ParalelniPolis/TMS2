@@ -3,7 +3,7 @@ restructuralized onto MVC and shifted from handmade payments into BitcoinPay.com
 
 
 extra-1+4 hotfix and repairs of hotfix
-v0.20-4+1+4+2+3 requests no.4 & minor changes + implement bitcoinpay.com notify feature 
+v0.20-4+1+4+2+3+1 requests no.4 & minor changes + implement bitcoinpay.com notify feature 
 v0.19-2 added assiging members to locks
 v0.18-2+2 polishing
 v0.17-4+2+4 adding extras

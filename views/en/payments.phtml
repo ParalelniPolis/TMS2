@@ -42,7 +42,7 @@
 			<?php if ($admin): ?>
 				<td>
 					<a href="<?=ROOT?>/en/DeleteInvoice/<?=$p['id_payment']?>">
-						<button>Cancel invoice!</button>
+						<button>Cancel invoice</button>
 					</a>
 				</td>
 			<?php endif ?>
@@ -52,7 +52,7 @@
 				<td class="right">
 					<?php if ($admin): ?>
 						<a href="<?=ROOT?>/en/extras/delete/<?=$e['id_extra']?>">
-							<button>Delete!</button>
+							<button>Delete</button>
 						</a>
 					<?php endif; ?>
 				</td>
@@ -87,7 +87,11 @@
 <?php if ($admin): ?>
 	<p><b>Extras for next invoice</b></p>
 	<?php foreach ($blankExtras as $blankExtra): ?>
-		<p><?=$blankExtra['description']?> - <?=$blankExtra['priceCZK']?> CZE</p>
+		<p><?=$blankExtra['description']?> - <?=$blankExtra['priceCZK']?> CZE 
+			<a href="<?=ROOT?>/en/extras/delete/<?=$blankExtra['id_extra']?>">
+				<button>Delete</button>
+			</a>
+		</p>
 	<?php endforeach ?>
 	<form method="POST" action="<?=ROOT?>/cs/extras/addBlank">
 		<label for="price">Price (CZE): </label>

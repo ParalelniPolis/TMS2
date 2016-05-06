@@ -42,7 +42,7 @@
 			<?php if ($admin): ?>
 				<td>
 					<a href="<?=ROOT?>/cs/DeleteInvoice/<?=$p['id_payment']?>">
-						<button>Zrušit fakturu!</button>
+						<button>Zrušit fakturu</button>
 					</a>
 				</td>
 			<?php endif ?>
@@ -52,7 +52,7 @@
 				<td class="right">
 					<?php if ($admin): ?>
 						<a href="<?=ROOT?>/cs/extras/delete/<?=$e['id_extra']?>">
-							<button>Smazat!</button>
+							<button>Smazat</button>
 						</a>
 					<?php endif; ?>
 				</td>
@@ -87,7 +87,11 @@
 <?php if ($admin): ?>
 	<p><b>Položky na další fakturu</b></p>
 	<?php foreach ($blankExtras as $blankExtra): ?>
-		<p><?=$blankExtra['description']?> - <?=$blankExtra['priceCZK']?> Kč</p>
+		<p><?=$blankExtra['description']?> - <?=$blankExtra['priceCZK']?> Kč
+			<a href="<?=ROOT?>/cs/extras/delete/<?=$blankExtra['id_extra']?>">
+				<button>Smazat</button>
+			</a>
+		</p>
 	<?php endforeach ?>
 		<form method="POST" action="<?=ROOT?>/cs/extras/addBlank">
 			<label for="price">Cena (Kč): </label>
