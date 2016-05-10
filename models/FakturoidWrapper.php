@@ -82,6 +82,7 @@ class FakturoidWrapper extends Model {
 				'subject_id' => $user['fakturoid_id'],
 				'issued_on' => date('Y-m-d'),
 				'currency' => 'CZK',
+				'tags' => ['Paper Hub'],
 				'lines' => $lines
 			]);
 			//deliver the invoice
