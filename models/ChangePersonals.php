@@ -11,13 +11,14 @@ class ChangePersonals extends Payments {
 			];
 		}
 		
-		if (!is_numeric($data['ic'])) {
-			return [
-				's' => 'error',
-				'cs' => 'IČ musí být číslo',
-				'en' => 'VAT number must be a number'
-			];
-		}
+		if (!empty($data['ic']))
+			if (!is_numeric($data['ic'])) {
+				return [
+					's' => 'error',
+					'cs' => 'IČ musí být číslo',
+					'en' => 'VAT number must be a number'
+				];
+			}
 		
 		$attempt = Db::queryOne('SELECT `password`,`salt` FROM `users`
                                  WHERE `email` = ?', [$_SESSION['username']]);
