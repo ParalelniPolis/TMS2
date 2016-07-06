@@ -1,0 +1,5 @@
+- mail alert for non-paid incoices
+- add booking calendar for meeting rooms
+- add exports of everything/statistics for every months
+- add integration for sharing member info
+- mailchimp integration

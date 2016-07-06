@@ -5,7 +5,7 @@ class Model {
 	public function newTicket($type, $sender, $message) {
 		Db::queryModify('INSERT INTO tickets (type, title, message, `timestamp`)
                          VALUES (?,?,?,NOW())', [$type, $sender, $message]);
-		 if (SEND_TICKET_EMAILS) $this->sendEmail(EMAIL, EMAIL, 'Ticket from'.NAME, $message);
+		 if (SEND_TICKET_EMAILS) $this->sendEmail(EMAIL, EMAIL, 'Ticket from '.NAME, $message);
 	}
 	
 	public function getLanguage($parameter) {

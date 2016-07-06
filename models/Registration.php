@@ -136,7 +136,7 @@ class Registration extends Model {
 		$activeLink = ROOT.'/'.$language.'/activation/'.$randomHash;
 		
 		$message = [
-			'cs' => 'Ahoj!<br/>
+			'cs' => 'Zdravím!<br/>
 <br/>
 Klikem na tento odkaz si aktivuješ účet v systému '.NAME.' z Paralelní polis: <br/>
 <a href="'.$activeLink.'">'.$activeLink.'</a><br/>

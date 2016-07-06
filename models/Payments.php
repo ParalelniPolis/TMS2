@@ -190,6 +190,12 @@ class Payments extends Model {
 			}
 		}
 		
+		//send email to user
+		$subject = NAME.' Paralelní Polis - nová faktura';
+		$link = '<a href="'.ROOT.'">'.ROOT.'</a>';
+		$message = 'Zdravím! '.NAME.' vygeneroval novou fakturu na toto období. Klikem na '.$link.' ji můžete zaplatit.';
+		$this->sendEmail(EMAIL, $user['email'], $subject, $message);
+		
 		return ['s' => 'success'];
 	}
 	
