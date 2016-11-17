@@ -192,9 +192,19 @@ class Payments extends Model {
 		
 		//send email to user
 		$subject = NAME.' Paralelní Polis - nová faktura';
-		$link = '<a href="'.ROOT.'">'.ROOT.'</a>';
-		$message = 'Zdravím! '.NAME.' vygeneroval novou fakturu na toto období. Klikem na '.$link.' ji můžete zaplatit.';
+		$link = ROOT.'/cs/payments';
+		$message = 'Ahoj,<br/>
+<br/>
+vystavili jsem ti fakturu za členství / pronájem v Paper Hub v Paralelní Polis.<br/>
+<a href="'.$link.'">'.$link.'</a><br/>
+Platbu uhradíš jednoduše na odkazu výše.<br/> 
+<br/>
+Díky za rychlou platbu!<br/>
+Paper Hub';
 		$this->sendEmail(EMAIL, $user['email'], $subject, $message);
+		//and send copy of email to hub manager
+		//TODO refractor
+		$this->sendEmail(EMAIL, EMAIL_HUB_MANAGER, NAME.' - Poslána výzva o nové faktuře na email '.$user['email'], $message);
 		
 		return ['s' => 'success'];
 	}
