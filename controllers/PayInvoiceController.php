@@ -98,9 +98,11 @@ class PayInvoiceController extends Controller {
 					$bitcoinPay->updatePaymentStatus($paymentId, $notifedStatus);
 				*/
 				//TODO debugging bitcoinpay.com
+				/*
 				$bitcoinPay->newTicket('debug', 'bitcoinpayRawData', ($rawDataWithPass));
 				$bitcoinPay->newTicket('debug', 'received new status', ($notifedStatus));
 				$bitcoinPay->newTicket('debug', 'bitcoinpayDataHash', ($dataHash));
+				*/
 				
 				break;
 			}
