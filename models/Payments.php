@@ -127,7 +127,7 @@ class Payments extends Model {
 			//and add following invoices till today
 			while ($startDate <= $currentDate) {
 				$this->createPayment($user, $tariff, $startDate, $lang);
-				$startDate = strtotime(' +1 month', $startDate);
+				$startDate = strtotime('+1 month', $startDate);
 				$new = true;
 			}
 			

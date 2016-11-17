@@ -108,7 +108,7 @@ class Db {
 		$functionCall = $trace[2];
 		$type = 'error with DB';
 		$function = $DBcall['function'].' into '.$functionCall['function'].' in file '.$functionCall['file'];
-		$message = serialize($DBcall['args']);
+		$message = 'Message: '.$e->getMessage().' & Trace: '.serialize($DBcall['args']);
 		Db::queryModify('INSERT INTO tickets (`type`, `title`, `message`, `timestamp`)
                          VALUES (?,?,?,NOW())', [$type, $function, $message]);
 	}

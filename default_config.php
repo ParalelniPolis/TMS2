@@ -4,16 +4,15 @@ if ($_SERVER['HTTP_HOST'] == 'localhost')
 else
 	$useProduction = true;
 
-//TODO add automatic recognition of dev/prod
-//--------------------------------------------------
-//you may delete 'default_' prefix for custom config
-//--------------------------------------------------
+//---------------------------------------------------------------
+// you may delete 'default_' prefix for custom .gitignored config
+//---------------------------------------------------------------
 
 //TODO - make nice installation script (where all this will be set)
 
-//---------------------------------------------------------------
-//settings for TMS2 - please edit the second string on every line
-//---------------------------------------------------------------
+//----------------------------------------------------------------
+// settings for TMS2 - please edit the second string on every line
+//----------------------------------------------------------------
 
 //main directory for TMS2
 $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
