@@ -190,17 +190,30 @@ class Payments extends Model {
 			}
 		}
 		
+		//get id of new payment
+		$newInvoiceId = $this->getPaymentIdFromFakturoidInvoiceId($fakturoidInvoiceId);
+		
 		//send email to user
 		$subject = NAME.' Paralelní Polis - nová faktura';
-		$link = ROOT.'/cs/payments';
-		$message = 'Ahoj,<br/>
+		$linkCzech = ROOT.'/cs/PayInvoice/pay/'.$newInvoiceId;
+		$linkEnglish = ROOT.'/en/PayInvoice/pay/'.$newInvoiceId;
+		
+		$message = '<div style="float: left;width: 45%;">Ahoj,<br/>
 <br/>
 vystavili jsem ti fakturu za členství / pronájem v Paper Hub v Paralelní Polis.<br/>
-<a href="'.$link.'">'.$link.'</a><br/>
-Platbu uhradíš jednoduše na odkazu výše.<br/> 
+Platbu uhradíš jednoduše na tomto odkazu: <a href="'.$linkCzech.'">'.$linkCzech.'</a><br/>
 <br/>
 Díky za rychlou platbu!<br/>
-Paper Hub';
+Paper Hub</div>
+<div style="margin-left: 55%;">Hello,<br/>
+<br/>
+we\'ve invoiced your membership / rent in Paper Hub in Paralelní Polis.<br/>
+You can easily pay by scanning this QR code in your BTC wallet: <a href="'.$linkEnglish.'">'.$linkEnglish.'</a><br/>
+<br/>
+Thank you for your fast payment!<br/>
+Best regards,<br/>
+Paper Hub
+</div>';
 		$this->sendEmail(EMAIL, $user['email'], $subject, $message);
 		//and send copy of email to hub manager
 		//TODO refractor
