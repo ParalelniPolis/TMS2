@@ -194,21 +194,26 @@ class Payments extends Model {
 		$newInvoiceId = $this->getPaymentIdFromFakturoidInvoiceId($fakturoidInvoiceId);
 		
 		//send email to user
-		$subject = NAME.' Paralelní Polis - nová faktura';
+		$subject = NAME.' Paralelní Polis - nová faktura/new invoice';
+		$link = ROOT;
 		$linkCzech = ROOT.'/cs/PayInvoice/pay/'.$newInvoiceId;
 		$linkEnglish = ROOT.'/en/PayInvoice/pay/'.$newInvoiceId;
 		
 		$message = '<div style="float: left;width: 45%;">Ahoj,<br/>
 <br/>
 vystavili jsem ti fakturu za členství / pronájem v Paper Hub v Paralelní Polis.<br/>
-Platbu uhradíš jednoduše na tomto odkazu: <a href="'.$linkCzech.'">'.$linkCzech.'</a><br/>
+Platbu uhradíš jednoduše na tomto odkazu: <a href="'.$linkCzech.'">'.$linkCzech.'</a> (je potřeba být přihlášená/ý).<br/>
+<br/>
+Pokud odkaz nebude fungovat, seznam svých faktur najdeš po přihlášení zde: <a href="'.$link.'">'.$link.'</a><br/>
 <br/>
 Díky za rychlou platbu!<br/>
 Paper Hub</div>
 <div style="margin-left: 55%;">Hello,<br/>
 <br/>
 we\'ve invoiced your membership / rent in Paper Hub in Paralelní Polis.<br/>
-You can easily pay by scanning this QR code in your BTC wallet: <a href="'.$linkEnglish.'">'.$linkEnglish.'</a><br/>
+You can easily pay by scanning this QR code in your BTC wallet: <a href="'.$linkEnglish.'">'.$linkEnglish.'</a> (you need to be logged in System)<br/>
+<br/>
+If the link is not working, log in System and find the list of your invoices here: <a href="'.$link.'">'.$link.'</a><br/>
 <br/>
 Thank you for your fast payment!<br/>
 Best regards,<br/>
@@ -218,6 +223,8 @@ Paper Hub
 		//and send copy of email to hub manager
 		//TODO refractor
 		$this->sendEmail(EMAIL, EMAIL_HUB_MANAGER, NAME.' - Poslána výzva o nové faktuře na email '.$user['email'], $message);
+		//controll thirth mail
+		$this->sendEmail(EMAIL, EMAIL, NAME.' - Poslána výzva o nové faktuře na email '.$user['email'], $message);
 		
 		return ['s' => 'success'];
 	}
