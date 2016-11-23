@@ -35,10 +35,19 @@
 		</tr>
 		<tr>
 			<td class="right">
-				<label for="address">Address: </label>
+				<label for="address">Address (with ZIP): </label>
 			</td>
 			<td class="left">
 				<input type="text" name="address" id="address" value="<?=$address?>">
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="company">Company (for invoicing, non-required): </label>
+			</td>
+			<td class="left">
+				<input type="text" name="company" id="company" value="<?php if (!empty($company))
+					echo($company) ?>">
 			</td>
 		</tr>
 		<tr>

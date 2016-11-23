@@ -34,10 +34,17 @@ class FakturoidWrapper extends Model {
 	
 	public function updateCustomer($user) {
 		try {
+			//determine data in invoice
+			if (!empty($user['company'])) {
+				$nameOfCompany = $user['company'];
+			} else {
+				$nameOfCompany = $user['firstname'].' '.$user['surname'];
+			}
 			$data = [
-				'name' => $user['firstname'].' '.$user['surname'],
+				'name' => $nameOfCompany,
 				'registration_no' => $user['ic'],
-				'street' => $user['address']
+				'street' => $user['address'],
+				'full_name' => $user['firstname'].' '.$user['surname'],
 			];
 			$id = $user['fakturoid_id'];
 			$result = $this->fakturoid->update_subject($id, $data);
@@ -59,14 +66,6 @@ class FakturoidWrapper extends Model {
 	
 	public function createInvoice($user, $price, $tariffName, $issuedDate, $lang) {
 		try {
-			$this->fakturoid->update_subject($user['fakturoid_id'], [
-				'id' => $user['fakturoid_id'],
-				'name' => $user['first_name'].' '.$user['last_name'],
-				'email' => $user['email'],
-				'registration_no' => $user['ic'],
-				'street' => $user['address'],
-			]);
-			
 			//disabled multilingual genereation fo texts
 			//if ($lang == 'cs') $tariffLine = 'Tarif: '.$tariffName.' se začátkem ke dni '.date('d. m. Y', strtotime($issuedDate)); else $tariffLine = 'Tariff: '.$tariffName.' with beginning from '.date('d. m. Y', strtotime($issuedDate));
 			

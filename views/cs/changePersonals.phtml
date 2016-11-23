@@ -35,10 +35,19 @@
 		</tr>
 		<tr>
 			<td class="right">
-				<label for="address">Adresa: </label>
+				<label for="address">Adresa (včetně PSČ): </label>
 			</td>
 			<td class="left">
 				<input type="text" name="address" id="address" value="<?=$address?>">
+			</td>
+		</tr>
+		<tr>
+			<td class="right">
+				<label for="company">Firma (pro fakturaci, nepovinně): </label>
+			</td>
+			<td class="left">
+				<input type="text" name="company" id="company" value="<?php if (!empty($company))
+					echo($company) ?>">
 			</td>
 		</tr>
 		<tr>
