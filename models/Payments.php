@@ -2,7 +2,7 @@
 
 class Payments extends Model {
 	public function getUserData($userId) {
-		$user = Db::queryOne('SELECT `id_user`,`fakturoid_id`,`first_name`,`last_name`,`telephone`,`address`,`ic`,`active`,`email`,`name`,`tariffCZE`,`tariffENG`,`invoicing_start_date`
+		$user = Db::queryOne('SELECT `id_user`,`fakturoid_id`,`first_name`,`last_name`,`telephone`,`address`,`ic`,`company`,`active`,`email`,`name`,`tariffCZE`,`tariffENG`,`invoicing_start_date`
                               FROM `users`
                               JOIN `tariffs` ON `tariffs`.`id_tariff` = `users`.`user_tariff`
                               JOIN `places` ON `places`.`id` = `tariffs`.`place_id`
@@ -211,9 +211,9 @@ Paper Hub</div>
 <div style="margin-left: 55%;">Hello,<br/>
 <br/>
 we\'ve invoiced your membership / rent in Paper Hub in Paralelní Polis.<br/>
-You can easily pay by scanning this QR code in your BTC wallet: <a href="'.$linkEnglish.'">'.$linkEnglish.'</a> (you need to be logged in System)<br/>
+You can easily pay by scanning this QR code in your BTC wallet: <a href="'.$linkEnglish.'">'.$linkEnglish.'</a> (you need to be logged in the System)<br/>
 <br/>
-If the link is not working, log in System and find the list of your invoices here: <a href="'.$link.'">'.$link.'</a><br/>
+If the link is not working, log in the System and find the list of your invoices here: <a href="'.$link.'">'.$link.'</a><br/>
 <br/>
 Thank you for your fast payment!<br/>
 Best regards,<br/>

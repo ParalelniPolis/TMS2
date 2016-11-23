@@ -4,15 +4,18 @@ class ChangePersonalsController extends Controller {
 	
 	function process($parameters) {
 		$changePersonals = new ChangePersonals();
-		if (!$changePersonals->checkLogin())
+		if (!$changePersonals->checkLogin()) {
 			$this->redirect('error');
+		}
 		//if empty parameter, add the current user
-		if (isset($parameters[0]))
-			$userId = $parameters[0]; else $userId = $_SESSION['id_user'];
+		if (isset($parameters[0])) {
+			$userId = $parameters[0];
+		} else $userId = $_SESSION['id_user'];
 		
 		//if not admin of the right place, throw error
-		if ($userId != $_SESSION['id_user'] && !$changePersonals->checkIfIsAdminOfUser($_SESSION['id_user'], $userId))
+		if ($userId != $_SESSION['id_user'] && !$changePersonals->checkIfIsAdminOfUser($_SESSION['id_user'], $userId)) {
 			$this->redirect('error');
+		}
 		
 		//if form is sent
 		if (isset($_POST['sent'])) {
@@ -22,9 +25,11 @@ class ChangePersonalsController extends Controller {
 				'telephone' => $_POST['telephone'],
 				'address' => $_POST['address'],
 				'ic' => $_POST['ic'],
+				'company' => $_POST['company'],
 				'p' => $_POST['p'],
 				'csrf' => $_POST['csrf']
 			]);
+			
 			if (!Csrf::validateCsrfRequest($data['csrf'])) {
 				$this->messages[] = [
 					's' => 'error',
