@@ -18,6 +18,7 @@ class RegistrationController extends Controller {
 				'address' => $_POST['address'],
 				'startDate' => $_POST['startDate'],
 				'ic' => $_POST['ic'],
+				'company' => $_POST['company'],
 				'p' => $_POST['p']
 			]);
 			$this->data = $data; //for autofilling from previous page

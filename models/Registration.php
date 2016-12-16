@@ -103,12 +103,13 @@ class Registration extends Model {
 			$data['telephone'],
 			$data['address'],
 			$data['ic'],
-			$data['fakturoid_id']
+			$data['company'],
+			$data['fakturoid_id'],
 		];
 		
 		//insert user into DB
-		if (!Db::queryModify('INSERT INTO `users` (`first_name`,`last_name`,`user_tariff`,`active`,`email`,`password`,`salt`,`invoicing_start_date`,`telephone`,`address`,`ic`,`fakturoid_id`)
-                              VALUES (?,?,?,0,?,?,?,?,?,?,?,?)', $databaseData)
+		if (!Db::queryModify('INSERT INTO `users` (`first_name`,`last_name`,`user_tariff`,`active`,`email`,`password`,`salt`,`invoicing_start_date`,`telephone`,`address`,`ic`,`company`,`fakturoid_id`)
+                              VALUES (?,?,?,0,?,?,?,?,?,?,?,?,?)', $databaseData)
 		)
 			return [
 				's' => 'error',

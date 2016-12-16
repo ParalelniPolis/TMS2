@@ -10,16 +10,17 @@ class ForceRegistrationController extends Controller {
 		//catch registration (button is pressed)
 		if (isset($_POST['sent'])) {
 			$data = $registration->sanitize([
-				"email" => $_POST['email'],
-				"tariff" => $_POST['tariff'],
-				"firstname" => $_POST['firstname'],
-				"surname" => $_POST['surname'],
-				"telephone" => $_POST['telephone'],
+				'email' => $_POST['email'],
+				'tariff' => $_POST['tariff'],
+				'firstname' => $_POST['firstname'],
+				'surname' => $_POST['surname'],
+				'telephone' => $_POST['telephone'],
 				'address' => $_POST['address'],
-				"startDate" => $_POST['startDate'],
-				"ic" => $_POST['ic'],
+				'startDate' => $_POST['startDate'],
+				'ic' => $_POST['ic'],
+				'company' => $_POST['company'],
 				//make up password (particulary its hash)
-				"p" => $registration->getRandomHash()
+				'p' => $registration->getRandomHash(),
 			]);
 			$this->data = $data; //for autofilling from previous page
 			

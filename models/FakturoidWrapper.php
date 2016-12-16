@@ -10,10 +10,16 @@ class FakturoidWrapper extends Model {
 	
 	public function createCustomer($user) {
 		try {
+			if (!empty($user['company'])) {
+				$nameOfCompany = $user['company'];
+			} else {
+				$nameOfCompany = $user['firstname'].' '.$user['surname'];
+			}
 			$data = [
-				'name' => $user['firstname'].' '.$user['surname'],
+				'name' => $nameOfCompany,
 				'registration_no' => $user['ic'],
-				'street' => $user['address']
+				'street' => $user['address'],
+				'full_name' => $user['firstname'].' '.$user['surname'],
 			];
 			$customer = $this->fakturoid->create_subject($data);
 			
