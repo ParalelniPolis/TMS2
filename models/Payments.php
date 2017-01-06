@@ -201,7 +201,7 @@ class Payments extends Model {
 		
 		$message = '<div style="float: left;width: 45%;">Ahoj,<br/>
 <br/>
-vystavili jsem ti fakturu za členství / pronájem v Paper Hub v Paralelní Polis.<br/>
+vystavili jsme ti fakturu za členství / pronájem v Paper Hub v Paralelní Polis.<br/>
 Platbu uhradíš jednoduše na tomto odkazu: <a href="'.$linkCzech.'">'.$linkCzech.'</a> (je potřeba být přihlášená/ý).<br/>
 <br/>
 Pokud odkaz nebude fungovat, seznam svých faktur najdeš po přihlášení zde: <a href="'.$link.'">'.$link.'</a><br/>

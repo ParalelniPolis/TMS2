@@ -1,13 +1,13 @@
 <h2>Přehled členů</h2>
 <table class="checkUsers">
 	<tr class="firstRow">
-		<td>Activation</td>
-		<td>Personal data</td>
-		<td>Name</td>
-		<td>Email</td>
-		<td>Place</td>
-		<td>First membership</td>
-		<td>Tariff</td>
+		<th>Activation</th>
+		<th>Personal data</th>
+		<th>Name</th>
+		<th>Email</th>
+		<th>Place</th>
+		<!--<th>First membership</th>-->
+		<th>Tariff</th>
 	</tr>
 	<?php foreach ($members as $m) : ?>
 		<tr>
@@ -40,9 +40,9 @@
 			<td>
 				<?=$m['name']?>
 			</td>
-			<td>
+			<!--<td>
 				<?=$m['firstPaymentDate']?>
-			</td>
+			</td>-->
 			<td>
 				<div class="<?=$m['paymentFlag']?>">
 					<?=$m['tariffCZE']?>
