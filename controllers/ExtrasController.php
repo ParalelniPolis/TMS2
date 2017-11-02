@@ -12,8 +12,13 @@ class ExtrasController extends Controller {
 				$paymentId = $extras->sanitize($_POST['paymentId']);
 				$price = $extras->sanitize($_POST['price']);
 				$description = $extras->sanitize($_POST['description']);
+				if (isset($_POST['vat']) && $_POST['vat'] === '21') {
+					$vat = VAT_RATE_INVOICE_EXTRAS;
+				} else {
+					$vat = 0;
+				}
 				
-				$result = $extras->checkAddValues($paymentId, $price, $description);
+				$result = $extras->checkAddValues($paymentId, $price, $description, $vat);
 				if ($result['s'] == 'success') {
 					$status = $extras->getStatusOfPayment($paymentId);
 					
@@ -24,11 +29,10 @@ class ExtrasController extends Controller {
 							'cs' => 'Bohužel, položka nebyla přidána; platba se právě platí nebo je již zaplacená',
 							'en' => 'Sorry, we cannot add an extra; payment is processing'
 						];
-					}
-					else {
+					} else {
 						$invoiceFakturoidId = $fakturoid->getFakturoidInvoiceIdFromPaymentId($paymentId);
-						$extraFakturoidId = $fakturoid->addExtra($invoiceFakturoidId, $price, $description);
-						$result = $extras->addExtra($paymentId, $price, $description, $extraFakturoidId);
+						$extraFakturoidId = $fakturoid->addExtra($invoiceFakturoidId, $price, $description, $vat);
+						$result = $extras->addExtra($paymentId, $price, $description, $extraFakturoidId, $vat);
 						$this->messages[] = $result;
 					}
 				}
@@ -39,12 +43,18 @@ class ExtrasController extends Controller {
 				$userId = $extras->sanitize($_POST['userId']);
 				$price = $extras->sanitize($_POST['price']);
 				$description = $extras->sanitize($_POST['description']);
+				if (isset($_POST['vat']) && $_POST['vat'] === '21') {
+					$vat = VAT_RATE_INVOICE_EXTRAS;
+				} else {
+					$vat = 0;
+				}
 				
-				$result = $extras->checkAddBlankValues($userId, $price, $description);
-				if ($result['s'] == 'success')
-					$this->messages[] = $extras->addBlankExtra($userId, $price, $description);
-				else
+				$result = $extras->checkAddBlankValues($userId, $price, $description, $vat);
+				if ($result['s'] == 'success') {
+					$this->messages[] = $extras->addBlankExtra($userId, $price, $description, $vat);
+				} else {
 					$this->messages[] = $result;
+				}
 				
 				$this->redirect('checkUsers');
 				break;
@@ -60,8 +70,7 @@ class ExtrasController extends Controller {
 						'cs' => 'Bohužel, položka nebyla zrušena; platba se právě platí nebo je již zaplacená',
 						'en' => 'Sorry, we cannot cancel an extra; payment is processing'
 					];
-				}
-				else {
+				} else {
 					$extraFakturoidId = $fakturoid->getExtraFakturoidId($extraId);
 					$invoiceFakturoidId = $fakturoid->getInvoiceFakturoidIdFromExtraId($extraId);
 					$fakturoid->deleteExtra($invoiceFakturoidId, $extraFakturoidId);

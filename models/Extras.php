@@ -2,7 +2,7 @@
 
 class Extras extends Model {
 	
-	public function checkAddValues($paymentId, $price, $description) {
+	public function checkAddValues($paymentId, $price, $description, $vat) {
 		$paymentIdFromDb = Db::querySingleOne('SELECT `id_payment` FROM `payments`
 			WHERE `id_payment` = ?', [$paymentId]);
 		if (empty($paymentIdFromDb))
@@ -26,10 +26,17 @@ class Extras extends Model {
 				'en' => 'Description must be up to 120 characters'
 			];
 		
+		if (!is_numeric($vat) || $vat < 0 || $vat > 100)
+			return [
+				's' => 'error',
+				'cs' => 'Daně musí být číslo od nuly do sta',
+				'en' => 'Vat must be a number'
+			];
+		
 		return ['s' => 'success'];
 	}
 	
-	public function checkAddBlankValues($userId, $price, $description) {
+	public function checkAddBlankValues($userId, $price, $description, $vat) {
 		$userIdFromDb = Db::querySingleOne('SELECT `id_user` FROM `users`
 			WHERE `id_user` = ?', [$userId]);
 		if (empty($userIdFromDb))
@@ -53,12 +60,19 @@ class Extras extends Model {
 				'en' => 'Description must be up to 120 characters'
 			];
 		
+		if (!is_numeric($vat) || $vat < 0 || $vat > 100)
+			return [
+				's' => 'error',
+				'cs' => 'Daně musí být číslo od nuly do sta',
+				'en' => 'Vat must be a number'
+			];
+		
 		return ['s' => 'success'];
 	}
 	
-	public function addExtra($paymentId, $price, $description, $extraFakturoidId) {
-		if (Db::queryModify('INSERT INTO `extras` (`payment_id`, `description`, `priceCZK`, `fakturoid_id`)
- 			VALUES (?, ?, ?, ?)', [$paymentId, $description, $price, $extraFakturoidId])
+	public function addExtra($paymentId, $price, $description, $extraFakturoidId, $vat) {
+		if (Db::queryModify('INSERT INTO `extras` (`payment_id`, `description`, `priceCZK`, `fakturoid_id`, `vat`)
+ 			VALUES (?, ?, ?, ?, ?)', [$paymentId, $description, $price, $extraFakturoidId, $vat])
 		)
 			return [
 				's' => 'success',
@@ -73,9 +87,9 @@ class Extras extends Model {
 			];
 	}
 	
-	public function addBlankExtra($userId, $price, $description) {
-		if (Db::queryModify('INSERT INTO `extras` (`description`, `priceCZK`, `blank_user_id`)
- 			VALUES (?, ?, ?)', [$description, $price, $userId])
+	public function addBlankExtra($userId, $price, $description, $vat) {
+		if (Db::queryModify('INSERT INTO `extras` (`description`, `priceCZK`, `blank_user_id`, `vat`)
+ 			VALUES (?, ?, ?, ?)', [$description, $price, $userId, $vat])
 		)
 			return [
 				's' => 'success',
@@ -148,7 +162,7 @@ class Extras extends Model {
 	}
 	
 	public function getBlankExtras($id_user) {
-		return Db::queryAll('SELECT `id_extra`,`description`,`priceCZK` FROM `extras`
+		return Db::queryAll('SELECT `id_extra`,`description`,`priceCZK`,`vat` FROM `extras`
 			WHERE `blank_user_id` = ? AND `payment_id` IS NULL', [$id_user]);
 	}
 }

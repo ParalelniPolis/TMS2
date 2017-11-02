@@ -17,7 +17,7 @@ class Payments extends Model {
                                   ORDER BY `payment_first_date` DESC', [$userId]);
 		//add extras for each payment
 		foreach ($payments as &$p)
-			$p['extras'] = Db::queryAll('SELECT `id_extra`, `description`, `priceCZK` 
+			$p['extras'] = Db::queryAll('SELECT `id_extra`, `description`, `priceCZK`, `vat`
 										 FROM `extras` WHERE `payment_id` = ?', [$p['id_payment']]);
 		
 		return [
@@ -184,7 +184,8 @@ class Payments extends Model {
 				$extraId = $extra['id_extra'];
 				$price = $extra['priceCZK'];
 				$description = $extra['description'];
-				$fakturoidExtraId = $fakturoid->addExtra($fakturoidInvoiceId, $extra['priceCZK'], $extra['description']);
+				$vat = $extra['vat'];
+				$fakturoidExtraId = $fakturoid->addExtra($fakturoidInvoiceId, $price, $description, $vat);
 				$paymentId = $this->getPaymentIdFromFakturoidInvoiceId($fakturoidInvoiceId);
 				$extras->assignBlankExtra($paymentId, $price, $description, $fakturoidExtraId, $extraId);
 			}

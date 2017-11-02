@@ -29,6 +29,9 @@ define('TOLERANCE_TIME_ON_SENDING_REMINDING_EMAILS', 7); //in days
 define('SEND_TICKET_EMAILS', false); //set true when you want to copy all ticket messages into your email, else set false
 define('ALLOW_MAKE_ADMIN', false); //default false - true is INSECURE!
 
+//settings for payments
+define('VAT_RATE_INVOICE_EXTRAS', 21);
+
 //settings for locks
 define('MASTER_LOCK_PASS', 'your_master_password');
 

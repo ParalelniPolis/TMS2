@@ -60,22 +60,25 @@
 					+
 					<?=$e['priceBTC'] * 1000?> mBTC
 				</td>
-				<td colspan="4">
+				<td>
+					<?=$e['vat']?> % DPH
+				</td>
+				<td colspan="3">
 					<?=$e['description']?>
 				</td>
 			</tr>
 		<?php endforeach ?>
 		<?php if ($admin): ?>
 			<tr>
-				<td class="right">
-					<label for="price">Cena (Kč): </label>
-				</td>
-				<td colspan="5">
+				<td colspan="6">
 					<form method="POST" action="<?=ROOT?>/cs/extras/add">
+						<label for="price">Cena (Kč): </label>
 						<input type="hidden" name="paymentId" value="<?=$p['id_payment']?>">
 						<input id="price" name="price" type="number" step="any">
 						<label for="description">Popis: </label>
 						<input id="description" name="description" type="text">
+						<label for="vat">Odevzdat 21% státu?</label>
+						<input id="vat" name="vat" type="checkbox" checked="checked" value="21"><br/>
 						<button type="submit">Přidat</button>
 					</form>
 				</td>
@@ -94,11 +97,13 @@
 		</p>
 	<?php endforeach ?>
 		<form method="POST" action="<?=ROOT?>/cs/extras/addBlank">
-			<label for="price">Cena (Kč): </label>
 			<input type="hidden" name="userId" value="<?=$user['id_user']?>">
-			<input id="price" name="price" type="number" step="any">
+			<label for="price">Cena (Kč): </label>
+			<input id="price" name="price" type="number" step="any"><br/>
 			<label for="description">Popis: </label>
-			<input id="description" name="description" type="text">
+			<input id="description" name="description" type="text"><br/>
+			<label for="vat">Odevzdat 21% státu?</label>
+			<input id="vat" name="vat" type="checkbox" checked="checked" value="21"><br/>
 			<button type="submit">Přidat položku k budoucí faktuře</button>
 		</form>
 <?php endif ?>

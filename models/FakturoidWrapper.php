@@ -87,6 +87,7 @@ class FakturoidWrapper extends Model {
 				'subject_id' => $user['fakturoid_id'],
 				'issued_on' => date('Y-m-d'),
 				'currency' => 'CZK',
+				'vat_price_mode' => 'with_vat',
 				'tags' => ['Paper Hub'],
 				'lines' => $lines
 			]);
@@ -127,16 +128,20 @@ class FakturoidWrapper extends Model {
 		}
 	}
 	
-	public function addExtra($invoiceFakturoidId, $price, $description) {
+	public function addExtra($invoiceFakturoidId, $price, $description, $vatRate = 0) {
 		try {
 			$lines = [
 				[
 					'name' => $description,
 					'quantity' => 1,
-					'unit_price' => $price
+					'unit_price' => $price,
+					'vat_rate' => $vatRate,
 				]
 			];
-			$invoice = $this->fakturoid->update_invoice($invoiceFakturoidId, ['lines' => $lines]);
+			$invoice = $this->fakturoid->update_invoice($invoiceFakturoidId, [
+				'vat_price_mode' => 'with_vat',
+				'lines' => $lines,
+			]);
 			
 			return $extraFakturoidId = end($invoice->lines)->id;
 		} catch (FakturoidException $e) {
