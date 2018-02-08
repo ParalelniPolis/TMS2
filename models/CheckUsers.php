@@ -45,9 +45,10 @@ class CheckUsers extends Model {
                                  WHERE `id_payer` = ? ORDER BY ?, ?, `status` DESC', [
 			$userId,
 			'received',
-			'confirmed'
+			'confirmed',
+			'paidByHand',
 		]);
-		if ($r == 'received' || $r == 'confirmed')
+		if ($r == 'received' || $r == 'confirmed' || $r == 'paidByHand')
 			return 'success';
 		if (empty($r))
 			return 'unknown'; else return 'error';

@@ -6,7 +6,7 @@ class PaymentsController extends Controller {
 		$payments = new Payments();
 		if (!$payments->checkLogin())
 			$this->redirect('error');
-		//if empty parameter, add there current user
+		//if empty parameter, add current user
 		if (isset($parameters[0]))
 			$userId = $parameters[0]; else $userId = $_SESSION['id_user'];
 		
@@ -46,7 +46,6 @@ class PaymentsController extends Controller {
 			'en' => 'Payments overview'
 		];
 		//TODO add nice sliding JS invoice detail directly into view
-		//TODO hide table in view when empty (no data)
 		$this->view = 'payments';
 	}
 }

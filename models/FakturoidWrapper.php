@@ -111,7 +111,7 @@ class FakturoidWrapper extends Model {
 	public function setInvoicePayed($invoiceId) {
 		try {
 			$this->fakturoid->fire_invoice($invoiceId, 'pay');
-		} catch (FakturoidException $e) {
+		} catch (Exception $e) {
 			$code = $e->getCode();
 			$message = $e->getMessage();
 			$this->newTicket('error', 'class FakturoidWrapper func. setFakturoidInvoicePayed', 'code: '.$code.' with message: '.$message);
@@ -121,7 +121,7 @@ class FakturoidWrapper extends Model {
 	public function cancelInvoice($invoiceId) {
 		try {
 			$this->fakturoid->fire_invoice($invoiceId, 'cancel');
-		} catch (FakturoidException $e) {
+		} catch (Exception $e) {
 			$code = $e->getCode();
 			$message = $e->getMessage();
 			$this->newTicket('error', 'class FakturoidWrapper func. cancelInvoice', 'code: '.$code.' with message: '.$message);

@@ -55,8 +55,8 @@ class RestartPasswordByLink extends Model {
 			
 			return [
 				's' => 'error',
-				'cs' => 'Stalo se něco divného v hashování hesla. Prosím zkuste to znovu',
-				'en' => 'An error has occurred in hashing passwords . Please try again'
+				'cs' => 'Stalo se něco divného v hashování hesla. Pro tuto akci je nutný zapnutý JavaScript!',
+				'en' => 'An error has occurred in hashing passwords. For this action you need to turn on JavaScript!'
 			];
 		}
 		
