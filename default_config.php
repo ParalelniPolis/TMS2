@@ -1,5 +1,5 @@
 <?php
-if ($_SERVER['HTTP_HOST'] == 'localhost')
+if ($_SERVER['SERVER_NAME'] == 'localhost')
 	$useProduction = false;
 else
 	$useProduction = true;
@@ -17,11 +17,11 @@ else
 //main directory for TMS2
 $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
 if ($useProduction)
-	define('ROOT', $scheme.'://yoursite.com/TMS2'); else define('ROOT', 'http://localhost/TMS2');
+	define('ROOT', $scheme.'://example.com/TMS2'); else define('ROOT', 'http://localhost/TMS2');
 define('NAME', 'TMS2'); //how will be this system called in application
-define('EMAIL_HUB_MANAGER', 'hub.manager@yoursite.com'); //email on your Hub Manager
+define('EMAIL_HUB_MANAGER', 'hub.manager@example.com'); //email on your Hub Manager
 define('VERSION', '0.21'); //number of actual version for correct displaying
-define('EMAIL', 'TMS2@yoursite.com'); //default email for communication with users of TMS2
+define('EMAIL', 'TMS2@example.com'); //default email for communication with users of TMS2
 define('BRUTEFORCE_LOCKED_TIME', 1800); //in seconds; time how long login anti-brutforce system will be active; default is 1800 (half an hour)
 define('BRUTEFORCE_NUMBER_OF_ATTEMPTS', 5); //max number of attempts before bruteforce send email and lock account; default is 5
 define('CHANGE_PASS_TIME_VALIDITY', 1800); //in seconds; time how long will be link for changing password; default is 1800 (half an hour)
@@ -35,10 +35,10 @@ define('VAT_RATE_INVOICE_EXTRAS', 21);
 //settings for locks
 define('MASTER_LOCK_PASS', 'your_master_password');
 
-//settings for localhost database
-define('DB_SERVER_LOCAL', 'localhost');
+//settings for dev database
+define('DB_SERVER_LOCAL', 'db');
 define('DB_LOGIN_LOCAL', 'root');
-define('DB_PASSWORD_LOCAL', '');
+define('DB_PASSWORD_LOCAL', 'root');
 define('DB_DATABASE_LOCAL', 'tms');
 
 //settings for production database

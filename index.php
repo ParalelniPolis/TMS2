@@ -29,6 +29,7 @@ try {
 } catch (PDOException $e) {
 	if (!$useProduction)
 		echo $e->getMessage();
+	echo('<br/>');
 	require("views/DBerror.html");
 	die();
 }
