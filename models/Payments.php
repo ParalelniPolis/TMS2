@@ -19,14 +19,14 @@ class Payments extends Model {
 		foreach ($payments as &$p)
 			$p['extras'] = Db::queryAll('SELECT `id_extra`, `description`, `priceCZK`, `vat`
 										 FROM `extras` WHERE `payment_id` = ?', [$p['id_payment']]);
-		
+
 		return [
 			'user' => $user,
 			'tariff' => $tariff,
 			'payments' => $payments
 		];
 	}
-	
+
 	public function enhanceUserPayments($payments, $lang) {
 		foreach ($payments as &$p) {
 			//translation for statuses
@@ -40,33 +40,32 @@ class Payments extends Model {
 				$e['priceBTC'] = round($ratio * $e['priceCZK'], 5);
 			}
 		}
-		
+
 		return $payments;
 	}
-	
+
 	public function getUsersIds() {
 		$dbResult = Db::queryAll('SELECT `id_user` FROM `users` WHERE `active` = 1', []);
 		$result = [];
 		foreach ($dbResult as $r)
 			$result[] = $r['id_user'];
-		
+
 		return $result;
 	}
-	
+
 	public function actualizePayments($payments) {
 		$bitcoinPay = new Bitcoinpay();
 		$messages = [];
-		
+
 		foreach ($payments as $payment) {
 			$paymentId = $payment['id_payment'];
 			$bitcoinpayId = $payment['bitcoinpay_payment_id'];
 			$fakturoidId = $payment['invoice_fakturoid_id'];
-			
+
 			if (empty($payment['status']) || $payment['status'] == 'unpaid') {
 				$data['status'] = 'unpaid';
 				$data['price'] = null;
-			}
-			else {
+			} else {
 				$data = $bitcoinPay->getTransactionDetails($bitcoinpayId);
 				//invalid response
 				if (empty($data)) {
@@ -93,10 +92,30 @@ class Payments extends Model {
 				}
 			}
 		}
-		
+
 		return $messages;
 	}
-	
+
+	/**
+	 * @param $paymentId
+	 * @param $fakturoidId
+	 *
+	 * @return bool
+	 */
+	public function setPaymentLtcPaid($paymentId, $fakturoidId) {
+		$result = Db::queryModify('UPDATE `payments` SET `status` = ?, bitcoinpay_payment_id = ?
+						 WHERE `id_payment` = ? AND `invoice_fakturoid_id` = ? AND (status = ? OR status = ?)',
+			['confirmed', 'LTCbyButton', $paymentId, $fakturoidId, 'unpaid', 'timeout']);
+
+		//make invoice in fakturoid payed
+		if ($result) {
+			$fakturoid = new FakturoidWrapper();
+			$fakturoid->setInvoicePayed($fakturoidId);
+		}
+
+		return $result;
+	}
+
 	public function makeNewPayments($user, $tariff, $lang) {
 		$new = false;
 		$active = $user['active'];
@@ -110,12 +129,11 @@ class Payments extends Model {
                 SELECT `payment_first_date` FROM `payments`
                 WHERE `id_payer` = ?
                 ORDER BY `payment_first_date` DESC', [$userId]);
-			
+
 			if (empty($startOfLastGeneratedMonth)) {
 				//add beginning for new user
 				$startDate = $dbStartDate;
-			}
-			else {
+			} else {
 				list($year, $month, $day) = explode('-', $startOfLastGeneratedMonth);
 				$startOfLastGeneratedMonth = mktime(0, 0, 0, $month, $day, $year);
 				//or deside when if use last day of previous payment or newly begin set
@@ -123,28 +141,28 @@ class Payments extends Model {
 					$startDate = strtotime('+1 month', $startOfLastGeneratedMonth);
 				else $startDate = $dbStartDate;
 			}
-			
+
 			//and add following invoices till today
 			while ($startDate <= $currentDate) {
 				$this->createPayment($user, $tariff, $startDate, $lang);
 				$startDate = strtotime('+1 month', $startDate);
 				$new = true;
 			}
-			
+
 		}
 		if ($new == true)
 			return true;
 		else
 			return false;
 	}
-	
+
 	private function createPayment($user, $tariff, $beginningDate, $lang) {
 		$userId = $user['id_user'];
 		$tariffId = $tariff['id_tariff'];
 		$tariffName = $this->getTariffName($tariffId, 'cs'); //invoice is in czech only
 		$priceCZK = $tariff['priceCZK'];
 		$fakturoid = new FakturoidWrapper();
-		
+
 		$fakturoidInvoice = $fakturoid->createInvoice($user, $tariff['priceCZK'], $tariffName, $beginningDate, $lang);
 		if (!$fakturoidInvoice)
 			return [
@@ -175,7 +193,7 @@ class Payments extends Model {
 			$fakturoidInvoiceId,
 			$fakturoidInvoiceNumber
 		]);
-		
+
 		//add blank extras
 		$extras = new Extras;
 		$blankExtras = $extras->getBlankExtras($user['id_user']);
@@ -190,16 +208,16 @@ class Payments extends Model {
 				$extras->assignBlankExtra($paymentId, $price, $description, $fakturoidExtraId, $extraId);
 			}
 		}
-		
+
 		//get id of new payment
 		$newInvoiceId = $this->getPaymentIdFromFakturoidInvoiceId($fakturoidInvoiceId);
-		
+
 		//send email to user
 		$subject = NAME.' Paralelní Polis - nová faktura/new invoice';
 		$link = ROOT;
 		$linkCzech = ROOT.'/cs/PayInvoice/pay/'.$newInvoiceId;
 		$linkEnglish = ROOT.'/en/PayInvoice/pay/'.$newInvoiceId;
-		
+
 		$message = '<div style="float: left;width: 45%;">Ahoj,<br/>
 <br/>
 vystavili jsme ti fakturu za členství / pronájem v Paper Hub v Paralelní Polis.<br/>
@@ -226,29 +244,29 @@ Paper Hub
 		$this->sendEmail(EMAIL, EMAIL_HUB_MANAGER, NAME.' - Poslána výzva o nové faktuře na email '.$user['email'], $message);
 		//controll thirth mail
 		$this->sendEmail(EMAIL, EMAIL, NAME.' - Poslána výzva o nové faktuře na email '.$user['email'], $message);
-		
+
 		return ['s' => 'success'];
 	}
-	
+
 	private function getExchangeRate() {
 		$ch = curl_init();
-		
+
 		curl_setopt($ch, CURLOPT_URL, "https://bitcoinpay.com/api/v1/rates/btc");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HEADER, false);
-		
+
 		$response = curl_exec($ch);
 		curl_close($ch);
-		
+
 		$result = json_decode($response, true);
 		foreach ($result as $r) {
 			if (array_key_exists('CZK', $r))
 				return $r['CZK'];
 		}
-		
+
 		return false;
 	}
-	
+
 	private function translatePaymentStatus($status, $lang) {
 		$a = [
 			'pending' => [
@@ -288,10 +306,10 @@ Paper Hub
 				'en' => 'refund'
 			],
 		];
-		
+
 		return $a[$status][$lang];
 	}
-	
+
 	public function getExpiredPayments($toleranceDays) {
 		$dbResults = Db::queryAll('SELECT `price_CZK`, `email`, `id_user` FROM `payments`
 			JOIN `users` ON `users`.`id_user` = `payments`.`id_payer`
@@ -304,10 +322,10 @@ Paper Hub
 				'price_CZK' => $r['price_CZK']
 			];
 		}
-		
+
 		return $result;
 	}
-	
+
 	private function getPaymentIdFromFakturoidInvoiceId($fakturoidInvoiceId) {
 		return Db::querySingleOne('SELECT `id_payment` FROM `payments` WHERE `invoice_fakturoid_id` = ?', [$fakturoidInvoiceId]);
 	}

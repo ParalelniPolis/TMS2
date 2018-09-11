@@ -1,7 +1,8 @@
 TMS 2nd generation for PP by TK
 restructuralized onto MVC and shifted from handmade payments into BitcoinPay.com system
 
-
+0 LTC support
+3+4 Docker support
 extra-1+4+4+2 hotfix and repairs of hotfix
 v0.20-4+1+4+2+3+1 requests no.4 & minor changes + implement bitcoinpay.com notify feature 
 v0.19-2 added assiging members to locks

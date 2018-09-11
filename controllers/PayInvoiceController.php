@@ -106,6 +106,36 @@ class PayInvoiceController extends Controller {
 				
 				break;
 			}
+
+			case ('payLtcByHand'): {
+				//admin check
+				if ($bitcoinPay->checkIfAdmin($_SESSION['id_user'])) {
+					if (!is_numeric($parameters[2])) {
+						$this->redirect('error');
+					}
+
+					$fakturoidId = $parameters[2];
+					$paymentsModel = new Payments();
+					$result = $paymentsModel->setPaymentLtcPaid($paymentId, $fakturoidId);
+
+					if ($result) {
+						$this->messages[] = [
+							's' => 'success',
+							'cs' => 'Pardon, nepovedlo se spojení s platebním serverem bitcoinpay.com - zkuste to prosím za pár minut',
+							'en' => 'Sorry, could not make the connection with the payment server bitcoinpay.com - please try again in a few minutes'
+						];
+					} else {
+						$this->messages[] = [
+							's' => 'error',
+							'cs' => 'Pardon, nepovedlo se označit platbu jako zaplacenou',
+							'en' => 'Sorry, could not mark payment as paid'
+						];
+					}
+				} else {
+					//not an admin
+					$this->redirect('error');
+				}
+			}
 			
 			default:
 				$this->redirect('error');

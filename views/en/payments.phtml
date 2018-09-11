@@ -33,6 +33,11 @@
 				<a href="<?=ROOT?>/en/PayInvoice/pay/<?=$p['id_payment']?>">
 					<button>Pay</button>
 				</a>
+				<?php if ($admin): ?>
+					<a href="<?=ROOT?>/en/PayInvoice/payLtcByHand/<?=$p['id_payment']?>/<?=$p['invoice_fakturoid_id']?>">
+						<button>Comfirm LTC</button>
+					</a>
+				<?php endif ?>
 			</td>
 			<td>
 				<a href="<?=ROOT?>/en/InvoicePdf/<?=$p['invoice_fakturoid_id']?>" target="_blank">
