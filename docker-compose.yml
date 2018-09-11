@@ -1,0 +1,16 @@
+version: '3'
+services:
+  db:
+    image: mysql/mysql-server:5.7
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_HOST=0.0.0.0/0.0.0.0
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_BIND_ADDRESS=0.0.0.0
+    restart: always
+  adminer:
+    image: adminer:latest
+    ports:
+      - 8080:8080

@@ -1,8 +1,8 @@
 <h2>
-	<i><?=$user['first_name']?> <?=$user['last_name']?></i>
+	<i><?= $user['first_name'] ?> <?= $user['last_name'] ?></i>
 </h2>
 <h3>
-	s tarifem <?=$user['tariffCZE']?> (<?=$tariff['priceCZK']?> Kč/měsíc) v <?=$user['name']?>
+	s tarifem <?= $user['tariffCZE'] ?> (<?= $tariff['priceCZK'] ?> Kč/měsíc) v <?= $user['name'] ?>
 </h3>
 
 <table class="user">
@@ -19,18 +19,18 @@
 	<?php foreach ($payments as $p): ?>
 		<tr>
 			<td>
-				<?=date("j/n/y", strtotime($p['payment_first_date']))?>
+				<?= date("j/n/y", strtotime($p['payment_first_date'])) ?>
 				až
-				<?=date("j/n/y", strtotime($p['payment_first_date']."+1 month -1 day"))?>
+				<?= date("j/n/y", strtotime($p['payment_first_date']."+1 month -1 day")) ?>
 			</td>
 			<td>
-				<?=$p['payed_price_BTC'] * 1000?> mBTC
+				<?= $p['payed_price_crypto'] * 1000 ?> mBTC
 			</td>
 			<td>
-				<b><?=$p['status']?></b>
+				<b><?= $p['status'] ?></b>
 			</td>
 			<td>
-				<a href="<?=ROOT?>/cs/PayInvoice/pay/<?=$p['id_payment']?>">
+				<a href="<?= ROOT ?>/cs/PayInvoice/pay/<?= $p['id_payment'] ?>">
 					<button>Zaplatit</button>
 				</a>
 				<?php if ($admin): ?>
@@ -40,13 +40,13 @@
 				<?php endif ?>
 			</td>
 			<td>
-				<a href="<?=ROOT?>/cs/InvoicePdf/<?=$p['invoice_fakturoid_id']?>" target="_blank">
+				<a href="<?= ROOT ?>/cs/InvoicePdf/<?= $p['invoice_fakturoid_id'] ?>" target="_blank">
 					<button>ukázat PDF</button>
 				</a>
 			</td>
 			<?php if ($admin): ?>
 				<td>
-					<a href="<?=ROOT?>/cs/DeleteInvoice/<?=$p['id_payment']?>">
+					<a href="<?= ROOT ?>/cs/DeleteInvoice/<?= $p['id_payment'] ?>">
 						<button>Zrušit fakturu</button>
 					</a>
 				</td>
@@ -56,34 +56,37 @@
 			<tr>
 				<td class="right">
 					<?php if ($admin): ?>
-						<a href="<?=ROOT?>/cs/extras/delete/<?=$e['id_extra']?>">
+						<a href="<?= ROOT ?>/cs/extras/delete/<?= $e['id_extra'] ?>">
 							<button>Smazat</button>
 						</a>
 					<?php endif; ?>
 				</td>
 				<td>
 					+
-					<?=$e['priceBTC'] * 1000?> mBTC
+					<?= $e['priceBTC'] * 1000 ?> mBTC
 				</td>
 				<td>
-					<?=$e['vat']?> % DPH
+					<?= $e['vat'] ?> % DPH
 				</td>
 				<td colspan="3">
-					<?=$e['description']?>
+					<?= $e['description'] ?>
 				</td>
 			</tr>
 		<?php endforeach ?>
 		<?php if ($admin): ?>
 			<tr>
 				<td colspan="6">
-					<form method="POST" action="<?=ROOT?>/cs/extras/add">
-						<label for="price">Cena (Kč): </label>
-						<input type="hidden" name="paymentId" value="<?=$p['id_payment']?>">
-						<input id="price" name="price" type="number" step="any">
-						<label for="description">Popis: </label>
-						<input id="description" name="description" type="text">
-						<label for="vat">Odevzdat 21% státu?</label>
-						<input id="vat" name="vat" type="checkbox" checked="checked" value="21"><br/>
+					<form method="POST" action="<?= ROOT ?>/cs/extras/add">
+						<input type="hidden" name="paymentId" value="<?= $p['id_payment'] ?>">
+						<label for="price">Cena (Kč):
+							<input id="price" name="price" type="number" step="any">
+						</label>
+						<label for="description">Popis:
+							<input id="description" name="description" type="text">
+						</label>
+						<label for="vat">Odevzdat 21% státu?
+							<input id="vat" name="vat" type="checkbox" checked="checked" value="21">
+						</label><br/>
 						<button type="submit">Přidat</button>
 					</form>
 				</td>
@@ -95,22 +98,25 @@
 <?php if ($admin): ?>
 	<p><b>Položky na další fakturu</b></p>
 	<?php foreach ($blankExtras as $blankExtra): ?>
-		<p><?=$blankExtra['description']?> - <?=$blankExtra['priceCZK']?> Kč
-			<a href="<?=ROOT?>/cs/extras/delete/<?=$blankExtra['id_extra']?>">
+		<p><?= $blankExtra['description'] ?> - <?= $blankExtra['priceCZK'] ?> Kč
+			<a href="<?= ROOT ?>/cs/extras/delete/<?= $blankExtra['id_extra'] ?>">
 				<button>Smazat</button>
 			</a>
 		</p>
 	<?php endforeach ?>
-		<form method="POST" action="<?=ROOT?>/cs/extras/addBlank">
-			<input type="hidden" name="userId" value="<?=$user['id_user']?>">
-			<label for="price">Cena (Kč): </label>
-			<input id="price" name="price" type="number" step="any"><br/>
-			<label for="description">Popis: </label>
-			<input id="description" name="description" type="text"><br/>
-			<label for="vat">Odevzdat 21% státu?</label>
-			<input id="vat" name="vat" type="checkbox" checked="checked" value="21"><br/>
-			<button type="submit">Přidat položku k budoucí faktuře</button>
-		</form>
+	<form method="POST" action="<?= ROOT ?>/cs/extras/addBlank">
+		<input type="hidden" name="userId" value="<?= $user['id_user'] ?>">
+		<label for="price">Cena (Kč):
+			<input id="price" name="price" type="number" step="any">
+		</label><br/>
+		<label for="description">Popis:
+			<input id="description" name="description" type="text">
+		</label><br/>
+		<label for="vat">Odevzdat 21% státu?
+			<input id="vat" name="vat" type="checkbox" checked="checked" value="21">
+		</label><br/>
+		<button type="submit">Přidat položku k budoucí faktuře</button>
+	</form>
 <?php endif ?>
 
-<p><a href="mailto:<?=EMAIL_HUB_MANAGER?>">Pro změnu tarifu kontaktuj prosím svého Paper Hub manažera</a></p>
+<p><a href="mailto:<?= EMAIL_HUB_MANAGER ?>">Pro změnu tarifu kontaktuj prosím svého Paper Hub manažera</a></p>

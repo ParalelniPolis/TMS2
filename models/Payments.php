@@ -12,7 +12,7 @@ class Payments extends Model {
                                 JOIN `tariffs` ON `users`.`user_tariff` = `tariffs`.`id_tariff`
                                 JOIN `places` ON `place_id` = `places`.`id`
                                 WHERE  `id_user` = ?', [$userId]);
-		$payments = Db::queryAll('SELECT `id_payment`,`bitcoinpay_payment_id`,`id_payer`,`payed_price_BTC`,`payment_first_date`,`status`,`tariff_id`,`price_CZK`,`invoice_fakturoid_id`
+		$payments = Db::queryAll('SELECT `id_payment`,`bitcoinpay_payment_id`,`id_payer`,payed_price_crypto,`payment_first_date`,`status`,`tariff_id`,`price_CZK`,`invoice_fakturoid_id`
                                   FROM `payments` WHERE `id_payer` = ?
                                   ORDER BY `payment_first_date` DESC', [$userId]);
 		//add extras for each payment
@@ -32,8 +32,8 @@ class Payments extends Model {
 			//translation for statuses
 			$p['status'] = $this->translatePaymentStatus($p['status'], $lang);
 			//guessing BTC price
-			if (empty($p['payed_price_BTC']))
-				$p['payed_price_BTC'] = round($p['price_CZK'] / $this->getExchangeRate(), 5);
+			if (empty($p['payed_price_crypto']))
+				$p['payed_price_crypto'] = round($p['price_CZK'] / $this->getExchangeRate(), 5);
 			//and price for extras
 			$ratio = $p['payed_price_BTC'] / $p['price_CZK'];
 			foreach ($p['extras'] as &$e) {
@@ -61,34 +61,37 @@ class Payments extends Model {
 			$paymentId = $payment['id_payment'];
 			$bitcoinpayId = $payment['bitcoinpay_payment_id'];
 			$fakturoidId = $payment['invoice_fakturoid_id'];
-
-			if (empty($payment['status']) || $payment['status'] == 'unpaid') {
-				$data['status'] = 'unpaid';
-				$data['price'] = null;
-			} else {
-				$data = $bitcoinPay->getTransactionDetails($bitcoinpayId);
-				//invalid response
-				if (empty($data)) {
-					$messages[] = [
-						's' => 'info',
-						'cs' => 'Nepovedlo se nám spojit se se serverem bitcoinpay.com - některé platby můžou být neaktualizované',
-						'en' => 'We failed at connecting with bitcoinpay.com - some payments may be outdated'
-					];
-					break;
+			
+			if ($payment['status'] == 'paidByHand') {
+				//when payment is paid by hand, we dont want to do anything about it
+				if (empty($payment['status']) || $payment['status'] == 'unpaid') {
+					$data['status'] = 'unpaid';
+					$data['price'] = null;
+				} else {
+					$data = $bitcoinPay->getTransactionDetails($bitcoinpayId);
+					//invalid response
+					if (empty($data)) {
+						$messages[] = [
+							's' => 'info',
+							'cs' => 'Nepovedlo se nám spojit se se serverem bitcoinpay.com - některé platby můžou být neaktualizované',
+							'en' => 'We failed at connecting with bitcoinpay.com - some payments may be outdated'
+						];
+						break;
+					}
 				}
-			}
-			$newStatus = $data['status'];
-			//when status is different (or new), save it and inform user
-			if ($newStatus != $payment['status']) {
-				Db::queryModify('UPDATE `payments` SET `status` = ? WHERE `id_payment` = ?', [$newStatus, $paymentId]);
-				$messages[] = $bitcoinPay->getStatusMessage($newStatus);
-				//and when receive money, make invoice in fakturoid payed
-				if ($newStatus == ('confirmed')) {
-					$fakturoid = new FakturoidWrapper();
-					$fakturoid->setInvoicePayed($fakturoidId);
-					Db::queryModify('UPDATE `payments`
-						SET `payed_price_BTC` = ?
-						WHERE `id_payment` = ?', [$data['settled_amount'], $paymentId]);
+				$newStatus = $data['status'];
+				//when status is different (or new), save it and inform user
+				if ($newStatus != $payment['status']) {
+					Db::queryModify('UPDATE `payments` SET `status` = ? WHERE `id_payment` = ?', [$newStatus, $paymentId]);
+					$messages[] = $bitcoinPay->getStatusMessage($newStatus);
+					//and when receive money, make invoice in fakturoid payed
+					if ($newStatus == ('confirmed')) {
+						$fakturoid = new FakturoidWrapper();
+						$fakturoid->setInvoicePayed($fakturoidId);
+						Db::queryModify('UPDATE `payments`
+							SET payed_price_crypto = ?
+							WHERE `id_payment` = ?', [$data['settled_amount'], $paymentId]);
+					}
 				}
 			}
 		}
@@ -276,6 +279,10 @@ Paper Hub
 			'confirmed' => [
 				'cs' => 'potvrzená',
 				'en' => 'confirmed'
+			],
+			'paidByHand' => [
+				'cs' => 'potvrzená ručně',
+				'en' => 'confirmed by hand'
 			],
 			'received' => [
 				'cs' => 'přijato',
